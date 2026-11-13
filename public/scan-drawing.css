@@ -1,0 +1,23 @@
+.scan-workspace { display: grid; grid-template-columns: minmax(0,1fr) minmax(285px, 32%); gap: 15px; align-items: start; margin-top: 18px; }
+.scan-note, .selection-text, .scan-provenance { font-size: 13px; line-height: 1.55; color: var(--muted); }
+.scan-note { margin-top: 9px; }
+#scan-filename { margin-top: 8px; }
+#image-state { padding: 4px 14px 8px; }
+.scan-viewport { position: relative; display: grid; justify-items: center; align-items: start; max-height: 76vh; overflow: auto; padding: 16px; background: #e9ede5; }
+.scan-sheet { position: relative; width: max-content; max-width: 100%; background: white; box-shadow: 0 3px 12px #2033221c; }
+#scan-image { display: block; max-width: 100%; max-height: 68vh; width: auto; height: auto; }
+.scan-viewport.native { display: block; }
+.native .scan-sheet, .native #scan-image { max-width: none; max-height: none; }
+#scan-overlay { position: absolute; inset: 0; pointer-events: none; }
+.scan-pin { position: absolute; padding: 0; border: 2px solid #0a7757; background: #47ab7140; pointer-events: auto; cursor: pointer; }
+.scan-pin[aria-pressed=true] { outline: 2px solid #fff; outline-offset: 1px; border-color: #984a07; background: #ffad3c4a; }
+.scan-pin:focus-visible { outline: 3px solid #0945ac; outline-offset: 3px; }
+.saved-controls { padding: 16px 17px; }
+.saved-controls label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--muted); font-weight: 600; }
+.saved-controls select { width: 100%; min-height: 35px; padding: 4px 6px; border: 1px solid #bfcbb8; border-radius: 4px; background: var(--paper); font: inherit; font-size: 13px; }
+.scan-side .answer { font-size: clamp(27px, 3vw, 45px); }
+.scan-side .result-block h2 { line-height: 1.4; }
+#scan-evidence { padding: 0 10px; max-height: 230px; overflow: auto; }
+.selection-text { padding: 4px 16px 12px; font-size: 12px; }
+.scan-provenance { border-top: 1px solid var(--line); padding: 12px 16px; overflow-wrap: anywhere; font-size: 12px; }
+@media (max-width: 740px) { .scan-workspace { grid-template-columns: minmax(0, 1fr); } .scan-viewport { max-height: 60vh; } #scan-image { max-height: 52vh; } .native #scan-image { max-height: none; } }

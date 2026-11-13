@@ -4,6 +4,8 @@
 
 © 2019 CubiCasa. Ahti Kalervo, Juha Ylioinas, Markus Häikiö, Antti Karhu, Juho Kannala. *CubiCasa5K: A Dataset and an Improved Multi-Task Model for Floorplan Image Analysis*, SCIA 2019. The image and its sponsor-supplied evaluation question are licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/), separately from the application code. Commercial reuse requires appropriate permission. The app draws its evidence overlay separately from the original file. [Upstream dataset](https://zenodo.org/records/2613548) · [Full Junction archive](https://fwjydgxpttajiqpfmqtj.supabase.co/storage/v1/object/public/stoa-junction-2026/junction-dataset.zip).
 
+The library additionally reads original CubiCasa drawings from the locally supplied sponsor archive. The same CubiCasa credit and licence apply to those drawings. `library-runs.json` contains four recorded predictions on `high_quality-12564.png` and `colorful-10052.png`, bound to the source bytes by SHA-256. One is a local Nemotron Parse bedroom count. Three are authenticated NVIDIA Super VL door, sink and window responses. A recorded box is the model's proposed location. The four-door prediction misses one door against the sponsor's count of five.
+
 ## Reproduce the inference
 
 Set `NEMOTRON_BASE_URL` to the Verda Junction **API base including its version prefix**, or a complete chat completions URL, and place the matching endpoint credential in `NEMOTRON_API_KEY`. If the endpoint exposes its own alias for the exact Nemotron 3.5 Super VL model, set `NEMOTRON_MODEL` to that alias. Keep credentials on the server. The default model ID is `nvidia/nemotron-3.5-super-vl-120b-a12b`.

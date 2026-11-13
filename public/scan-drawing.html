@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153c32"><title>Scan reader · Planproof</title>
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/library.css"><link rel="stylesheet" href="/scan-drawing.css"><script src="/library-scan.js" defer></script>
+</head><body>
+<header class="topbar"><div class="brand"><svg viewBox="0 0 36 36" width="31" height="31" fill="none" aria-hidden="true"><path d="M4 7h18v17H4zM14 14h18v17H14z" stroke="currentColor" stroke-width="2.6"/><path d="M14 14h8v10h-8z" fill="currentColor"/></svg><span>Planproof</span></div>
+<nav aria-label="Drawing workflows"><a href="/library.html">Drawing library</a><a href="/">Swiss drawing</a><a href="/finnish.html">Finnish scan</a></nav></header>
+<main class="library-main">
+  <a class="back-link" href="/library.html?source=cubicasa5k">← CubiCasa5K scans</a>
+  <div class="page-title"><div><p class="kicker">CUBICASA5K</p><h1>Scan reader</h1><p id="scan-filename" class="source-filename"></p></div><a id="original-scan" class="outline-button" target="_blank" rel="noopener" hidden>Open original PNG ↗</a></div>
+  <form id="scan-form" class="query-form" aria-label="Ask a count question about this scan"><label for="scan-question" class="sr-only">Count question for this scan</label><input type="text" id="scan-question" placeholder="How many windows are shown on this floor plan?" required disabled autocomplete="off"><button id="scan-submit" type="submit" disabled>Run count</button></form>
+  <p id="scan-service" class="scan-note" hidden></p><p id="scan-status" class="model-status" role="status">Opening scan…</p><button type="button" id="retry-scan" class="outline-button" hidden>Retry</button>
+  <div class="scan-workspace" id="scan-workspace" hidden>
+    <section class="drawing-panel" aria-labelledby="image-heading"><div class="panelbar"><div class="panel-identity"><h2 id="image-heading">Original scan</h2></div><button id="scan-size" type="button" class="outline-button" aria-pressed="false" disabled>Actual size</button></div>
+      <p id="image-state" class="scan-note" role="status">Loading drawing image…</p>
+      <div class="scan-viewport" id="scan-viewport" tabindex="0" aria-label="Drawing image and evidence boxes"><div class="scan-sheet"><img id="scan-image" alt="Original CubiCasa5K architectural floor plan"><div id="scan-overlay" aria-label="Evidence locations"></div></div></div>
+    </section>
+    <aside class="scan-side drawing-panel" aria-label="Saved counts and image evidence">
+      <div class="saved-controls"><label for="saved-questions">Saved questions</label><select id="saved-questions" disabled><option>No saved questions</option></select></div>
+      <div class="result-block"><p class="kicker">SCAN RESULT</p><h2 id="answer-question">Count</h2><p id="scan-answer" class="answer">—</p><p id="answer-reason" class="answer-caption"></p></div>
+      <div class="evidence-heading"><h3>Evidence</h3><span id="scan-evidence-count"></span></div>
+      <div id="scan-evidence" aria-label="Evidence from this drawing"></div><p id="scan-selection" class="selection-text" aria-live="polite"></p>
+      <div id="scan-provenance" class="scan-provenance" hidden></div>
+    </aside>
+  </div>
+  <footer><span>Drawing by CubiCasa and the CubiCasa5K dataset authors · CC BY-NC-SA 4.0</span><a href="/data/FINNISH-SOURCE.md">Source and licence ↗</a></footer>
+</main></body></html>

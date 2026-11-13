@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153c32"><title>IFC quantity reader · Planproof</title>
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/library.css"><script src="/model.js" defer></script>
+</head><body>
+<header class="topbar"><div class="brand"><svg viewBox="0 0 36 36" width="31" height="31" fill="none" aria-hidden="true"><path d="M4 7h18v17H4zM14 14h18v17H14z" stroke="currentColor" stroke-width="2.6"/><path d="M14 14h8v10h-8z" fill="currentColor"/></svg><span>Planproof</span></div>
+<nav aria-label="Drawing workflows"><a href="/library.html">Drawing library</a><a href="/">Swiss drawing</a><a href="/finnish.html">Finnish scan</a></nav></header>
+<main class="library-main">
+  <a class="back-link" href="/library.html?source=ifc_models">← IFC models</a>
+  <div class="page-title"><div><p class="kicker">IFC MODEL</p><h1 id="model-title">Model quantity reader</h1><p id="model-filename" class="source-filename" hidden></p></div><a id="original-model" class="outline-button" target="_blank" rel="noopener" hidden>Open original IFC ↗</a></div>
+  <form id="model-form" class="query-form" aria-label="Query the IFC model"><label for="model-query" class="sr-only">Question about this model</label><input type="text" id="model-query" placeholder="Ask about a quantity in this model" required disabled autocomplete="off"><button id="model-submit" type="submit" disabled>Ask model <span aria-hidden="true">↗</span></button></form>
+  <div class="starter-queries" id="starters" aria-label="Suggested model queries" hidden><span>Try</span><button type="button" data-query="How many doors are there in the model?">Count doors</button><button type="button" data-query="How many walls are there in the model?">Count walls</button><button type="button" data-query="How many rooms (spaces) are there in the model?">Count spaces</button></div>
+  <p class="model-status" id="model-status" role="status">Opening model…</p><button id="model-retry" class="outline-button" type="button" hidden>Retry</button>
+  <section id="model-result" class="model-layout" aria-label="Quantity and supporting model records" hidden>
+    <aside class="model-results"><div class="result-block"><p class="kicker">MODEL QUANTITY</p><h2 id="model-question"></h2><p id="model-value" class="answer"></p><p id="model-method" class="answer-caption"></p></div>
+    <div class="evidence-heading"><h3>Evidence</h3><span id="model-count"></span></div><div id="model-evidence" class="model-evidence"></div><button id="more-evidence" class="outline-button" type="button" hidden>Show more records</button></aside>
+    <section class="record-panel" aria-labelledby="record-heading"><div class="panelbar"><div class="panel-identity"><h2 id="record-heading">Source record</h2></div><span id="record-ref" class="file-id"></span></div><div id="model-record" class="record-body" aria-live="polite"></div></section>
+  </section>
+  <footer id="model-attribution" aria-label="Model attribution" hidden><div><strong id="model-work"></strong><span id="model-license"></span><p id="model-credit"></p></div><a id="model-source" target="_blank" rel="noopener noreferrer" hidden>Original source ↗</a></footer>
+</main></body></html>

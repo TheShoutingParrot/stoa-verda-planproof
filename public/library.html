@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153c32"><title>Drawing library · Planproof</title>
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/library.css">
+  <script src="/library.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><svg viewBox="0 0 36 36" width="31" height="31" fill="none" aria-hidden="true"><path d="M4 7h18v17H4zM14 14h18v17H14z" stroke="currentColor" stroke-width="2.6"/><path d="M14 14h8v10h-8z" fill="currentColor"/></svg><span>Planproof</span></div>
+  <nav aria-label="Drawing workflows"><a href="/library.html" aria-current="page">Drawing library</a><a href="/">Swiss drawing</a><a href="/finnish.html">Finnish scan</a></nav>
+</header>
+<main class="library-main">
+  <div class="page-title"><div><p class="kicker">DRAWING WORKSPACE</p><h1>Drawing library</h1></div></div>
+  <form id="library-search" class="library-search" role="search">
+    <div class="search-field"><label for="library-query">Search drawings</label><input type="search" name="q" id="library-query" placeholder="Search by filename, building or site" autocomplete="off"></div>
+    <div class="source-field"><label for="library-source">Source</label><select id="library-source" name="source"><option value="">All sources</option><option value="swiss_dwellings">Swiss Dwellings</option><option value="ifc_models">IFC models</option><option value="cubicasa5k">CubiCasa5K</option></select></div>
+    <button type="submit" class="primary-button">Search</button>
+  </form>
+  <section class="library-results" aria-labelledby="results-title">
+    <div class="library-bar"><h2 id="results-title">Drawings</h2><span id="library-count" role="status"></span></div>
+    <div id="library-state" role="status">Loading drawings…</div>
+    <button id="library-retry" class="outline-button retry" type="button" hidden>Retry</button>
+    <ul id="library-list" aria-label="Matching drawings"></ul>
+    <nav class="paging" id="library-pages" aria-label="Search results pages" hidden><button type="button" id="prev" class="outline-button">← Previous</button><span id="range"></span><button type="button" id="next" class="outline-button">Next →</button></nav>
+  </section>
+</main>
+</body></html>

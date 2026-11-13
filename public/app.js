@@ -412,17 +412,28 @@ function clearSheet() {
   byId('loading').hidden=false;
   message('');
 }
-async function loadSheet(stem=originalSheet, roomId=null) {
+async function loadSheet(stem=originalSheet, roomId=null, libraryPath=null) {
   const ticket=++generation;
-  if (!sheetFiles.has(stem)) stem=originalSheet;
-  byId('drawing-select').value=stem;
+  const picker = byId('drawing-select');
+  const externalOption = picker.options?.namedItem('library-option');
+  externalOption?.remove();
+  if (libraryPath) {
+    const option = new Option(libraryPath.split('/').pop(), libraryPath);
+    option.id = 'library-option';
+    picker.add(option);
+  } else if (!sheetFiles.has(stem)) stem=originalSheet;
+  picker.value=libraryPath || stem;
   clearSheet();
   try {
-    const response=await fetch(sheetFiles.get(stem));
+    const address = libraryPath ? '/api/drawing?' + new URLSearchParams({path:libraryPath}) : sheetFiles.get(stem);
+    const response=await fetch(address);
     if(!response.ok) throw new Error('Drawing data unavailable');
-    const data=await response.json();
+    const payload=await response.json();
+    const data = libraryPath ? payload.geometry : payload;
     if (ticket!==generation) return;
-    if (data.sheet.id!==stem) throw new Error('Unexpected drawing data');
+    if (libraryPath ? payload.drawing?.path !== libraryPath || payload.drawing.kind !== 'swiss' || !data?.sheet
+                    : data.sheet.id !== stem) throw new Error('Unexpected drawing data');
+    if (libraryPath) byId('library-option').textContent = payload.drawing.title || payload.drawing.name;
     state.data=data;
     const {sheet,rooms}=state.data;
     byId('drawing-title').textContent=sheet.title||'Floor plan';
@@ -467,11 +478,12 @@ async function loadSheet(stem=originalSheet, roomId=null) {
 }
 function loadFromAddress() {
   const query=new URLSearchParams(window.location.search);
-  loadSheet(query.get('sheet')||originalSheet,query.get('room'));
+  loadSheet(query.get('sheet')||originalSheet,query.get('room'),query.get('path'));
 }
 byId('drawing-select').addEventListener('change',event=>{
   const stem=event.target.value;
   const address=new URL(window.location.href);
+  address.searchParams.delete('path');
   if(stem===originalSheet)address.searchParams.delete('sheet');
   else address.searchParams.set('sheet',stem);
   address.searchParams.delete('room');

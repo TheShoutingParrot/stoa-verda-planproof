@@ -1,0 +1,154 @@
+{
+  "data/cubicasa5k/high_quality-12564.png": [
+    {
+      "status": "answered",
+      "answer": 3,
+      "evidence": [
+        {
+          "label": "mh",
+          "box": [
+            878,
+            328,
+            903,
+            347
+          ]
+        },
+        {
+          "label": "mh",
+          "box": [
+            878,
+            629,
+            903,
+            648
+          ]
+        },
+        {
+          "label": "mh",
+          "box": [
+            878,
+            801,
+            903,
+            821
+          ]
+        }
+      ],
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "path": "data/cubicasa5k/high_quality-12564.png",
+      "image_sha256": "ff0018ae4caa2d62313f39001846cda36cc6d70b58d1c7da429ca520c877a5a6",
+      "coordinate_system": "xyxy_top_left_0_to_1000",
+      "origin": "Local Nemotron Parse",
+      "model": "nvidia/NVIDIA-Nemotron-Parse-v1.2",
+      "served_model": "mlx-community/Nemotron-Parse-v1.2-8bit@92ebb2122d413426995ea92340ac847dad6ec274",
+      "method": "local_nemotron_parse",
+      "latency_ms": 32012,
+      "image": "high_quality-12564.png"
+    }
+  ],
+  "data/cubicasa5k/colorful-10052.png": [
+    {
+      "status": "answered",
+      "answer": 4,
+      "evidence": [
+        {
+          "label": "Left side double doors with swing arcs",
+          "box": [
+            89,
+            436,
+            209,
+            513
+          ]
+        },
+        {
+          "label": "Door swing arc near toilet area",
+          "box": [
+            646,
+            268,
+            692,
+            328
+          ]
+        },
+        {
+          "label": "Door swing arc in lower bathroom area",
+          "box": [
+            646,
+            567,
+            692,
+            629
+          ]
+        },
+        {
+          "label": "Door swing arc at bottom entrance area",
+          "box": [
+            616,
+            655,
+            682,
+            722
+          ]
+        }
+      ],
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "path": "data/cubicasa5k/colorful-10052.png",
+      "image_sha256": "7827869a473a59bfbbc6560bf00ed3849de6b9dc59eab7b9f8dd005069f63375",
+      "coordinate_system": "xyxy_top_left_0_to_1000",
+      "origin": "Saved hosted inference",
+      "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+      "served_model": "private/nvidia/nemotron-3.5-super-120b-a12b",
+      "provider_host": "integrate.api.nvidia.com",
+      "timestamp": "2026-11-13T20:46:42+00:00",
+      "latency_ms": 25151,
+      "image": "colorful-10052.png"
+    },
+    {
+      "status": "answered",
+      "answer": 2,
+      "evidence": [
+        {
+          "label": "Kitchen sink (top counter)",
+          "box": [
+            558,
+            196,
+            582,
+            222
+          ]
+        },
+        {
+          "label": "Kitchen sink/double basin (bottom counter)",
+          "box": [
+            335,
+            672,
+            392,
+            688
+          ]
+        }
+      ],
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "path": "data/cubicasa5k/colorful-10052.png",
+      "image_sha256": "7827869a473a59bfbbc6560bf00ed3849de6b9dc59eab7b9f8dd005069f63375",
+      "coordinate_system": "xyxy_top_left_0_to_1000",
+      "origin": "Saved hosted inference",
+      "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+      "served_model": "private/nvidia/nemotron-3.5-super-120b-a12b",
+      "provider_host": "integrate.api.nvidia.com",
+      "timestamp": "2026-11-13T20:47:32+00:00",
+      "latency_ms": 12023,
+      "image": "colorful-10052.png"
+    },
+    {
+      "status": "unknown",
+      "answer": null,
+      "evidence": [],
+      "reason": "The count and number of localized objects did not match.",
+      "question": "How many windows are shown on this floor plan?",
+      "path": "data/cubicasa5k/colorful-10052.png",
+      "image_sha256": "7827869a473a59bfbbc6560bf00ed3849de6b9dc59eab7b9f8dd005069f63375",
+      "coordinate_system": "xyxy_top_left_0_to_1000",
+      "origin": "Saved hosted inference",
+      "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+      "served_model": "private/nvidia/nemotron-3.5-super-120b-a12b",
+      "provider_host": "integrate.api.nvidia.com",
+      "timestamp": "2026-11-13T20:47:21+00:00",
+      "latency_ms": 11120,
+      "image": "colorful-10052.png"
+    }
+  ]
+}

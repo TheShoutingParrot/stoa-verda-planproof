@@ -1,6 +1,6 @@
 # Planproof on every released English question
 
-These figures are the completed local baseline. An authenticated follow-up is running on the 39,797 hosted image questions. Run `python3 scripts/benchmark_hosted_progress.py` alongside its checkpoint to refresh the by-source count of answered, correct and pending questions.
+These figures are the original local baseline. The authenticated follow-up stopped after 1,560 of the 39,797 hosted image questions. The [drawing-library evaluation](drawing-library.md) incorporates those completed results and the later native IFC reader.
 
 Planproof answered **18,801 of 64,132 questions correctly (29.32%)** on the sponsor's 9.77 GB archive. It returned 18,807 answers, of which 99.97% were correct. The table keeps every released English question in its source denominator. [Machine-readable results](full-english-results.json)
 
