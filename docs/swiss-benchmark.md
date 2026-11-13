@@ -2,6 +2,8 @@
 
 The paired comparison uses 1,080 English sponsor questions on the same 60 Swiss Dwellings sites for both code revisions. The baseline is commit `32b2941ea5108140a81f44ea484d40b22f4c6b78`. The revised result is identified by the SHA-256 hashes of its frontend and extractor in the results JSON.
 
+The later [full-corpus and fresh-site evaluation](swiss-frontier.md) covers the expanded takeoff engine, with results for all 18,792 released English Swiss questions.
+
 ## Paired results
 
 Correct scope and numeric value improved from **360/1,080 (33.3%)** to **487/1,080 (45.1%)**, a change of 127 questions. The sample and the 2% area tolerance are identical in both columns.
