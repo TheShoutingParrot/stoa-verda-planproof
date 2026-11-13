@@ -48,6 +48,15 @@ class NemotronEvidence(unittest.TestCase):
         self.assertTrue(body['messages'][1]['content'][1]['image_url']['url'].startswith('data:image/png;base64,iVBOR'))
         self.assertNotIn('test-token-123', json.dumps(report))
 
+    def test_direct_reader_reserves_the_response_for_json(self):
+        reply = Capture({'choices':[{'message':{'content':json.dumps(self.answer)}}]})
+        report = nemotron.run(SAMPLE, 'Count rooms', 'https://example.invalid', 'model', 'test',
+                              opener=reply, thinking=False, json_output=True)
+        self.assertEqual(report['status'], 'answered')
+        payload = json.loads(reply.request.data)
+        self.assertEqual(payload['chat_template_kwargs'], {'enable_thinking': False})
+        self.assertEqual(payload['response_format'], {'type':'json_object'})
+
     def test_unknown_for_malformed_missing_or_unverifiable_boxes(self):
         for data in ('not JSON', json.dumps(dict(self.answer, answer=3)),
                      json.dumps(dict(self.answer, evidence=self.answer['evidence'][:1] * 2))):

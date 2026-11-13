@@ -95,7 +95,8 @@ def token_usage(reply):
     return {k: v for k, v in out.items() if v is not None} or None
 
 
-def run(image, question, base, model, api_key, timeout=90, opener=None):
+def run(image, question, base, model, api_key, timeout=90, opener=None, *, instructions=INSTRUCTIONS,
+        thinking=None, json_output=False):
     report = {'schema_version': 1, 'status': 'unavailable', 'answer': None, 'evidence': [],
               'question': question, 'image': image.name, 'model': model, 'provider_host': None,
               'timestamp': datetime.now(timezone.utc).isoformat(timespec='seconds'),
@@ -120,8 +121,13 @@ def run(image, question, base, model, api_key, timeout=90, opener=None):
             raise ConfigurationError('Timeout must be between 1 and 600 seconds.')
         content = [{'type': 'text', 'text': question},
                    {'type': 'image_url', 'image_url': {'url': 'data:' + mime + ';base64,' + base64.b64encode(data).decode('ascii')}}]
-        body = json.dumps({'model': model, 'max_tokens': 4096, 'stream': False,
-                           'messages': [{'role': 'system', 'content': INSTRUCTIONS}, {'role': 'user', 'content': content}]}).encode()
+        payload = {'model': model, 'max_tokens': 4096, 'stream': False,
+                   'messages': [{'role': 'system', 'content': instructions}, {'role': 'user', 'content': content}]}
+        if json_output:
+            payload['response_format'] = {'type': 'json_object'}
+        if thinking is not None:
+            payload['chat_template_kwargs'] = {'enable_thinking': thinking}
+        body = json.dumps(payload).encode()
         req = request.Request(endpoint, method='POST', data=body, headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + api_key})
         start = time.monotonic()
         client = opener or request.build_opener(NoRedirect())

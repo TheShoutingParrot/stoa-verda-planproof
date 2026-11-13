@@ -9,7 +9,7 @@ import sqlite3
 import tempfile
 import threading
 
-from . import local_parse, nemotron
+from . import local_parse, nemotron, scan_reader
 from .drawing_library import DrawingError, ROOT
 
 RUN_LOCK = threading.Lock()
@@ -32,8 +32,17 @@ def _safe_report(raw, path, digest, question, origin):
         report = nemotron.parse_count(json.dumps(raw, allow_nan=False))
     except (ValueError, TypeError):
         return None
+    if raw.get('coverage_evidence') and report['status'] == 'answered' and report['answer'] == 0:
+        try:
+            coverage = raw['coverage_evidence']
+            report['coverage_evidence'] = nemotron.parse_count(json.dumps(
+                dict(status='answered', answer=len(coverage), evidence=coverage)))['evidence']
+        except (TypeError, ValueError):
+            return None
+        if isinstance(raw.get('reason'), str):
+            report['reason'] = raw['reason'][:220]
     report.update(question=question, path=path, image_sha256=digest, coordinate_system=COORDS, origin=origin)
-    for k in ('model', 'served_model', 'provider_host', 'method', 'timestamp'):
+    for k in ('model', 'served_model', 'provider_host', 'method', 'timestamp', 'reader_version'):
         if isinstance(raw.get(k), str):
             report[k] = raw[k][:220]
     if type(raw.get('latency_ms')) is int:
@@ -89,7 +98,7 @@ def _saved(path, digest):
     for item in _interactive_dir(digest).glob('*.json'):
         raw = _json_file(item)
         if isinstance(raw, dict):
-            remember(raw, raw.get('question'), 'Interactive inference')
+            remember(raw, raw.get('question'), raw.get('origin') or 'Interactive inference')
     return reports
 
 
@@ -109,38 +118,39 @@ class ScanImage:
 def scan_info(library, path):
     image = ScanImage(library, path)
     reports = _saved(path, image.digest)
-    return dict(drawing=image.drawing, imageSha256=image.digest,
+    return dict(drawing=image.drawing, imageSha256=image.digest, local=scan_reader.local_available(),
                 configured=bool(os.getenv('NEMOTRON_BASE_URL') and os.getenv('NEMOTRON_API_KEY')),
                 saved=sorted(reports.values(), key=lambda r: (r['status'] != 'answered', not r['evidence'], r['question'])))
 
 
-def scan_answer(library, path, question):
+def scan_answer(library, path, question, *, refresh=False):
     if not isinstance(question, str) or not question.strip() or len(question) > 2000:
         raise DrawingError(400, 'Enter a count question up to 2,000 characters.')
     image = ScanImage(library, path)
     question = ' '.join(question.split())
     saved = _saved(path, image.digest).get(question)
-    if saved:
+    if saved and not refresh:
         return dict(saved, reused=True)
     if not COUNT_QUESTION.search(question) or MEASUREMENT.search(question):
         raise DrawingError(422, 'Ask for a count of visible items, such as “How many doors are shown?”')
     base, key = os.getenv('NEMOTRON_BASE_URL'), os.getenv('NEMOTRON_API_KEY')
-    if not base or not key:
-        raise DrawingError(503, 'New scan questions require a configured inference endpoint and key. Saved results are available.')
     if not RUN_LOCK.acquire(blocking=False):
         raise DrawingError(409, 'Another drawing is being counted. Try again when it finishes.')
     try:
         # A previous request may have finished between the cache lookup and the lock.
         saved = _saved(path, image.digest).get(question)
-        if saved:
+        if saved and not refresh:
             return dict(saved, reused=True)
-        raw = nemotron.run(image, question, base, os.getenv('NEMOTRON_MODEL', nemotron.MODEL), key)
+        raw = scan_reader.run(image, question, base, os.getenv('NEMOTRON_MODEL', nemotron.MODEL), key)
         if raw.get('status') == 'unavailable':
             raise DrawingError(503, raw.get('reason') or 'Inference is unavailable.')
         raw['path'] = path
-        report = _safe_report(raw, path, image.digest, question, 'Interactive inference')
+        report = _safe_report(raw, path, image.digest, question, raw.get('origin') or 'Interactive inference')
         if not report:
             raise DrawingError(502, 'The inference service returned an invalid drawing report.')
+        # Keep a previously localized answer available if the fresh reader abstains.
+        if report['status'] == 'unknown' and saved and saved['status'] == 'answered':
+            return dict(report, reused=False, saved=False)
         directory = _interactive_dir(image.digest)
         directory.mkdir(parents=True, exist_ok=True)
         target = directory / (hashlib.sha256((path + '\0' + question).encode()).hexdigest() + '.json')

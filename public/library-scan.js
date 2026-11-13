@@ -26,8 +26,10 @@ function listOptions() {
 function syncAction() {
   const query = node('scan-question').value.trim();
   const saved = reports.some(r => normalize(r.question) === normalize(query));
-  node('scan-submit').disabled = !info || running || !query || (!info.configured && !saved);
-  node('scan-submit').textContent = running ? 'Counting…' : saved ? 'Show saved answer' : 'Run hosted count';
+  node('scan-submit').disabled = !info || running || !query || (!info.configured && !info.local && !saved);
+  node('scan-submit').textContent = running ? 'Counting…' : saved ? 'Show saved answer' : 'Run count';
+  node('rerun-scan').hidden = !saved || !(info?.local || info?.configured);
+  node('rerun-scan').disabled = running;
 }
 function selectBox(index, fromList = false) {
   const pins = node('scan-overlay').children, buttons = node('scan-evidence').children;
@@ -73,9 +75,12 @@ function showReport(index) {
     && items.length === report.answer && items.every(boxOK);
   if (valid) {
     node('scan-answer').textContent = String(report.answer);
-    node('answer-reason').textContent = report.answer === 0 ? 'The model returned a count of zero.' : (report.reason || 'Select an evidence mark to locate it on the original scan.');
+    const coverage = report.answer === 0 && Array.isArray(report.coverage_evidence)
+      ? report.coverage_evidence.filter(boxOK) : [];
+    node('answer-reason').textContent = report.reason || (report.answer === 0 ? 'The reader returned a count of zero.' : 'Select an evidence mark to locate it on the original scan.');
     node('scan-evidence-count').textContent = `${items.length} ${items.length === 1 ? 'mark' : 'marks'}`;
-    drawBoxes(items);
+    if (coverage.length) node('scan-evidence-count').textContent = 'Printed evidence for zero';
+    drawBoxes(coverage.length ? coverage : items);
   } else {
     node('scan-answer').textContent = report.status === 'unavailable' ? 'Unavailable' : 'Unknown';
     node('answer-reason').textContent = !matchesImage ? 'The saved report could not be matched to this original image.' : report.reason || (report.status === 'unavailable' ? 'The inference service could not return a result.' : 'The evidence was insufficient to verify a count.');
@@ -109,29 +114,36 @@ async function loadScan() {
     node('scan-workspace').hidden = false; node('scan-image').src = file;
     node('scan-question').disabled = false;
     node('scan-service').hidden = false;
-    node('scan-service').textContent = info.configured ? 'New counts use the configured vision model. A run can take about 90 seconds.' : 'Hosted inference is unconfigured. Saved questions can be inspected offline.';
+    node('scan-service').textContent = info.configured ? 'Counts use local readers when available. Other questions use the configured vision model.' : info.local ? 'Local readers are available for supported count questions.' : 'Configure a reader to ask a new question. Saved results are available offline.';
     listOptions(); showReport(reports.length ? 0 : -1); message('');
   } catch (error) { if (ticket === openRequest) message(error.message, true); }
 }
-async function ask() {
+async function ask(refresh = false) {
   if (!info || running) return;
   const question = node('scan-question').value.trim();
   if (!question) return;
   const saved = reports.findIndex(r => normalize(r.question) === normalize(question));
-  if (saved >= 0) { showReport(saved); message('Showing saved answer.'); return; }
-  if (!info.configured) { message('A new question requires a configured hosted endpoint.'); return; }
+  if (saved >= 0 && !refresh) { showReport(saved); message('Showing saved answer.'); return; }
+  if (!info.configured && !info.local) { message('Configure a scan reader to run a new count.'); return; }
   const revision = ++selectionRevision;
   selectedReport = -1; node('saved-questions').selectedIndex = -1;
   clearScanEvidence();
   node('answer-question').textContent = question; node('scan-answer').textContent = 'Pending';
   node('answer-reason').textContent = 'Waiting for the model to read this drawing.';
-  running = true; syncAction(); message('Reading the original scan with the hosted model…');
+  running = true; syncAction(); message('Reading the original scan…');
   try {
-    const answer = await request('/api/scan-drawing', {method:'POST',headers:{'Content-Type':'application/json','X-Planproof-Run':'1'},body:JSON.stringify({path:scanPath,question})});
+    const answer = await request('/api/scan-drawing', {method:'POST',headers:{'Content-Type':'application/json','X-Planproof-Run':'1'},body:JSON.stringify(refresh ? {path:scanPath,question,refresh:true} : {path:scanPath,question})});
     const report = answer.report || answer;
     if (typeof report.question !== 'string' || normalize(report.question) !== normalize(question) || !['answered','unknown','unavailable'].includes(report.status)) throw Error('Unexpected scan response.');
     if (!info.imageSha256 || report.image_sha256 !== info.imageSha256) throw Error('The model response could not be matched to this original image.');
-    const index = reports.push(report) - 1;
+    if (saved >= 0 && report.saved === false) {
+      if (revision === selectionRevision) showReport(saved);
+      message('The recheck returned unknown. The saved answer is still available. ' + (report.reason || ''));
+      return;
+    }
+    let index = saved;
+    if (index >= 0) reports[index] = report;
+    else index = reports.push(report) - 1;
     listOptions();
     if (revision === selectionRevision) showReport(index);
     else if (selectedReport < 0) { node('saved-questions').selectedIndex = -1; node('scan-answer').textContent = '—'; node('answer-reason').textContent = 'Select a saved question to inspect its result.'; }
@@ -145,6 +157,7 @@ async function ask() {
 node('scan-form').addEventListener('submit', event => {event.preventDefault(); ask();});
 node('saved-questions').addEventListener('change', event => {showReport(Number(event.target.value)); if (!running) message('');});
 node('scan-question').addEventListener('input', () => {selectionRevision++; syncAction();});
+node('rerun-scan').addEventListener('click', () => ask(true));
 node('retry-scan').addEventListener('click', loadScan);
 node('scan-image').addEventListener('load', () => {node('image-state').hidden = true; node('scan-size').disabled = false;});
 node('scan-image').addEventListener('error', () => {node('image-state').textContent = 'The original image could not be loaded. Open the PNG to inspect the source file.'; node('image-state').hidden = false; node('scan-size').disabled = true; node('scan-overlay').hidden = true;});

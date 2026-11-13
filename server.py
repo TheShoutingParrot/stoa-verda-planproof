@@ -97,7 +97,11 @@ class Workspace(SimpleHTTPRequestHandler):
             data = json.loads(self.rfile.read(length).decode("utf-8"))
         except (ValueError, RecursionError) as exc:
             raise DrawingError(400, "Supply a valid JSON question.") from exc
-        if (not isinstance(data, dict) or set(data) != {"path", "question"}
+        keys = set(data) if isinstance(data, dict) else set()
+        valid_request = keys == {"path", "question"} or (
+            route == "/api/scan-drawing" and keys == {"path", "question", "refresh"}
+            and isinstance(data["refresh"], bool))
+        if (not valid_request
                 or not isinstance(data["path"], str) or not isinstance(data["question"], str)
                 or not data["question"].strip() or len(data["question"]) > 2000):
             raise DrawingError(400, "Supply a drawing path and a question of 1–2,000 characters.")
@@ -107,7 +111,8 @@ class Workspace(SimpleHTTPRequestHandler):
             from scripts.scan_library import scan_answer
             if library.metadata(path)["kind"] != "scan":
                 raise DrawingError(422, "Select a CubiCasa PNG scan for this reader.")
-            result = scan_answer(library, path, question)
+            result = (scan_answer(library, path, question, refresh=True) if data.get("refresh")
+                      else scan_answer(library, path, question))
         else:
             result = library.ifc_answer(path, question)
         return self.send_json(200, result)

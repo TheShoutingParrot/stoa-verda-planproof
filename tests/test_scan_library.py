@@ -85,6 +85,20 @@ class ScanTests(unittest.TestCase):
         self.lib.content = b'changed file'
         self.assertEqual(scan.scan_info(self.lib, self.path)['saved'], [])
 
+    def test_recheck_preserves_last_answer_and_replaces_it_on_success(self):
+        self.store([(self.q, self.raw)])
+        abstention = dict(self.raw, status='unknown', answer=None, evidence=[], reason='Unreadable')
+        with patch.object(scan.scan_reader, 'run', return_value=abstention):
+            fresh = scan.scan_answer(self.lib, self.path, self.q, refresh=True)
+        self.assertEqual(fresh['status'], 'unknown')
+        self.assertFalse(fresh['saved'])
+        self.assertEqual(scan.scan_answer(self.lib, self.path, self.q)['answer'], 1)
+        correction = dict(self.raw, answer=0, evidence=[], method='cubicasa_pixel_objects', origin='Local object detector')
+        with patch.object(scan.scan_reader, 'run', return_value=correction):
+            self.assertFalse(scan.scan_answer(self.lib, self.path, self.q, refresh=True)['reused'])
+        replay = scan.scan_info(self.lib, self.path)['saved'][0]
+        self.assertEqual((replay['answer'], replay['origin']), (0, 'Local object detector'))
+
     def test_bad_questions_offline_and_provider_errors(self):
         for question, expected in [(' ', 400), ('What area is the kitchen?', 422), ('How many square meters?', 422), (self.q, 503)]:
             with self.assertRaises(DrawingError) as ctx:

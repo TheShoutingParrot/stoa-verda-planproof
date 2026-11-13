@@ -37,7 +37,7 @@ function harness(file, url, respond) {
 function scanHarness(configured, remote) {
   return harness('library-scan.js','/scan-drawing.html?'+new URLSearchParams({path:scan}),(u,opts) => {
     if(opts?.method==='POST')return remote();
-    return {imageSha256:'verified',configured,drawing:{path:scan,kind:'scan',name:'example.png'},saved:[original,
+    return {imageSha256:'verified',configured,drawing:{path:scan,kind:'scan',name:'example.png'},saved:[{...original},
       {question:'How many lifts?',status:'answered',answer:0,image_sha256:'verified',evidence:[]},{question:'How many rooms?',status:'unknown',answer:null,image_sha256:'verified',evidence:[],reason:'Boundary unclear.'}]};
   });
 }
@@ -103,4 +103,17 @@ test('a new pending or failed count has no old quantity or pins; saved and fresh
   assert.equal(elm('saved-questions').children.length,3);
   run('delete reports[0].image_sha256; showReport(0)');
   assert.equal(elm('scan-answer').textContent,'Unknown'); assert.equal(elm('scan-overlay').children.length,0);
+});
+
+test('an inconclusive recheck retains its previous saved result and marks', async () => {
+  const {elm,run} = scanHarness(true, () => ({
+    ...original, status:'unknown', answer:null, evidence:[], reason:'Unreadable', saved:false
+  }));
+  await flush();
+  const count = elm('saved-questions').children.length;
+  await run('ask(true)');
+  assert.equal(elm('saved-questions').children.length,count);
+  assert.equal(elm('scan-answer').textContent,String(original.answer));
+  assert.match(elm('scan-status').textContent,/recheck returned unknown/);
+  assert.equal(elm('scan-overlay').children.length,original.evidence.length);
 });
