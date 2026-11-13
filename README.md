@@ -44,7 +44,7 @@ python3 scripts/extract_rooms.py
 python3 -m unittest discover -s tests -v
 ```
 
-The [full English Swiss benchmark](docs/swiss-frontier.md) covers 1,040 drawings and includes the original 60-site comparison. The [frontier model benchmark](docs/swiss-vision.md) uses the same 1,080 English questions from those 60 sites. Planproof reads the sponsor’s paired CAD files, and GPT-6 Astra reads the sponsor’s rendered images. The [earlier room-lookup experiment](docs/swiss-benchmark.md) records the previous baseline.
+The [full English benchmark by source](docs/full-english.md) evaluates all 64,132 English questions in the 9.77 GB release. The [full English Swiss benchmark](docs/swiss-frontier.md) covers 1,040 drawings and includes the original 60-site comparison. The [frontier model benchmark](docs/swiss-vision.md) uses the same 1,080 English questions from those 60 sites. Planproof reads the sponsor’s paired CAD files, and GPT-6 Astra reads the sponsor’s rendered images. The [earlier room-lookup experiment](docs/swiss-benchmark.md) records the previous baseline.
 
 The extractor matches DXF text to enclosing straight closed room outlines and subtracts interior cutouts. It reads model units and adds unrounded areas before formatting the total. The supplied geometry targets this Swiss drawing convention. The scan's optional OCR reproduction uses Tesseract 5 with English language data and Python Pillow: `python3 scripts/ocr_baseline.py`.
 
