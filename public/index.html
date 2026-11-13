@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153c32">
+  <title>Planproof · Swiss drawing</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><svg viewBox="0 0 36 36" width="31" height="31" fill="none" aria-hidden="true"><path d="M4 7h18v17H4zM14 14h18v17H14z" stroke="currentColor" stroke-width="2.6"/><path d="M14 14h8v10h-8z" fill="currentColor"/></svg><span>Planproof</span></div>
+  <nav aria-label="Drawing workflows"><a href="/" aria-current="page">Swiss drawing</a><a href="/finnish.html">Finnish scan <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main>
+  <div class="page-title"><div><p class="kicker">DRAWING WORKSPACE</p><h1>Floor plan takeoff</h1></div><div class="dataset-badge"><span class="status-dot"></span>Swiss Dwellings</div></div>
+  <form id="query-form" class="query-form" aria-label="Query the drawing">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 5 5"/></svg>
+    <label for="query" class="sr-only">Ask about a room count or area</label>
+    <input id="query" name="query" type="text" autocomplete="off" placeholder="Ask about a room count or area" required>
+    <button id="ask" type="submit">Ask drawing <span aria-hidden="true">↗</span></button>
+  </form>
+  <p id="query-message" class="query-message" role="status" hidden></p>
+  <div class="workbench">
+    <section class="drawing-panel" aria-labelledby="drawing-title">
+      <div class="panelbar">
+        <div class="panel-identity"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 4h18v16H3zM3 12h10V4M13 15v5"/></svg><h2 id="drawing-title">Floor plan</h2></div>
+        <span id="sheet-id" class="file-id"></span>
+      </div>
+      <div class="drawing-stage" id="stage">
+        <svg id="plan" role="img" aria-label="Room outlines and walls of the selected floor plan" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="loading" class="loading">Loading drawing…</div>
+        <div class="zoom-tools" aria-label="Drawing zoom">
+          <button type="button" id="zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+          <button type="button" id="zoom-fit" aria-label="Fit whole plan" title="Fit whole plan"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 7V2h5m6 0h5v5m0 6v5h-5m-6 0H2v-5"/></svg></button>
+          <button type="button" id="zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+        </div>
+      </div>
+      <div class="legend"><span><i class="legend-match"></i>Matching room</span><span><i class="legend-selected"></i>Selected room</span><span class="zoom-level" id="zoom-level">100%</span></div>
+    </section>
+    <aside class="evidence-panel" aria-labelledby="answer-title">
+      <div class="result-block"><p class="kicker">TAKEOFF RESULT</p><h2 id="answer-title">Combined area</h2><p id="answer" class="answer" aria-live="polite">—</p><p id="answer-caption" class="answer-caption"></p></div>
+      <div class="filters">
+        <label for="room-type">Room type</label><select id="room-type" disabled></select>
+        <span id="area-label" class="control-label">Area source</span>
+        <div class="mode-picker" role="group" aria-labelledby="area-label"><button type="button" id="outline-mode" aria-pressed="true">Drawn outlines</button><button type="button" id="printed-mode" aria-pressed="false">Printed values</button></div>
+      </div>
+      <div class="evidence-heading"><h3>Evidence</h3><span id="evidence-count"></span></div>
+      <div id="evidence" class="evidence" aria-label="Matching rooms"></div>
+      <div class="room-detail" id="room-detail" aria-live="polite" hidden></div>
+    </aside>
+  </div>
+  <footer><div id="sheet-credit"></div><div id="sheet-links"></div></footer>
+</main>
+</body></html>

@@ -1,0 +1,41 @@
+{
+  "engine": "tesseract 5.5.3",
+  "source": "high_quality_architectural-13066.png",
+  "imageSha256": "f1cf7f64462f9687e41b4a5848534cc409c32212cc3c6ae02b9e315039d6f6af",
+  "imageSize": [
+    378,
+    521
+  ],
+  "method": "Whole page, grayscale at 1x and Lanczos-resampled 4x. Tesseract eng, sparse text (--psm 11), TSV word boxes. Same settings and no cropping for both runs.",
+  "matching": "Casefold letters, ignoring punctuation. Exact MH, MAKUUH or MAKUUHUONE. Allow one single-character insertion, deletion or substitution only for long forms. No hand-placed boxes.",
+  "coordinates": "Original image pixels, [left, top, right, bottom], top-left origin.",
+  "interpretation": "Page-wide text candidates. Apartment boundary and room membership unverified. Candidate count is not a bedroom count.",
+  "runs": [
+    {
+      "scale": 1,
+      "wordsRead": 44,
+      "exactLabels": 0,
+      "candidates": []
+    },
+    {
+      "scale": 4,
+      "wordsRead": 86,
+      "exactLabels": 0,
+      "candidates": [
+        {
+          "text": "moakuuh",
+          "expectedLabel": "MAKUUH",
+          "match": "fuzzy",
+          "editDistance": 1,
+          "ocrConfidence": 27.277355,
+          "box": [
+            76.75,
+            415.0,
+            120.0,
+            422.0
+          ]
+        }
+      ]
+    }
+  ]
+}

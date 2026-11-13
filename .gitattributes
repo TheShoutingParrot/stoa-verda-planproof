@@ -1,0 +1,2 @@
+# Preserve the original CAD exchange file byte-for-byte.
+public/data/swiss/*.dxf -text -diff
