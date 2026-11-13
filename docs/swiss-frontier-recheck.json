@@ -1,0 +1,1360 @@
+{
+  "baselineHashes": {
+    "public/app.js": "48b3c83188092bb1396e661cc9b0131bc7e4bc839a925b464d5e355e3cc4be09",
+    "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+    "scripts/extract_rooms.py": "01b677331cec4d958248f97aedf1b49da66fcda1dcdade24be68bdac2e82d231"
+  },
+  "currentHashes": {
+    "public/app.js": "7c41e2e3b14326dacd908588ae9bb861b1582ad4e5458bc61fc62ed7be9f34ff",
+    "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+    "scripts/extract_rooms.py": "8d33f9b9edf491574cc5df983b302f9fc4627d6ec38870e535903765f93fccb9",
+    "scripts/swiss_objects.py": "c7cd2e0f5a36aedda48e2a1d5607f4e76e90b1abe427261155ce631c0f3683a7",
+    "scripts/swiss_units.py": "178c0fcf6897fcdf6d4a2d33fd0f640a9379f78a1f983f60a3643ad6a965987c"
+  },
+  "questionFileSha256": "0e6322c74561a63f42bac35f5c1be8a2c6a37516b14a81e66ab88b74950a6d1f",
+  "inventory": {
+    "cubicasa5k": {
+      "all": 85514,
+      "english": 42757,
+      "englishSheets": 4787
+    },
+    "ifc_models": {
+      "all": 3062,
+      "english": 1699,
+      "englishSheets": 84
+    },
+    "ifc_bench": {
+      "all": 820,
+      "english": 820,
+      "englishSheets": 25
+    },
+    "opening_design": {
+      "all": 64,
+      "english": 64,
+      "englishSheets": 3
+    },
+    "finna": {
+      "all": 0,
+      "english": 0,
+      "englishSheets": 0
+    },
+    "habs": {
+      "all": 0,
+      "english": 0,
+      "englishSheets": 0
+    },
+    "wikimedia": {
+      "all": 0,
+      "english": 0,
+      "englishSheets": 0
+    },
+    "europeana": {
+      "all": 0,
+      "english": 0,
+      "englishSheets": 0
+    },
+    "swiss_dwellings": {
+      "all": 37584,
+      "english": 18792,
+      "englishSheets": 1040
+    }
+  },
+  "scoring": "A strict pass requires correct numeric value, scope and displayed source-linked evidence.",
+  "splits": {
+    "original60": {
+      "sheets": 60,
+      "baseline": {
+        "sheets": 60,
+        "total": {
+          "rows": 1080,
+          "answered": 499,
+          "correct": 487,
+          "numeric": 489,
+          "wrongScope": 12,
+          "wrongEvidence": 0,
+          "wrongValue": 0,
+          "abstained": 581,
+          "extractionError": 0
+        },
+        "missExamples": [
+          {
+            "family": "apartment_area",
+            "stem": "site1002_bldg2084_floor9393",
+            "target": "B",
+            "status": "abstained",
+            "answer": null,
+            "gold": 155.16
+          },
+          {
+            "family": "apartment_count",
+            "stem": "site1002_bldg2084_floor9393",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 2
+          },
+          {
+            "family": "floor_area",
+            "stem": "site1002_bldg2084_floor9393",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 340.73
+          },
+          {
+            "family": "label_area",
+            "stem": "site10089_bldg14683_floor39107",
+            "target": "Camera da letto",
+            "status": "wrong_scope",
+            "answer": 354.38,
+            "gold": 111.52
+          },
+          {
+            "family": "label_count",
+            "stem": "site1002_bldg2084_floor9393",
+            "target": "Wohnen/Essen",
+            "status": "abstained",
+            "answer": null,
+            "gold": 2
+          },
+          {
+            "family": "object_count",
+            "stem": "site1002_bldg2084_floor9393",
+            "target": "doors",
+            "status": "abstained",
+            "answer": null,
+            "gold": 30
+          }
+        ],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 111,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 111,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 53,
+            "numeric": 53,
+            "wrongScope": 7,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 361,
+            "answered": 319,
+            "correct": 314,
+            "numeric": 316,
+            "wrongScope": 5,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 42,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 308,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 308,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 48,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 48,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 20,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 20,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 60,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 60,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 729,
+            "answered": 319,
+            "correct": 314,
+            "numeric": 316,
+            "wrongScope": 5,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 410,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 351,
+            "answered": 180,
+            "correct": 173,
+            "numeric": 173,
+            "wrongScope": 7,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 171,
+            "extractionError": 0
+          }
+        }
+      },
+      "current": {
+        "sheets": 60,
+        "total": {
+          "rows": 1080,
+          "answered": 1080,
+          "correct": 1080,
+          "numeric": 1080,
+          "wrongScope": 0,
+          "wrongEvidence": 0,
+          "wrongValue": 0,
+          "abstained": 0,
+          "extractionError": 0
+        },
+        "missExamples": [],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 111,
+            "answered": 111,
+            "correct": 111,
+            "numeric": 111,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 361,
+            "answered": 361,
+            "correct": 361,
+            "numeric": 361,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 308,
+            "answered": 308,
+            "correct": 308,
+            "numeric": 308,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 48,
+            "answered": 48,
+            "correct": 48,
+            "numeric": 48,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 20,
+            "answered": 20,
+            "correct": 20,
+            "numeric": 20,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 60,
+            "answered": 60,
+            "correct": 60,
+            "numeric": 60,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 729,
+            "answered": 729,
+            "correct": 729,
+            "numeric": 729,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 351,
+            "answered": 351,
+            "correct": 351,
+            "numeric": 351,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        }
+      },
+      "paired": {
+        "retained": 487,
+        "gained": 593,
+        "regressed": 0,
+        "stillMissed": 0
+      }
+    },
+    "fresh120": {
+      "sheets": 120,
+      "baseline": {
+        "sheets": 120,
+        "total": {
+          "rows": 2161,
+          "answered": 1019,
+          "correct": 1001,
+          "numeric": 1005,
+          "wrongScope": 18,
+          "wrongEvidence": 0,
+          "wrongValue": 0,
+          "abstained": 1142,
+          "extractionError": 0
+        },
+        "missExamples": [
+          {
+            "family": "apartment_area",
+            "stem": "site1001_bldg2083_floor9389",
+            "target": "D",
+            "status": "abstained",
+            "answer": null,
+            "gold": 55.24
+          },
+          {
+            "family": "apartment_count",
+            "stem": "site1001_bldg2083_floor9389",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 4
+          },
+          {
+            "family": "floor_area",
+            "stem": "site1001_bldg2083_floor9389",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 235.32
+          },
+          {
+            "family": "label_area",
+            "stem": "site11026_bldg16062_floor41618",
+            "target": "Chambre à coucher",
+            "status": "wrong_scope",
+            "answer": 605.77,
+            "gold": 59.86
+          },
+          {
+            "family": "label_count",
+            "stem": "site1023_bldg2103_floor9599",
+            "target": "Wohnen/Essen",
+            "status": "abstained",
+            "answer": null,
+            "gold": 3
+          },
+          {
+            "family": "object_count",
+            "stem": "site1001_bldg2083_floor9389",
+            "target": "doors",
+            "status": "abstained",
+            "answer": null,
+            "gold": 32
+          }
+        ],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 216,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 216,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 117,
+            "answered": 117,
+            "correct": 110,
+            "numeric": 110,
+            "wrongScope": 7,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 730,
+            "answered": 663,
+            "correct": 652,
+            "numeric": 656,
+            "wrongScope": 11,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 67,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 619,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 619,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 102,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 102,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 37,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 37,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 120,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 120,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 239,
+            "answered": 239,
+            "correct": 239,
+            "numeric": 239,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 1469,
+            "answered": 663,
+            "correct": 652,
+            "numeric": 656,
+            "wrongScope": 11,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 806,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 692,
+            "answered": 356,
+            "correct": 349,
+            "numeric": 349,
+            "wrongScope": 7,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 336,
+            "extractionError": 0
+          }
+        }
+      },
+      "current": {
+        "sheets": 120,
+        "total": {
+          "rows": 2161,
+          "answered": 2161,
+          "correct": 2161,
+          "numeric": 2161,
+          "wrongScope": 0,
+          "wrongEvidence": 0,
+          "wrongValue": 0,
+          "abstained": 0,
+          "extractionError": 0
+        },
+        "missExamples": [],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 216,
+            "answered": 216,
+            "correct": 216,
+            "numeric": 216,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 117,
+            "answered": 117,
+            "correct": 117,
+            "numeric": 117,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 730,
+            "answered": 730,
+            "correct": 730,
+            "numeric": 730,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 619,
+            "answered": 619,
+            "correct": 619,
+            "numeric": 619,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 102,
+            "answered": 102,
+            "correct": 102,
+            "numeric": 102,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 37,
+            "answered": 37,
+            "correct": 37,
+            "numeric": 37,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 120,
+            "answered": 120,
+            "correct": 120,
+            "numeric": 120,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 239,
+            "answered": 239,
+            "correct": 239,
+            "numeric": 239,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 1469,
+            "answered": 1469,
+            "correct": 1469,
+            "numeric": 1469,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 692,
+            "answered": 692,
+            "correct": 692,
+            "numeric": 692,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        }
+      },
+      "paired": {
+        "retained": 1001,
+        "gained": 1160,
+        "regressed": 0,
+        "stillMissed": 0
+      }
+    },
+    "all": {
+      "sheets": 1040,
+      "baseline": {
+        "sheets": 1040,
+        "total": {
+          "rows": 18792,
+          "answered": 8708,
+          "correct": 8548,
+          "numeric": 8574,
+          "wrongScope": 160,
+          "wrongEvidence": 0,
+          "wrongValue": 0,
+          "abstained": 10084,
+          "extractionError": 0
+        },
+        "missExamples": [
+          {
+            "family": "apartment_area",
+            "stem": "site1000_bldg2082_floor9385",
+            "target": "B",
+            "status": "abstained",
+            "answer": null,
+            "gold": 80.83
+          },
+          {
+            "family": "apartment_count",
+            "stem": "site1000_bldg2082_floor9385",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 4
+          },
+          {
+            "family": "floor_area",
+            "stem": "site1000_bldg2082_floor9385",
+            "target": null,
+            "status": "abstained",
+            "answer": null,
+            "gold": 341.45
+          },
+          {
+            "family": "label_area",
+            "stem": "site10089_bldg14683_floor39107",
+            "target": "Camera da letto",
+            "status": "wrong_scope",
+            "answer": 354.38,
+            "gold": 111.52
+          },
+          {
+            "family": "label_count",
+            "stem": "site1000_bldg2082_floor9385",
+            "target": "Wohnen/Essen",
+            "status": "abstained",
+            "answer": null,
+            "gold": 1
+          },
+          {
+            "family": "object_count",
+            "stem": "site1000_bldg2082_floor9385",
+            "target": "doors",
+            "status": "abstained",
+            "answer": null,
+            "gold": 36
+          }
+        ],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 1875,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1875,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 1017,
+            "answered": 1017,
+            "correct": 931,
+            "numeric": 931,
+            "wrongScope": 86,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 6365,
+            "answered": 5615,
+            "correct": 5541,
+            "numeric": 5567,
+            "wrongScope": 74,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 750,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 5379,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 5379,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 897,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 897,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 322,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 322,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 1040,
+            "answered": 0,
+            "correct": 0,
+            "numeric": 0,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 1040,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 2076,
+            "answered": 2076,
+            "correct": 2076,
+            "numeric": 2076,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 12784,
+            "answered": 5615,
+            "correct": 5541,
+            "numeric": 5567,
+            "wrongScope": 74,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 7169,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 6008,
+            "answered": 3093,
+            "correct": 3007,
+            "numeric": 3007,
+            "wrongScope": 86,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 2915,
+            "extractionError": 0
+          }
+        }
+      },
+      "current": {
+        "sheets": 1040,
+        "total": {
+          "rows": 18792,
+          "answered": 18792,
+          "correct": 18789,
+          "numeric": 18789,
+          "wrongScope": 0,
+          "wrongEvidence": 0,
+          "wrongValue": 3,
+          "abstained": 0,
+          "extractionError": 0
+        },
+        "missExamples": [
+          {
+            "family": "apartment_area",
+            "stem": "site333_bldg692_floor3958",
+            "target": "E",
+            "status": "wrong_value",
+            "answer": 75.48,
+            "gold": 73.52
+          },
+          {
+            "family": "floor_area",
+            "stem": "site333_bldg692_floor3958",
+            "target": null,
+            "status": "wrong_value",
+            "answer": 528.74,
+            "gold": 517.18
+          }
+        ],
+        "byFamily": {
+          "apartment_area": {
+            "rows": 1875,
+            "answered": 1875,
+            "correct": 1873,
+            "numeric": 1873,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 2,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "apartment_count": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1040,
+            "numeric": 1040,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "floor_area": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1039,
+            "numeric": 1039,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 1,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_area": {
+            "rows": 1017,
+            "answered": 1017,
+            "correct": 1017,
+            "numeric": 1017,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "label_count": {
+            "rows": 6365,
+            "answered": 6365,
+            "correct": 6365,
+            "numeric": 6365,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count": {
+            "rows": 5379,
+            "answered": 5379,
+            "correct": 5379,
+            "numeric": 5379,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/bathtubs": {
+            "rows": 897,
+            "answered": 897,
+            "correct": 897,
+            "numeric": 897,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/doors": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1040,
+            "numeric": 1040,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/showers": {
+            "rows": 322,
+            "answered": 322,
+            "correct": 322,
+            "numeric": 322,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/toilets": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1040,
+            "numeric": 1040,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/washbasins": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1040,
+            "numeric": 1040,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "object_count/windows": {
+            "rows": 1040,
+            "answered": 1040,
+            "correct": 1040,
+            "numeric": 1040,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "room_area": {
+            "rows": 2076,
+            "answered": 2076,
+            "correct": 2076,
+            "numeric": 2076,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        },
+        "byUnit": {
+          "count": {
+            "rows": 12784,
+            "answered": 12784,
+            "correct": 12784,
+            "numeric": 12784,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 0,
+            "abstained": 0,
+            "extractionError": 0
+          },
+          "m2": {
+            "rows": 6008,
+            "answered": 6008,
+            "correct": 6005,
+            "numeric": 6005,
+            "wrongScope": 0,
+            "wrongEvidence": 0,
+            "wrongValue": 3,
+            "abstained": 0,
+            "extractionError": 0
+          }
+        }
+      },
+      "paired": {
+        "retained": 8548,
+        "gained": 10241,
+        "regressed": 0,
+        "stillMissed": 3
+      }
+    }
+  }
+}

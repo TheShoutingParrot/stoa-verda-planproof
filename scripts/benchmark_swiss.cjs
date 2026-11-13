@@ -57,7 +57,7 @@ async function runSheet(source, sheet, questions) {
   }`, context);
   await new Promise(resolve => setImmediate(resolve));
   if (!nodes.get('loading').hidden) throw Error('Failed to load sheet ' + sheet.sheet.id);
-  const readState = vm.runInContext('() => ({selection:state.roomType, metric:state.metric, roomId:state.roomId ?? null})', context);
+  const readState = vm.runInContext('() => ({selection:state.roomType, metric:state.metric, roomId:state.roomId ?? null, scope:state.scope ?? null})', context);
   return questions.map(question => {
     nodes.get('query').value = question;
     const start = performance.now();

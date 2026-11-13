@@ -2,7 +2,7 @@
 
 const byId = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
-const state = {data: null, roomType: null, roomId: null, metric: 'area', source: 'outline', selected: null, zoom: 1, origin: null, frame: null};
+const state = {data: null, roomType: null, roomId: null, scope: null, metric: 'area', source: 'outline', selected: null, zoom: 1, origin: null, frame: null};
 const svg = byId('plan');
 const allType = '*';
 const labelNames = {
@@ -27,7 +27,25 @@ function unitValue(value) {
   return Number.isFinite(value) ? number.format(value) + ' m²' : 'Unavailable';
 }
 function roomLabel(room) { return room.label || 'Unlabelled room'; }
+const objectNames = {
+  doors: 'Door', windows: 'Window', toilets: 'Toilet', washbasins: 'Washbasin', bathtubs: 'Bathtub', showers: 'Shower'
+};
+function featureName(item) {
+  if (state.scope?.kind === 'object_count') return objectNames[state.scope.target] + ' ' + item.id.split('-').pop();
+  if (state.scope?.kind === 'apartment_count') return 'Apartment ' + item.id.slice(5);
+  return 'Room ' + item.id;
+}
+function countsFeatures() {
+  return state.scope?.kind === 'object_count' || state.scope?.kind === 'apartment_count';
+}
 function matches() {
+  const {scope, data} = state;
+  if (scope?.kind === 'object_count') return data.objects[scope.target];
+  if (scope?.kind === 'apartment_count') return data.apartments.map(unit => ({...unit, id:'unit:'+unit.id, center:unit.labelPoint}));
+  if (scope?.kind === 'floor_area' || scope?.kind === 'apartment_area') {
+    const ids = new Set(scope.kind === 'floor_area' ? data.indoorRoomIds : data.apartments.find(u => u.id === scope.target).roomIds);
+    return data.rooms.filter(room => ids.has(room.id));
+  }
   if (state.roomId !== null) return state.data.rooms.filter(room => room.numbered && room.id === state.roomId);
   return state.data.rooms.filter(r => state.roomType === allType ? r.numbered !== false && r.label : r.label === state.roomType);
 }
@@ -35,6 +53,13 @@ function labelOptions() {
   return [...new Set(state.data.rooms.map(room => room.label).filter(Boolean))].sort((a,b) => a.localeCompare(b));
 }
 function setQueryForSelection() {
+  if (state.scope) {
+    const {kind, target} = state.scope;
+    const question = {object_count:'How many '+target+' are drawn on this floor plan?', apartment_count:'How many apartments are on this floor?',
+      floor_area:'What is the net area of all numbered indoor rooms?', apartment_area:'What is the net indoor area of apartment '+target+'?'};
+    byId('query').value = question[kind];
+    return;
+  }
   if (state.roomId !== null) {
     byId('query').value = 'What is the area of room ' + state.roomId + '?';
     return;
@@ -46,11 +71,13 @@ function message(line) {
   byId('query-message').textContent = line;
   byId('query-message').hidden = !line;
 }
-function choose(type, metric, roomId = null) {
+function scopeKey(scope) { return '@' + scope.kind + (scope.target ? ':'+scope.target : ''); }
+function choose(type, metric, roomId = null, scope = null) {
+  state.scope = scope;
   state.roomType = type;
   state.roomId = roomId;
   state.metric = metric;
-  byId('room-type').value = roomId === null ? (type ?? '') : 'room:' + roomId;
+  byId('room-type').value = scope ? scopeKey(scope) : roomId === null ? (type ?? '') : 'room:' + roomId;
   const rooms = matches();
   state.selected = rooms.length ? rooms[0].id : null;
   message('');
@@ -82,8 +109,35 @@ function parseRoomQuery(text) {
   }
   return {type: null, metric: 'area', roomId: room.id};
 }
+function takeoffQuery(text) {
+  const q = tokens(text.replace(/m²/gi, 'm2')).join(' ');
+  const count = q.match(/^(?:how many|count(?: the)?|number of) (.+?)(?: (?:are |are there )?(?:drawn |shown )?(?:on|in) (?:this|the) (?:floor plan|drawing|floor|plan))?$/);
+  if (count) {
+    const noun = count[1].replace(/ (?:interior doors and entrance doors together|wc|residential units)$/, '');
+    const objects = {door:'doors', doors:'doors', window:'windows', windows:'windows', toilet:'toilets', toilets:'toilets',
+      washbasin:'washbasins', washbasins:'washbasins', bathtub:'bathtubs', bathtubs:'bathtubs', shower:'showers', showers:'showers'};
+    if (Object.hasOwn(objects, noun) && state.data.objects) return {metric:'count', scope:{kind:'object_count', target:objects[noun]}};
+    if (/^(?:apartments?|residential units?)$/.test(noun) && state.data.apartments) {
+      if (state.data.apartmentCountComplete === false) return {error:'Some apartment boundaries could not be resolved on this drawing.'};
+      return {metric:'count', scope:{kind:'apartment_count'}};
+    }
+  }
+  const lead = '(?:(?:what is (?:the )?|show (?:the )?)?(?:total )?(?:net )?(?:indoor |floor )?area(?: in m2)? of )';
+  const apartment = q.match(new RegExp('^'+lead+'(?:apartment|unit) ([a-z0-9]+)(?: in m2)?(?: summing all its rooms except balconies loggias terraces and other outdoor spaces)?$'));
+  if (apartment && state.data.apartments) {
+    const unit = state.data.apartments.find(u => normalized(u.id) === apartment[1]);
+    if (!unit || !unit.complete) return {error:'The indoor rooms of apartment '+apartment[1].toUpperCase()+' could not be resolved on this drawing.'};
+    return {metric:'area', scope:{kind:'apartment_area', target:unit.id}};
+  }
+  if (new RegExp('^'+lead+'(?:all )?(?:numbered )?indoor rooms(?: on this floor)?(?: excluding balconies loggias terraces and other outdoor spaces shafts and voids)?$').test(q) && state.data.indoorRoomIds) {
+    if (state.data.floorComplete === false) return {error:'Some indoor room boundaries could not be resolved on this drawing.'};
+    return {metric:'area', scope:{kind:'floor_area'}};
+  }
+  return null;
+}
 function parseQuery(text) {
-  const direct = parseRoomQuery(text);
+  text = text.trim().replace(/^(?:(?:please|(?:can|could) you(?: please)?(?: tell me)?|i(?: would like to know| need to know))\s+)+/i, '');
+  const direct = takeoffQuery(text) || parseRoomQuery(text);
   if (direct) return direct;
   const words = tokens(text);
   const wordSet = new Set(words);
@@ -93,6 +147,27 @@ function parseQuery(text) {
   if (!metric) return null;
   // These require an operation or area scope beyond a simple count/sum.
   if (/\b(except|exclud\w*|without|excluding|minus|largest|smallest|average|mean|maximum|minimum|between|larger|smaller|greater|less|over|under|above|below|only indoor|indoor|outdoor|apartment|apartments|unit|units)\b/.test(simple)) return null;
+  // English room questions must consume the whole request, so extra objects,
+  // conditions or units cannot silently become a room subtotal.
+  if (/^(?:how|what|count|number|total|area|show)\b/.test(simple)) {
+    const input = text.trim().replace(/[?!.]+$/, '').trim();
+    const count = input.match(/^(?:how many|(?:count|number of)(?: the)?)\s+(.+?)(?:\s+(?:are there|are|are shown|are drawn))?(?:\s+(?:on|in) (?:this|the) (?:floor plan|floor|drawing))?$/i);
+    const area = input.match(/^(?:(?:what(?:'s| is)|show(?: me)?)\s+)?(?:the )?(?:total |combined )?(?:net )?(?:floor )?area(?: in (?:m²|m2|square metres|square meters))? of (.+?)(?: on this floor)?$/i);
+    if (!count && !area) return null;
+    const target = (count || area)[1].trim();
+    const metric = count ? 'count' : 'area';
+    const named = target.match(/^(?:all (?:the )?)?rooms? (?:labelled|labeled|named|called) (.+)$/i);
+    if (named) {
+      const name = named[1].replace(/^['"“«]\s*(.*?)\s*['"”»]$/, '$1');
+      const label = labelOptions().find(option => normalized(option) === normalized(name));
+      return label ? {type:label, metric} : {error:'No room has the label “'+name+'” on this drawing.'};
+    }
+    if (/^all (?:the )?numbered[, ]+(?:labelled |labeled )rooms$/i.test(target)) return {type:allType, metric};
+    const name = normalized(target).replace(/^(?:all |the )+/, '').replace(/ rooms?$/, '').trim();
+    const labels = labelOptions().filter(option => [normalized(option), ...(labelNames[normalized(option)] || [])].includes(name));
+    return labels.length === 1 ? {type:labels[0], metric} : null;
+  }
+  if (!/^(?:wie|wieviel|combien|quelle?|quali?|quanti|quante|quale|numero)\b/.test(simple)) return null;
   const hits = labelOptions().filter(label => [normalized(label), ...(labelNames[normalized(label)] || [])].some(alias => wordSet.has(alias)));
   if (hits.length > 1) return null;
   if (hits.length === 1) return {type: hits[0], metric};
@@ -124,7 +199,7 @@ function applyView() {
 function changeZoom(factor) {
   if (!state.data) return;
   if (state.zoom === 1 && factor > 1 && state.selected) {
-    const rt=state.data.rooms.find(r=>r.id===state.selected);
+    const rt=matches().find(r=>r.id===state.selected) || state.data.rooms.find(r=>r.id===state.selected);
     if (rt) state.origin=[rt.center[0],-rt.center[1]];
   }
   state.zoom=Math.min(4,Math.max(1,state.zoom*factor));
@@ -159,6 +234,7 @@ function selectRoom(id) {
     }
     return;
   }
+  if (countsFeatures() && !matches().some(item => item.id === id)) return;
   state.selected=id;
   render();
 }
@@ -195,6 +271,23 @@ function draw(rooms) {
   for (const line of state.data.detailLines||[]) {
     if(line.length>1) edges.append(make('polyline',{points:points(line),class:'plan-detail'}));
   }
+  if (countsFeatures()) {
+    for (const [index,item] of rooms.entries()) {
+      const group = make('g', {'data-room-id':item.id, class:'takeoff-feature'+(item.id===state.selected?' chosen':'')});
+      if (item.polygon?.length) {
+        for (const part of [item, ...(item.additionalFootprints || [])]) {
+          const d = [part.polygon, ...(part.holes || [])].map(ring => 'M'+points(ring)+'Z').join(' ');
+          group.append(make('path', {d, 'fill-rule':'evenodd', class:'unit-geometry'}));
+        }
+      }
+      for (const line of item.lines || []) group.append(make('polyline',{points:points(line),class:'feature-line'}));
+      const [x,y] = item.center;
+      const marker = make('g',{class:'map-marker',transform:'translate('+x+' '+(-y)+')'});
+      marker.append(make('circle',{r:radius*.67}));
+      const text = make('text',{'font-size':radius*.85}); text.textContent=index+1; marker.append(text);
+      const title=make('title'); title.textContent=featureName(item); group.append(title,marker); textLayer.append(group);
+    }
+  }
   layer.append(regionLayer,edges,textLayer);svg.replaceChildren(layer);
 }
 svg.addEventListener('click',event=>{
@@ -214,8 +307,11 @@ function render() {
   const total=known.reduce((sum,value)=>sum+value,0);
   const complete=known.length===rooms.length && rooms.length>0;
   const specific = state.roomId !== null;
-  const empty = !specific && state.roomType === null;
+  const empty = !specific && !state.scope && state.roomType === null;
   byId('answer-title').textContent=empty?'No result':specific?'Room area':state.metric==='count'?'Room count':'Combined area';
+  if (state.scope) byId('answer-title').textContent = {object_count:objectNames[state.scope.target]+' count',apartment_count:'Apartment count',
+    apartment_area:'Apartment '+state.scope.target+' · indoor area',floor_area:'Indoor floor area'}[state.scope.kind];
+  byId('outline-mode').disabled = byId('printed-mode').disabled = state.metric === 'count';
   const result=byId('answer');result.replaceChildren();
   const answer=state.metric==='count'?String(rooms.length):complete?number.format(total):'—';
   result.append(document.createTextNode(answer));
@@ -224,26 +320,31 @@ function render() {
   const groupName=state.roomType===allType?'numbered, labelled rooms':'labelled “'+state.roomType+'”';
   byId('answer-caption').textContent=state.metric==='area'&&!complete&&rooms.length?'Area missing for '+(rooms.length-known.length)+' of '+rooms.length+' '+noun+'.':rooms.length+' '+noun+' '+(state.roomType===allType?'included':groupName);
   if (specific && rooms.length) byId('answer-caption').textContent='Room '+rooms[0].id+' · '+roomLabel(rooms[0]);
+  if (state.scope && (state.metric==='count' || complete)) byId('answer-caption').textContent = countsFeatures() ? 'Counted on this drawing' : rooms.length+' indoor '+noun+' included';
   if (empty) byId('answer-caption').textContent='';
   byId('evidence-count').textContent=rooms.length+' '+(rooms.length===1?'match':'matches');
   const buttons=document.createDocumentFragment();
   rooms.forEach((room,index)=>{
     const btn=document.createElement('button');btn.type='button';btn.className='evidence-row';btn.dataset.roomId=room.id;
     btn.setAttribute('aria-pressed',String(state.selected===room.id));
-    btn.setAttribute('aria-label','Inspect room '+room.id+', '+roomLabel(room)+', '+unitValue(roomValue(room)));
-    for (const [className,value] of [['number',String(index+1)],['room-id','Room '+room.id],['area',unitValue(roomValue(room))]]) {
+    const name = featureName(room);
+    const columns = [['number',String(index+1)],['room-id',name]];
+    if (!countsFeatures()) columns.push(['area',unitValue(roomValue(room))]);
+    btn.setAttribute('aria-label','Inspect '+name+(countsFeatures()?'':', '+roomLabel(room)+', '+unitValue(roomValue(room))));
+    for (const [className,value] of columns) {
       const span=document.createElement('span');span.className=className;span.textContent=value;btn.append(span);
     }
     buttons.append(btn);
   });
-  if(!rooms.length){const p=document.createElement('p');p.className='empty-evidence';p.textContent='No rooms match this selection.';buttons.append(p);}
+  if(!rooms.length){const p=document.createElement('p');p.className='empty-evidence';p.textContent='No matches on this drawing.';buttons.append(p);}
   const list=byId('evidence');
   const hadFocus=list.contains(document.activeElement);
   list.replaceChildren(buttons);
   if(hadFocus) [...list.children].find(b=>b.dataset.roomId===state.selected)?.focus({preventScroll:true});
-  const room=state.data.rooms.find(r=>r.id===state.selected);
+  const room=rooms.find(r=>r.id===state.selected) || state.data.rooms.find(r=>r.id===state.selected);
   const detail=byId('room-detail');detail.hidden=!room;
-  if(room)detail.textContent='Room '+room.id+' · '+roomLabel(room)+' — outline '+room.area.toFixed(5)+' m², printed '+unitValue(room.printedArea)+'.';
+  if (room && countsFeatures()) detail.textContent=featureName(room)+' · '+(state.scope.kind === 'apartment_count' ? (room.polygon?.length ? 'Apartment boundary' : 'Apartment label') : 'Drawing symbol');
+  else if(room)detail.textContent='Room '+room.id+' · '+roomLabel(room)+' — outline '+room.area.toFixed(5)+' m², printed '+unitValue(room.printedArea)+'.';
 }
 byId('evidence').addEventListener('click', event=>{
   const id=event.target.closest('[data-room-id]')?.dataset.roomId;
@@ -256,7 +357,7 @@ function submitQuery(text) {
     choose(null, 'area');
     message(result.error);
   } else if (result) {
-    choose(result.type, result.metric, result.roomId);
+    choose(result.type ?? null, result.metric, result.roomId, result.scope);
   } else {
     message('Ask for one room by number, or a room count or combined area by label. The previous result is still displayed.');
   }
@@ -267,7 +368,11 @@ byId('query-form').addEventListener('submit',event=>{
 });
 byId('room-type').addEventListener('change',event=>{
   const value = event.target.value;
-  if (value.startsWith('room:')) choose(null, 'area', value.slice(5));
+  if (value.startsWith('@')) {
+    const [kind,target] = value.slice(1).split(':');
+    const scope = target ? {kind,target} : {kind};
+    choose(null, kind.endsWith('_count')?'count':'area', null, scope);
+  } else if (value.startsWith('room:')) choose(null, 'area', value.slice(5));
   else choose(value, state.metric);
   setQueryForSelection();
 });
@@ -333,6 +438,15 @@ async function loadSheet(stem=originalSheet, roomId=null) {
       group.append(new Option('Room '+room.id+' · '+roomLabel(room), 'room:'+room.id));
     }
     select.append(group);
+    const takeoffs = document.createElement('optgroup');
+    takeoffs.label = 'Floor quantities';
+    if (data.objects) for (const key of Object.keys(objectNames)) takeoffs.append(new Option(objectNames[key]+' count',scopeKey({kind:'object_count',target:key})));
+    if (data.apartments && data.apartmentCountComplete !== false) takeoffs.append(new Option('Apartment count',scopeKey({kind:'apartment_count'})));
+    if (data.indoorRoomIds && data.floorComplete !== false) takeoffs.append(new Option('Indoor floor area',scopeKey({kind:'floor_area'})));
+    for (const unit of data.apartments || []) {
+      if (unit.complete) takeoffs.append(new Option('Apartment '+unit.id+' · indoor area',scopeKey({kind:'apartment_area',target:unit.id})));
+    }
+    select.append(takeoffs);
     select.disabled=false;
     const frequencies=new Map();
     for(const room of rooms){if(room.label)frequencies.set(room.label,(frequencies.get(room.label)||0)+1);}

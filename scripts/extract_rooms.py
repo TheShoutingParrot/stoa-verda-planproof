@@ -132,6 +132,12 @@ def flag_ambiguous_ids(rooms):
 
 
 def extract_rooms(path):
+    if __package__:
+        from .swiss_objects import extract_objects
+        from .swiss_units import extract_units
+    else:
+        from swiss_objects import extract_objects
+        from swiss_units import extract_units
     scale, entities = read_entities(path)
     rooms, walls, details, labels, notes = [], [], [], [], []
     for entity in entities:
@@ -193,6 +199,7 @@ def extract_rooms(path):
         "bounds": [min(p[0] for p in points), min(p[1] for p in points),
                    max(p[0] for p in points), max(p[1] for p in points)],
         "walls": walls, "rooms": rooms, "detailLines": details, "unassignedLabels": unassigned,
+        "objects": extract_objects(entities, scale), **extract_units(entities, scale, rooms),
     }
 
 

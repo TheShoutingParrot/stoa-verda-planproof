@@ -11,6 +11,7 @@ import platform
 import re
 import statistics
 import subprocess
+import sys
 import time
 import zipfile
 
@@ -148,15 +149,22 @@ def percentiles(values):
 def evaluate(work, version, drawings, groups):
     app = snapshot(work, version, APP)
     extractor = snapshot(work, version, EXTRACTOR)
-    module_spec = importlib.util.spec_from_file_location("benchmark_extractor", extractor)
-    module = importlib.util.module_from_spec(module_spec)
-    module_spec.loader.exec_module(module)
-    inputs, times = [], []
-    for stem, rows in groups.items():
-        started = time.perf_counter()
-        sheet = module.extract_rooms(drawings / (stem + ".dxf"))
-        times.append(1000 * (time.perf_counter() - started))
-        inputs.append({"sheet": sheet, "questions": [r["question"] for r in rows]})
+    if version == "working":
+        for sibling in (ROOT / "scripts").glob("swiss_*.py"):
+            (extractor.parent / sibling.name).write_bytes(sibling.read_bytes())
+    sys.path.insert(0, str(extractor.parent))
+    try:
+        module_spec = importlib.util.spec_from_file_location("benchmark_extractor", extractor)
+        module = importlib.util.module_from_spec(module_spec)
+        module_spec.loader.exec_module(module)
+        inputs, times = [], []
+        for stem, rows in groups.items():
+            started = time.perf_counter()
+            sheet = module.extract_rooms(drawings / (stem + ".dxf"))
+            times.append(1000 * (time.perf_counter() - started))
+            inputs.append({"sheet": sheet, "questions": [r["question"] for r in rows]})
+    finally:
+        sys.path.pop(0)
     task = subprocess.run(["node", str(ROOT / "scripts/benchmark_swiss.cjs"), str(app)],
                           input=compact_json(inputs), stdout=subprocess.PIPE, check=True)
     outputs = json.loads(task.stdout)

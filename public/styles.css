@@ -3,3 +3,5 @@
 
 .sheet-switch{display:flex;align-items:center;gap:8px}.sheet-switch label{font-size:12px;font-weight:600;color:var(--muted)}.sheet-switch select{max-width:100%;font-family:inherit;font-weight:600;font-size:13px;color:var(--forest);background:var(--paper);border:1px solid #bfcab9;border-radius:6px;padding:7px 6px;cursor:pointer}.sheet-switch select:focus-visible{outline:2px solid #557c48;outline-offset:2px}
 @media(max-width:660px){.page-title{align-items:flex-start;flex-direction:column;gap:12px}.sheet-switch{gap:7px}.sheet-switch select{font-size:12px;padding:5px}}
+
+.takeoff-feature{cursor:pointer}.feature-line{fill:none;stroke:#2b6044;stroke-width:2;vector-effect:non-scaling-stroke}.unit-geometry{fill:#97c27844;stroke:#417954;stroke-width:1.5;vector-effect:non-scaling-stroke}.takeoff-feature.chosen .feature-line,.takeoff-feature.chosen .unit-geometry{stroke:#173c2b;stroke-width:3}.takeoff-feature.chosen circle{fill:#143e2b;stroke:#f5f8ec;stroke-width:2}
