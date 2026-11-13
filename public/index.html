@@ -14,7 +14,7 @@
   <nav aria-label="Drawing workflows"><a href="/" aria-current="page">Swiss drawing</a><a href="/finnish.html">Finnish scan <span aria-hidden="true">↗</span></a></nav>
 </header>
 <main>
-  <div class="page-title"><div><p class="kicker">DRAWING WORKSPACE</p><h1>Floor plan takeoff</h1></div><div class="dataset-badge"><span class="status-dot"></span>Swiss Dwellings</div></div>
+  <div class="page-title"><div><p class="kicker">DRAWING WORKSPACE</p><h1>Floor plan takeoff</h1></div><div class="sheet-switch"><label for="drawing-select">Drawing</label><select id="drawing-select" aria-label="Choose a Swiss drawing"><option value="site1102_bldg2242_floor10281">Site 1102 · Floor 5</option><option value="site1006_bldg2088_floor9498">Site 1006 · Floor 1</option></select></div></div>
   <form id="query-form" class="query-form" aria-label="Query the drawing">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 5 5"/></svg>
     <label for="query" class="sr-only">Ask about a room count or area</label>
@@ -42,7 +42,7 @@
     <aside class="evidence-panel" aria-labelledby="answer-title">
       <div class="result-block"><p class="kicker">TAKEOFF RESULT</p><h2 id="answer-title">Combined area</h2><p id="answer" class="answer" aria-live="polite">—</p><p id="answer-caption" class="answer-caption"></p></div>
       <div class="filters">
-        <label for="room-type">Room type</label><select id="room-type" disabled></select>
+        <label for="room-type">Room or room type</label><select id="room-type" disabled></select>
         <span id="area-label" class="control-label">Area source</span>
         <div class="mode-picker" role="group" aria-labelledby="area-label"><button type="button" id="outline-mode" aria-pressed="true">Drawn outlines</button><button type="button" id="printed-mode" aria-pressed="false">Printed values</button></div>
       </div>

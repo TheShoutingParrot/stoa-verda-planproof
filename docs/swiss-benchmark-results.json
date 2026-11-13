@@ -1,0 +1,226 @@
+{
+  "baselineCommit": "32b2941",
+  "inputRowsSha256": "9d300a638164bd910b29f872e47202ebdbd3e92a35dde777a16631e21a2d9ee8",
+  "sheets": 60,
+  "baseline": {
+    "all": {
+      "rows": 1080,
+      "answered": 478,
+      "numeric": 367,
+      "intent": 360
+    },
+    "byFamily": {
+      "apartment_area": {
+        "rows": 111,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "apartment_count": {
+        "rows": 60,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "floor_area": {
+        "rows": 60,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "label_area": {
+        "rows": 60,
+        "answered": 59,
+        "numeric": 52,
+        "intent": 52
+      },
+      "label_count": {
+        "rows": 361,
+        "answered": 313,
+        "numeric": 310,
+        "intent": 308
+      },
+      "object_count": {
+        "rows": 308,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "room_area": {
+        "rows": 120,
+        "answered": 106,
+        "numeric": 5,
+        "intent": 0
+      }
+    },
+    "byUnit": {
+      "count": {
+        "rows": 729,
+        "answered": 313,
+        "numeric": 310,
+        "intent": 308
+      },
+      "m2": {
+        "rows": 351,
+        "answered": 165,
+        "numeric": 57,
+        "intent": 52
+      }
+    }
+  },
+  "current": {
+    "all": {
+      "rows": 1080,
+      "answered": 499,
+      "numeric": 489,
+      "intent": 487
+    },
+    "byFamily": {
+      "apartment_area": {
+        "rows": 111,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "apartment_count": {
+        "rows": 60,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "floor_area": {
+        "rows": 60,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "label_area": {
+        "rows": 60,
+        "answered": 60,
+        "numeric": 53,
+        "intent": 53
+      },
+      "label_count": {
+        "rows": 361,
+        "answered": 319,
+        "numeric": 316,
+        "intent": 314
+      },
+      "object_count": {
+        "rows": 308,
+        "answered": 0,
+        "numeric": 0,
+        "intent": 0
+      },
+      "room_area": {
+        "rows": 120,
+        "answered": 120,
+        "numeric": 120,
+        "intent": 120
+      }
+    },
+    "byUnit": {
+      "count": {
+        "rows": 729,
+        "answered": 319,
+        "numeric": 316,
+        "intent": 314
+      },
+      "m2": {
+        "rows": 351,
+        "answered": 180,
+        "numeric": 173,
+        "intent": 173
+      }
+    }
+  },
+  "paired": {
+    "retainedCorrect": 360,
+    "improved": 127,
+    "regressed": 0,
+    "stillIncorrectOrUnanswered": 593,
+    "changedDisplayedValue": 124
+  },
+  "pairedByFamily": {
+    "apartment_area": {
+      "retainedCorrect": 0,
+      "improved": 0,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 111,
+      "changedDisplayedValue": 0
+    },
+    "apartment_count": {
+      "retainedCorrect": 0,
+      "improved": 0,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 60,
+      "changedDisplayedValue": 0
+    },
+    "floor_area": {
+      "retainedCorrect": 0,
+      "improved": 0,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 60,
+      "changedDisplayedValue": 0
+    },
+    "label_area": {
+      "retainedCorrect": 52,
+      "improved": 1,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 7,
+      "changedDisplayedValue": 3
+    },
+    "label_count": {
+      "retainedCorrect": 308,
+      "improved": 6,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 47,
+      "changedDisplayedValue": 6
+    },
+    "object_count": {
+      "retainedCorrect": 0,
+      "improved": 0,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 308,
+      "changedDisplayedValue": 0
+    },
+    "room_area": {
+      "retainedCorrect": 0,
+      "improved": 120,
+      "regressed": 0,
+      "stillIncorrectOrUnanswered": 0,
+      "changedDisplayedValue": 115
+    }
+  },
+  "revisions": {
+    "baseline": {
+      "appSha256": "c82e5a73960f4e92fed7ee2bb69e1ffd410cd39b1332d2fcda4ee2615c5db7f9",
+      "extractorSha256": "600f8a09824c782200e13367e20bceb54da39c3fecb4b0f2d5ea7863d97c7420",
+      "extractionMs": {
+        "median": 6.2029,
+        "p95": 19.5277
+      },
+      "formMs": {
+        "median": 0.0333,
+        "p95": 0.6426
+      }
+    },
+    "current": {
+      "appSha256": "48b3c83188092bb1396e661cc9b0131bc7e4bc839a925b464d5e355e3cc4be09",
+      "extractorSha256": "01b677331cec4d958248f97aedf1b49da66fcda1dcdade24be68bdac2e82d231",
+      "extractionMs": {
+        "median": 7.4736,
+        "p95": 25.603
+      },
+      "formMs": {
+        "median": 0.1085,
+        "p95": 1.4454
+      }
+    }
+  },
+  "runtime": {
+    "machine": "arm64",
+    "python": "3.14.6",
+    "node": "v24.16.0"
+  }
+}

@@ -2,7 +2,7 @@
 
 const byId = id => document.getElementById(id);
 const svgNS = 'http://www.w3.org/2000/svg';
-const state = {data: null, roomType: '', metric: 'area', source: 'outline', selected: null, zoom: 1, origin: null, frame: null};
+const state = {data: null, roomType: null, roomId: null, metric: 'area', source: 'outline', selected: null, zoom: 1, origin: null, frame: null};
 const svg = byId('plan');
 const allType = '*';
 const labelNames = {
@@ -28,12 +28,17 @@ function unitValue(value) {
 }
 function roomLabel(room) { return room.label || 'Unlabelled room'; }
 function matches() {
+  if (state.roomId !== null) return state.data.rooms.filter(room => room.numbered && room.id === state.roomId);
   return state.data.rooms.filter(r => state.roomType === allType ? r.numbered !== false && r.label : r.label === state.roomType);
 }
 function labelOptions() {
   return [...new Set(state.data.rooms.map(room => room.label).filter(Boolean))].sort((a,b) => a.localeCompare(b));
 }
 function setQueryForSelection() {
+  if (state.roomId !== null) {
+    byId('query').value = 'What is the area of room ' + state.roomId + '?';
+    return;
+  }
   const label = state.roomType === allType ? 'all numbered, labelled rooms' : 'rooms labelled “' + state.roomType + '”';
   byId('query').value = state.metric === 'count' ? 'How many ' + label + ' are on this floor?' : 'What is the total area of ' + label + '?';
 }
@@ -41,16 +46,45 @@ function message(line) {
   byId('query-message').textContent = line;
   byId('query-message').hidden = !line;
 }
-function choose(type, metric) {
+function choose(type, metric, roomId = null) {
   state.roomType = type;
+  state.roomId = roomId;
   state.metric = metric;
-  byId('room-type').value = type;
+  byId('room-type').value = roomId === null ? (type ?? '') : 'room:' + roomId;
   const rooms = matches();
   state.selected = rooms.length ? rooms[0].id : null;
   message('');
   render();
 }
+// A numbered-room request must resolve to a single polygon before label aggregation.
+function parseRoomQuery(text) {
+  const input = normalized(text).replace(/[−–]/g, '-');
+  const identifiers = input.match(/(?<![\w.])-?[a-z]*\d+\.\d+(?!\w|\.\d)/g) || [];
+  if (!identifiers.length) return null;
+  const unsupported = {error: 'Ask for the area of one numbered room at a time.'};
+  if (identifiers.length !== 1) return unsupported;
+  const id = identifiers[0];
+  const labelHint = input.match(/\(\s*['"“«]([^()]+?)['"”»]\s*\)/);
+  let remainder = (labelHint ? input.replace(labelHint[0], '') : input).replace(id, ' ');
+  remainder = remainder.replace(/\bm(?:²|\^?2)\b|m²/g, ' ').replace(/[.,?!#]/g, ' ').trim();
+  // Limit this operation to a room lookup. Extra objects, filters and dimensions change the question.
+  const allowed = new Set(('what s is the net floor area of for in how big large size show me get find room number no '
+    + 'wie gross groß ist die nettoflache flache von vom raum zimmer '
+    + 'quelle est la surface nette de piece du local '
+    + 'qual e superficie netta del locale stanza').split(/\s+/));
+  const words = tokens(remainder);
+  if (words.some(word => !allowed.has(word))) return unsupported;
+  if (/[^a-z0-9\s'’ß]/.test(remainder)) return unsupported;
+  const room = state.data.rooms.find(r => r.numbered && normalized(r.id) === id);
+  if (!room) return {error: 'Room ' + id.toUpperCase() + ' could not be uniquely identified on this drawing.'};
+  if (labelHint && normalized(room.label) !== labelHint[1].trim()) {
+    return {error: 'Room ' + room.id + ' is labelled “' + roomLabel(room) + '” on this drawing.'};
+  }
+  return {type: null, metric: 'area', roomId: room.id};
+}
 function parseQuery(text) {
+  const direct = parseRoomQuery(text);
+  if (direct) return direct;
   const words = tokens(text);
   const wordSet = new Set(words);
   const simple = words.join(' ');
@@ -58,7 +92,7 @@ function parseQuery(text) {
     : /\b(count|many|number|combien|quanti|quante|viele|numero)\b/.test(simple) ? 'count' : null;
   if (!metric) return null;
   // These require an operation or area scope beyond a simple count/sum.
-  if (/\b(except|exclud\w*|without|excluding|minus|largest|smallest|average|mean|maximum|minimum|between|only indoor|indoor|outdoor|apartment|apartments|unit|units)\b/.test(simple)) return null;
+  if (/\b(except|exclud\w*|without|excluding|minus|largest|smallest|average|mean|maximum|minimum|between|larger|smaller|greater|less|over|under|above|below|only indoor|indoor|outdoor|apartment|apartments|unit|units)\b/.test(simple)) return null;
   const hits = labelOptions().filter(label => [normalized(label), ...(labelNames[normalized(label)] || [])].some(alias => wordSet.has(alias)));
   if (hits.length > 1) return null;
   if (hits.length === 1) return {type: hits[0], metric};
@@ -117,6 +151,14 @@ function endDrag(event) {
 }
 svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',endDrag);
 function selectRoom(id) {
+  if (state.roomId !== null && state.roomId !== id) {
+    const room = state.data.rooms.find(r => r.id === id);
+    if (room?.numbered) {
+      choose(null, 'area', room.id);
+      setQueryForSelection();
+    }
+    return;
+  }
   state.selected=id;
   render();
 }
@@ -131,7 +173,10 @@ function draw(rooms) {
   for (const room of state.data.rooms) {
     if (!room.polygon?.length) continue;
     const match=markers.has(room.id), selected=state.selected===room.id;
-    const poly=make('polygon',{points:points(room.polygon),class:'room-shape'+(match?' match':'')+(selected?' chosen':''),'data-room-id':room.id});
+    const shape = {class:'room-shape'+(match?' match':'')+(selected?' chosen':''),'data-room-id':room.id};
+    const poly = room.holes?.length
+      ? make('path', {...shape, d:[room.polygon, ...room.holes].map(ring => 'M'+points(ring)+'Z').join(' '), 'fill-rule':'evenodd'})
+      : make('polygon', {...shape, points:points(room.polygon)});
     const title=make('title');title.textContent=room.id+' · '+roomLabel(room)+' · '+unitValue(roomValue(room));poly.append(title);
     regionLayer.append(poly);
     const [x,y]=room.center;
@@ -168,7 +213,9 @@ function render() {
   const known=rooms.map(roomValue).filter(Number.isFinite);
   const total=known.reduce((sum,value)=>sum+value,0);
   const complete=known.length===rooms.length && rooms.length>0;
-  byId('answer-title').textContent=state.metric==='count'?'Room count':'Combined area';
+  const specific = state.roomId !== null;
+  const empty = !specific && state.roomType === null;
+  byId('answer-title').textContent=empty?'No result':specific?'Room area':state.metric==='count'?'Room count':'Combined area';
   const result=byId('answer');result.replaceChildren();
   const answer=state.metric==='count'?String(rooms.length):complete?number.format(total):'—';
   result.append(document.createTextNode(answer));
@@ -176,6 +223,8 @@ function render() {
   const noun=rooms.length===1?'room':'rooms';
   const groupName=state.roomType===allType?'numbered, labelled rooms':'labelled “'+state.roomType+'”';
   byId('answer-caption').textContent=state.metric==='area'&&!complete&&rooms.length?'Area missing for '+(rooms.length-known.length)+' of '+rooms.length+' '+noun+'.':rooms.length+' '+noun+' '+(state.roomType===allType?'included':groupName);
+  if (specific && rooms.length) byId('answer-caption').textContent='Room '+rooms[0].id+' · '+roomLabel(rooms[0]);
+  if (empty) byId('answer-caption').textContent='';
   byId('evidence-count').textContent=rooms.length+' '+(rooms.length===1?'match':'matches');
   const buttons=document.createDocumentFragment();
   rooms.forEach((room,index)=>{
@@ -200,14 +249,28 @@ byId('evidence').addEventListener('click', event=>{
   const id=event.target.closest('[data-room-id]')?.dataset.roomId;
   if(id) selectRoom(id);
 });
+function submitQuery(text) {
+  if (!state.data) return;
+  const result = parseQuery(text);
+  if (result?.error) {
+    choose(null, 'area');
+    message(result.error);
+  } else if (result) {
+    choose(result.type, result.metric, result.roomId);
+  } else {
+    message('Ask for one room by number, or a room count or combined area by label. The previous result is still displayed.');
+  }
+}
 byId('query-form').addEventListener('submit',event=>{
   event.preventDefault();
-  if(!state.data) return;
-  const result=parseQuery(byId('query').value);
-  if (result) choose(result.type,result.metric);
-  else message('This sheet supports room counts and combined areas by label. Choose a room type below, or ask “How many rooms are labelled '+(state.roomType===allType?labelOptions()[0]:state.roomType)+'?” The previous result is still displayed.');
+  submitQuery(byId('query').value);
 });
-byId('room-type').addEventListener('change',event=>{choose(event.target.value,state.metric);setQueryForSelection();});
+byId('room-type').addEventListener('change',event=>{
+  const value = event.target.value;
+  if (value.startsWith('room:')) choose(null, 'area', value.slice(5));
+  else choose(value, state.metric);
+  setQueryForSelection();
+});
 byId('outline-mode').addEventListener('click',()=>setMode('outline'));
 byId('printed-mode').addEventListener('click',()=>setMode('printed'));
 byId('zoom-fit').addEventListener('click',()=>{if(state.data)fitView();});
@@ -217,28 +280,89 @@ function addLink(title,url) {
   if (!url) return;
   const link=document.createElement('a');link.textContent=title;link.href=url;link.target='_blank';link.rel='noopener';byId('sheet-links').append(link);
 }
-async function loadSheet() {
+const originalSheet='site1102_bldg2242_floor10281';
+const sheetFiles=new Map([
+  [originalSheet,'/data/swiss-floor.json'],
+  ['site1006_bldg2088_floor9498','/data/swiss/site1006_bldg2088_floor9498.json']
+]);
+let generation=0;
+function clearSheet() {
+  state.data=null;
+  state.selected=null;
+  state.roomId=null;
+  state.frame=null;
+  state.origin=null;
+  state.zoom=1;
+  setMode('outline');
+  for(const id of ['sheet-links','evidence','plan','answer-caption','sheet-credit','evidence-count','sheet-id','room-type']){
+    byId(id).replaceChildren();
+  }
+  byId('room-detail').hidden=true;
+  byId('query').value='';
+  byId('ask').disabled=true;
+  byId('room-type').disabled=true;
+  byId('answer').textContent='—';
+  byId('drawing-title').textContent='Floor plan';
+  byId('loading').textContent='Loading drawing…';
+  byId('loading').hidden=false;
+  message('');
+}
+async function loadSheet(stem=originalSheet, roomId=null) {
+  const ticket=++generation;
+  if (!sheetFiles.has(stem)) stem=originalSheet;
+  byId('drawing-select').value=stem;
+  clearSheet();
   try {
-    const response=await fetch('/data/swiss-floor.json');
+    const response=await fetch(sheetFiles.get(stem));
     if(!response.ok) throw new Error('Drawing data unavailable');
-    state.data=await response.json();
+    const data=await response.json();
+    if (ticket!==generation) return;
+    if (data.sheet.id!==stem) throw new Error('Unexpected drawing data');
+    state.data=data;
     const {sheet,rooms}=state.data;
     byId('drawing-title').textContent=sheet.title||'Floor plan';
     byId('sheet-id').textContent=sheet.id;
     byId('sheet-credit').textContent=sheet.credit;
-    addLink('Original PDF',sheet.pdfUrl);addLink('DXF',sheet.dxfUrl);addLink('Dataset',sheet.sourceUrl);addLink('Licence',sheet.licenseUrl);
+    addLink('Original PDF',sheet.pdfUrl);addLink('DXF',sheet.dxfUrl);addLink('Dataset',sheet.sourceUrl);addLink('Licence',sheet.licenseUrl);addLink('Attribution',sheet.creditUrl);
     const select=byId('room-type');
-    for(const label of labelOptions()){const option=new Option(label,label);select.add(option);}
-    select.add(new Option('All numbered, labelled rooms',allType));select.disabled=false;
+    for(const label of labelOptions())select.add(new Option(label,label));
+    select.add(new Option('All numbered, labelled rooms',allType));
+    const group = document.createElement('optgroup');
+    group.label = 'Numbered rooms';
+    for (const room of rooms.filter(r => r.numbered).sort((a,b) => a.id.localeCompare(b.id, 'en', {numeric:true}))) {
+      group.append(new Option('Room '+room.id+' · '+roomLabel(room), 'room:'+room.id));
+    }
+    select.append(group);
+    select.disabled=false;
     const frequencies=new Map();
     for(const room of rooms){if(room.label)frequencies.set(room.label,(frequencies.get(room.label)||0)+1);}
     const first=[...frequencies].sort((a,b)=>b[1]-a[1])[0]?.[0]||allType;
     fitView();choose(first,'area');setQueryForSelection();
+    byId('ask').disabled=false;
     byId('loading').hidden=true;
+    if (roomId) {
+      byId('query').value = 'What is the net floor area of room '+roomId+'?';
+      submitQuery(byId('query').value);
+    }
   } catch (error) {
+    if (ticket!==generation) return;
     byId('loading').textContent='Could not load the drawing. Reload the page to try again.';
     byId('ask').disabled=true;
     console.error(error);
   }
 }
-loadSheet();
+function loadFromAddress() {
+  const query=new URLSearchParams(window.location.search);
+  loadSheet(query.get('sheet')||originalSheet,query.get('room'));
+}
+byId('drawing-select').addEventListener('change',event=>{
+  const stem=event.target.value;
+  const address=new URL(window.location.href);
+  if(stem===originalSheet)address.searchParams.delete('sheet');
+  else address.searchParams.set('sheet',stem);
+  address.searchParams.delete('room');
+  window.history.pushState(null,'',address);
+  loadSheet(stem);
+});
+window.addEventListener('popstate',loadFromAddress);
+loadFromAddress();

@@ -1,0 +1,250 @@
+{
+  "source": "https://fwjydgxpttajiqpfmqtj.supabase.co/storage/v1/object/public/stoa-junction-2026/junction-dataset.zip",
+  "seed": "planproof-heldout-2026-11-13-v1",
+  "selection": "First 60 by sha256(seed+'|'+stem) ascending; one drawing per site. Exclude every site in sponsor preview.",
+  "questionsMember": "junction-dataset/questions.jsonl",
+  "questionsMemberSha256": "0e6322c74561a63f42bac35f5c1be8a2c6a37516b14a81e66ab88b74950a6d1f",
+  "englishRowsSha256": "9d300a638164bd910b29f872e47202ebdbd3e92a35dde777a16631e21a2d9ee8",
+  "sites": [
+    {
+      "stem": "site777_bldg1681_floor7547",
+      "dxfSha256": "29ed086da1b0e993f78da7499cbe6f8c2f1543531aadc5c32eff8e6349fae699"
+    },
+    {
+      "stem": "site1677_bldg2833_floor13093",
+      "dxfSha256": "89075f596d1d8501b749bf5206ed2992e9e746df102aea3519497c5e641f60ac"
+    },
+    {
+      "stem": "site1024_bldg2107_floor9518",
+      "dxfSha256": "8f1a4e2c3402a4797be04717c2d8d10de43f43f0e35e34bdf60a9a45651b40cd"
+    },
+    {
+      "stem": "site10308_bldg14924_floor39248",
+      "dxfSha256": "428ffa2ef1d379901ce98220f530d85166ff1bb4e3af6e8a8bb4eb52e24721ce"
+    },
+    {
+      "stem": "site960_bldg2014_floor8910",
+      "dxfSha256": "bbb60ca61f892097472f65bac217f8cdf1bdabd55ec75c65e83a3d91a9f35330"
+    },
+    {
+      "stem": "site2300_bldg3395_floor15216",
+      "dxfSha256": "e0a73afac27154657fcba046a458ec9348492adbae1b5b25d122d9840c643cf7"
+    },
+    {
+      "stem": "site1918_bldg2926_floor13399",
+      "dxfSha256": "4f69c423f1eb2b88ffb751b6b0201acf7cf92f893804fa78fa1a6d4c885be8c1"
+    },
+    {
+      "stem": "site3905_bldg6105_floor25466",
+      "dxfSha256": "74455bc36129f03954d76bad8de52e82658d6312b9f982e997a3957f8131ba45"
+    },
+    {
+      "stem": "site218_bldg407_floor1620",
+      "dxfSha256": "54c064e10d8ffa3fd64014d09baad6c2b51b177de94b236c51b3a98c5033a782"
+    },
+    {
+      "stem": "site3565_bldg5449_floor23802",
+      "dxfSha256": "eedfb37566d5e5f5a778ce612262c14a92c9fc99b3e15435060eab6a43919e16"
+    },
+    {
+      "stem": "site10089_bldg14683_floor39107",
+      "dxfSha256": "a2b9df7a89e0a9c9c2e85e11534f0a33d93cf3bb9696685e17eeb0de9eb5f4ca"
+    },
+    {
+      "stem": "site1062_bldg2178_floor9864",
+      "dxfSha256": "08bafd391a6b0dd4d89b33055b60256a8e9155aea2d04f326bbb03f3b1d81cb3"
+    },
+    {
+      "stem": "site720_bldg1543_floor6786",
+      "dxfSha256": "fee1c68c03572231da5fb7ba24535f2b8b8f06a3a1ee55d2a47c6413a97a91bf"
+    },
+    {
+      "stem": "site595_bldg1308_floor5758",
+      "dxfSha256": "10affddc2c565a272c48034119737cb6384c05c17824b5a1e147a420b4d7d612"
+    },
+    {
+      "stem": "site1052_bldg2158_floor9753",
+      "dxfSha256": "b9f34322107155c7b9f77da72a7eb6f88ea72b5e29d142f397fbeeeafc278303"
+    },
+    {
+      "stem": "site1205_bldg2372_floor11000",
+      "dxfSha256": "4f04fe0ee3e9eeba6472b3a1f00b87981eac979f8423fc0904b360f80b7df0f4"
+    },
+    {
+      "stem": "site199_bldg388_floor1545",
+      "dxfSha256": "c57a7857dbd4d86887dd41f7b67708d9fbcbeb534f1c0f817f23293b23e51d76"
+    },
+    {
+      "stem": "site286_bldg529_floor2105",
+      "dxfSha256": "240bd7fe50e6e5614a1abd74bc4177ff78d294ed30162c38fe879a71ad93ba85"
+    },
+    {
+      "stem": "site153_bldg320_floor1300",
+      "dxfSha256": "79a2fea077b8cc3109e1d88e1da0ab0b9fc3657fc70270a52de56c870ad2c191"
+    },
+    {
+      "stem": "site1282_bldg2500_floor11695",
+      "dxfSha256": "fdb0752b2e60e6314a69dc789a27c82ff731dc93db949c25bb3ec7be895e627b"
+    },
+    {
+      "stem": "site1605_bldg2797_floor12944",
+      "dxfSha256": "aa1295b74e4dc98e634b71e9257cc5986b5c3ce5bdd6b85968e7ebee78ea03ac"
+    },
+    {
+      "stem": "site379_bldg836_floor3679",
+      "dxfSha256": "490f5de56f87f28942a689ced35be0e4bf2095a9a094a34203d2e338a262df38"
+    },
+    {
+      "stem": "site1002_bldg2084_floor9393",
+      "dxfSha256": "4c60fdc23b7fc687bc584cdad6c39a3c9e1bf3868031a0e107cb36b9a64126d2"
+    },
+    {
+      "stem": "site11743_bldg18329_floor49503",
+      "dxfSha256": "3123af5915f5aaf03c443a0fceac5b9197994e5f5ca8c8dc5a448188cc13200e"
+    },
+    {
+      "stem": "site417_bldg1060_floor4636",
+      "dxfSha256": "9e42ac62896e66b197fc684345397ddb2aa276de55152e6ab5d4cecb9a354a67"
+    },
+    {
+      "stem": "site10446_bldg15089_floor39475",
+      "dxfSha256": "d301c1eb4c753fa6148e014df2c391ce54723cf48ec52ddd0bcb342ac19a1811"
+    },
+    {
+      "stem": "site342_bldg721_floor3078",
+      "dxfSha256": "f08b967ae5f31aba49a47984efc0f2541b4ec7a81e196a13037559c7bc4ec5ba"
+    },
+    {
+      "stem": "site1211_bldg2381_floor11046",
+      "dxfSha256": "49892621494a0bcd2a68460c8eff0f35deb06bcb0f78b4b9fcc572890e32bec0"
+    },
+    {
+      "stem": "site1030_bldg2121_floor47586",
+      "dxfSha256": "efc26ca82089a5790045a2940216292e0d7a9f0b8365411f9692480fa0f8ae40"
+    },
+    {
+      "stem": "site211_bldg400_floor49458",
+      "dxfSha256": "d018657e944b31c5bc8beb38b4427829e75b3e451b665853c523c95ac456f0b8"
+    },
+    {
+      "stem": "site305_bldg599_floor2448",
+      "dxfSha256": "3d21ee18b91da29802d0c40f4aeb9b44494f6072749c51bd723568ece92f57a0"
+    },
+    {
+      "stem": "site11677_bldg18225_floor49850",
+      "dxfSha256": "ee9affdbae60cb0643a65c132f6fa9cc07e1cfc10af07ce8e48b41d957d2beca"
+    },
+    {
+      "stem": "site983_bldg2062_floor9222",
+      "dxfSha256": "6949b9858e3d30794d7eb6add69e609001c9acb93965f621adbf16ca5cc185e5"
+    },
+    {
+      "stem": "site2281_bldg3362_floor14970",
+      "dxfSha256": "562f05ae525c8536729eb33b40e34d2f28df9a5e010750fc0e5655091d68822f"
+    },
+    {
+      "stem": "site10400_bldg15026_floor39415",
+      "dxfSha256": "2b02dad0def2901542d15413918bb4fae4f941e188b17540cd32f7ee487c99ed"
+    },
+    {
+      "stem": "site882_bldg1881_floor8335",
+      "dxfSha256": "2ec1731258b747714210ab24d33991d11f2469dc1a3e193cc186a8cce25b158c"
+    },
+    {
+      "stem": "site96_bldg108_floor47822",
+      "dxfSha256": "e86c214920dd6abe97b338399875dca3af4bfa286600ee2eea324a52ea26ed79"
+    },
+    {
+      "stem": "site11262_bldg17047_floor45034",
+      "dxfSha256": "1bf6766dfc590e57e0fc8c8e4a857478b4a22b2a814532de2c9cd298b03303eb"
+    },
+    {
+      "stem": "site4125_bldg6657_floor27032",
+      "dxfSha256": "db7c9f1cba7b3dd33ea4f9a1a00b60749391f8f67e39a98ea482fe5d39937d77"
+    },
+    {
+      "stem": "site2247_bldg3160_floor47973",
+      "dxfSha256": "86d8b823abcd920332296f6fe65002d661e45a0b3036a1c561269210727215e2"
+    },
+    {
+      "stem": "site857_bldg1821_floor8090",
+      "dxfSha256": "b951d1b3b40645c446d216a630c3ba81596c56fa0af2a38754b2c9179859c757"
+    },
+    {
+      "stem": "site2050_bldg2970_floor13543",
+      "dxfSha256": "9c8211b5a3569331750c094ac02db4e613bfd5fa36d6e64fdc3cce8c787f0562"
+    },
+    {
+      "stem": "site3796_bldg5826_floor24653",
+      "dxfSha256": "f2a5c471369ab6ebf72d0979454207cead825204410d3eb8cbbad0e79a6e63eb"
+    },
+    {
+      "stem": "site319_bldg649_floor2754",
+      "dxfSha256": "60de4be4f793fcfed6ae1009a35de8308089e77e6011fae2b018de4af8a2bec2"
+    },
+    {
+      "stem": "site176_bldg363_floor1475",
+      "dxfSha256": "b9d8141f9712ac983c6b2f09a3f46472034b25692b0857ef9013c156c18383b9"
+    },
+    {
+      "stem": "site632_bldg1359_floor5915",
+      "dxfSha256": "70063612b3ba3bcf296161c5751a7b15480f2a8e8b4a1343147a5635481266ff"
+    },
+    {
+      "stem": "site886_bldg1894_floor8386",
+      "dxfSha256": "67e508f299fd2d8a78010c3a4416a9d0b18f333bf0a9a678278df6ae501fa573"
+    },
+    {
+      "stem": "site1124_bldg2267_floor10438",
+      "dxfSha256": "ec0d8180eaa604e97ba24ef17b8a14acdc426821772eec793ce66cd956d0e27e"
+    },
+    {
+      "stem": "site676_bldg3129_floor14088",
+      "dxfSha256": "f20a765dc28fe70c102a6c36ad22237b77359c08d418726b1db7289950aa15f8"
+    },
+    {
+      "stem": "site1939_bldg2932_floor13426",
+      "dxfSha256": "ea288ae290c2d7a1d37e6e6a49afa3072f16d96c505beed44f9f17f0acc074ae"
+    },
+    {
+      "stem": "site970_bldg2036_floor16468",
+      "dxfSha256": "ee69234fb3837d2f4988cbfad8e7c19fc2c80c5defab6323765e4f67555555f6"
+    },
+    {
+      "stem": "site1051_bldg2157_floor9751",
+      "dxfSha256": "8f5889d05e2489d1d0def3c03337a7479e209945acf7b0553e85485bd9cb8472"
+    },
+    {
+      "stem": "site11659_bldg18207_floor48758",
+      "dxfSha256": "4d4b0d85a7b6ac9db17285fd4d568b18fde796aa8f4044c9020fbe964ce4d966"
+    },
+    {
+      "stem": "site312_bldg625_floor2597",
+      "dxfSha256": "1fcf7bfb773e65f3fe3df41a80ebb1d6997a637dc425542b1ed52d5669ac416d"
+    },
+    {
+      "stem": "site695_bldg1470_floor6424",
+      "dxfSha256": "bba3f24821af69ff77e862bd55391692a28ddbc229b6194f64b4dd07919f3287"
+    },
+    {
+      "stem": "site3354_bldg5171_floor23246",
+      "dxfSha256": "25262d4b03c86f91be04dbed676621ba81d99d9555bf3f8b1a409f9c2087b947"
+    },
+    {
+      "stem": "site863_bldg1828_floor8117",
+      "dxfSha256": "a4cf8345bff3a07643e6f4c72a0527f3804468d877ba9329d00d17e9e2a1f07c"
+    },
+    {
+      "stem": "site542_bldg1239_floor6244",
+      "dxfSha256": "1a6d95a8e24f7e2d21c68bc7fbc93c4006f72be5eee8e6729532bc280e70c19b"
+    },
+    {
+      "stem": "site710_bldg1526_floor6638",
+      "dxfSha256": "c0f83236a9b5d06418ca1544ffe3453540e5affec19077e6fed77d13cf6b91a8"
+    },
+    {
+      "stem": "site2259_bldg3197_floor14352",
+      "dxfSha256": "d5243344e4f19d494f57025ef51bd3eeb01f935401229b09091b8dec7ae50686"
+    }
+  ]
+}

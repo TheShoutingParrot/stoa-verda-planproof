@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_STEM = "site1102_bldg2242_floor10281"
 DEFAULT_DXF = ROOT / "public" / "data" / "swiss" / f"{DEFAULT_STEM}.dxf"
 DEFAULT_JSON = ROOT / "public" / "data" / "swiss-floor.json"
-ROOM_NUMBER = re.compile(r"-?\d+\.\d+")
+ROOM_NUMBER = re.compile(r"(?:[Uu]|-)?[0-9]+\.[0-9]+")
 AREA_LABEL = re.compile(r"(\d+(?:[.,]\d+)?)\s*m(?:²|2|\^2)", re.I)
 APARTMENT = re.compile(r"^(?:app\.|apt\.|whg\.|wohnung\b|appartamento\b|appartement\b)", re.I)
 METRES_PER_UNIT = {1: 0.0254, 2: 0.3048, 4: 0.001, 5: 0.01, 6: 1.0}
@@ -41,7 +41,11 @@ def read_entities(path):
 
 
 def polygon_area(points):
-    return abs(math.fsum(x * b - a * y for (x, y), (a, b) in edges(points))) / 2
+    return abs(signed_area(points))
+
+
+def signed_area(points):
+    return math.fsum(x * b - a * y for (x, y), (a, b) in edges(points)) / 2
 
 
 def edges(points):
@@ -67,6 +71,64 @@ def make_room(entity, points):
         "center": [sum(v[i] for v in points) / len(points) for i in (0, 1)],
         "numbered": False, "labelled": False, "annotations": [],
     }
+
+
+def encloses_ring(shell, ring):
+    if not all(contains(shell, point) for point in ring):
+        return False
+
+    def side(a, b, p):
+        return (b[0] - a[0]) * (p[1] - a[1]) - (b[1] - a[1]) * (p[0] - a[0])
+
+    # A segment can cross out of a concave shell even if both ends are inside.
+    # A shared/touching boundary does not prove a separate interior loop either.
+    for a, b in edges(shell):
+        for c, d in edges(ring):
+            if any(max(a[i], b[i]) < min(c[i], d[i]) or max(c[i], d[i]) < min(a[i], b[i])
+                   for i in (0, 1)):
+                continue
+            if side(a, b, c) * side(a, b, d) <= 0 and side(c, d, a) * side(c, d, b) <= 0:
+                return False
+    return True
+
+
+def attach_holes(rooms):
+    # In the sponsor renderer, shell rings wind clockwise and inner rings wind
+    # counterclockwise. Only a strictly enclosed ring identifies a room cutout.
+    shells = [r for r in rooms if signed_area(r["polygon"]) < 0]
+    cutouts = set()
+    for ring in rooms:
+        if signed_area(ring["polygon"]) <= 0:
+            continue
+        parents = [shell for shell in shells if shell["area"] > ring["area"]
+                   and encloses_ring(shell["polygon"], ring["polygon"])]
+        if not parents:
+            continue
+        parent = min(parents, key=lambda r: r["area"])
+        parent.setdefault("holes", []).append(ring["polygon"])
+        parent.setdefault("holeHandles", []).append(ring["handle"])
+        cutouts.add(ring["handle"])
+    for shell in shells:
+        if "holes" in shell:
+            shell["area"] -= math.fsum(polygon_area(hole) for hole in shell["holes"])
+    return [r for r in rooms if r["handle"] not in cutouts]
+
+
+def flag_ambiguous_ids(rooms):
+    # The same label on two polygons, or several numbers inside one polygon,
+    # cannot identify a unique room. Keep every printed number in annotations.
+    by_number = defaultdict(list)
+    room_ids = {}
+    for room in rooms:
+        ids = list(dict.fromkeys(a["text"].upper() for a in room["annotations"]
+                                 if ROOM_NUMBER.fullmatch(a["text"])))
+        room_ids[room["handle"]] = ids
+        for identifier in ids:
+            by_number[identifier].append(room)
+    for room in rooms:
+        ids = room_ids[room["handle"]]
+        if len(ids) > 1 or any(len(by_number[identifier]) > 1 for identifier in ids):
+            room.update(id="outline-" + room["handle"], numbered=False, ambiguousRoomIds=ids)
 
 
 def extract_rooms(path):
@@ -95,9 +157,11 @@ def extract_rooms(path):
             rooms.append(make_room(entity, points))
     if not rooms:
         raise ValueError("No measurable ROOM_OUTLINE polygons found")
+    rooms = attach_holes(rooms)
     unassigned = []
     for label, xy in labels:
-        candidates = [room for room in rooms if contains(room["polygon"], xy)]
+        candidates = [room for room in rooms if contains(room["polygon"], xy)
+                      and not any(contains(hole, xy) for hole in room.get("holes", []))]
         if not candidates:
             unassigned.append({"text": label, "xy": xy})
             continue
@@ -107,13 +171,12 @@ def extract_rooms(path):
         if area_text:
             room["printedArea"] = float(area_text[1].replace(",", "."))
         elif ROOM_NUMBER.fullmatch(label):
-            room.update(id=label, numbered=True, center=xy)
+            room.update(id=label.upper(), numbered=True, center=xy)
         elif not APARTMENT.match(label):
             room.update(label=label, labelled=True)
             if not room["numbered"]:
                 room["center"] = xy
-    if len({room["id"] for room in rooms}) != len(rooms):
-        raise ValueError("Duplicate room IDs on this floor")
+    flag_ambiguous_ids(rooms)
     points = [point for poly in walls + [r["polygon"] for r in rooms] for point in poly]
     name = path.stem
     project = notes[1] if len(notes) > 1 else ""

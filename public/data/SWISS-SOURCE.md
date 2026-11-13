@@ -9,3 +9,11 @@ PlanProof extracts source polygons, label positions and measured areas and highl
 To reproduce the JSON from the repository root, run `python3 scripts/extract_rooms.py` using Python 3.10 or later. To extract another Junction Swiss DXF, use `python3 scripts/extract_rooms.py path/to/another.dxf --output /tmp/another.json`. The fixture test runs with `python3 -m unittest discover -s tests -p test_geometry.py`.
 
 The preview DXF SHA-256 is `4070c5f19eb921bc08e2f5a23e957086f76abcca03fafbb8b62ca30c8a60b58d`.
+
+## Independent floor 9498
+
+The second drawing, `site1006_bldg2088_floor9498`, is a German-language plan from site 1006, building 2088. The [original DXF](swiss/site1006_bldg2088_floor9498.dxf) and [original PDF](swiss/site1006_bldg2088_floor9498.pdf) were extracted without modification from the [full Stoa Junction archive](https://fwjydgxpttajiqpfmqtj.supabase.co/storage/v1/object/public/stoa-junction-2026/junction-dataset.zip). The [Swiss Dwellings attribution and licence](swiss/LICENSE.md) above also apply to this drawing. The [derived room geometry](swiss/site1006_bldg2088_floor9498.json) was generated using the same extractor as floor 10281.
+
+The selection was made before opening the drawing or reading its answers. Out of the full archive's Swiss DXFs, exclude every site in the preview, every site in the preceding 60-site evaluation, and the two previously examined sites (1102 and 3387). Sort the 914 remaining filename stems by the hexadecimal SHA-256 of the UTF-8 string `planproof-fresh-select-2026-11-13-v1|<stem>`. The first stem is this drawing, with selection digest `0046e2a56e75a7bbb3c698f9bccf606d1c633134b1923ce3efd3da26c6e39f8b`.
+
+The original DXF SHA-256 is `6d3820dc1d6286961651d6954ab3c94bfa122f7448abe9614ac541f4643625bd`. The original PDF SHA-256 is `7189952e7fe80d760f9b7c3c42e91665e446f82a4079dc8135472afb35cf6b93`.
