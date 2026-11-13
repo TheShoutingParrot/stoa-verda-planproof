@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "status": "answered",
+  "answer": 1,
+  "evidence": [
+    {
+      "label": "makuuh",
+      "box": [
+        202,
+        796,
+        325,
+        812
+      ],
+      "ocr_box_text": "moakuuh,",
+      "ocr_box_confidence": 43.204224
+    }
+  ],
+  "question": "Kuinka monta makuuhuonetta (MH) pohjapiirustuksessa on?",
+  "image": "high_quality_architectural-13066.png",
+  "image_sha256": "f1cf7f64462f9687e41b4a5848534cc409c32212cc3c6ae02b9e315039d6f6af",
+  "coordinate_system": "xyxy_top_left_0_to_1000",
+  "model": "nvidia/NVIDIA-Nemotron-Parse-v1.2",
+  "served_model": "mlx-community/Nemotron-Parse-v1.2-8bit@92ebb2122d413426995ea92340ac847dad6ec274",
+  "provider_host": null,
+  "quantization": "MLX community 8-bit decoder; bf16 vision encoder",
+  "runtime": {
+    "mlx": "0.32.4",
+    "mlx-vlm": "0.7.12",
+    "pillow": "13.0.0",
+    "tesseract": "tesseract 5.5.3"
+  },
+  "method": "Local image transcription by Nemotron Parse; Finnish bedroom label matching; Tesseract word boxes inside the green outline. Fixed-grid crops are diagnostic repeats and do not add to the full-sheet count.",
+  "latency_ms": 31632,
+  "latency_scope": "Warm Nemotron OCR for the upscaled whole sheet, excluding model load, Tesseract, and diagnostic crops.",
+  "model_load_ms": 4227,
+  "usage": null,
+  "transcript": "oloh.\noloh.\nruokailu\nuo\nkaitio\nke\nhk\njk\nsk\n60,0\n2 H+K+S -60,0 m2\nsk\nvo\nvatoeh\nwc\nkyl- mio\nkyl- mio\net.\nsauna\nsauno\ntk,\ntaku\nuh,\nmakuuh,\npesuh,\npesu",
+  "crop_runs": [
+    {
+      "name": "full",
+      "region_px": [
+        0,
+        0,
+        378,
+        521
+      ],
+      "input_size_px": [
+        1058,
+        1458
+      ],
+      "warm_inference_ms": 31632,
+      "text": "oloh.\noloh.\nruokailu\nuo\nkaitio\nke\nhk\njk\nsk\n60,0\n2 H+K+S -60,0 m2\nsk\nvo\nvatoeh\nwc\nkyl- mio\nkyl- mio\net.\nsauna\nsauno\ntk,\ntaku\nuh,\nmakuuh,\npesuh,\npesu",
+      "raw_output": "<x_0.1807><y_0.143>oloh.\noloh.\nruokailu\nuo\nkaitio\nke\nhk\njk\nsk\n60,0\n2 H+K+S -60,0 m2\nsk\nvo\nvatoeh\nwc\nkyl- mio\nkyl- mio\net.\nsauna\nsauno\ntk,\ntaku\nuh,\nmakuuh,\npesuh,\npesu<x_0.8164><y_0.8547><class_Picture>"
+    },
+    {
+      "name": "left-top",
+      "region_px": [
+        0,
+        0,
+        208,
+        288
+      ],
+      "input_size_px": [
+        582,
+        806
+      ],
+      "warm_inference_ms": 31206,
+      "text": "oloh.\noloh.\n-60.0 m2\n2 H+K+S-60.0 m2\nyo\nyaaloh\nw c",
+      "raw_output": "<x_0.3242><y_0.3016>oloh.\noloh.\n-60.0 m2\n2 H+K+S-60.0 m2\nyo\nyaaloh\nw c<x_0.6738><y_0.6961><class_Picture>"
+    },
+    {
+      "name": "right-top",
+      "region_px": [
+        170,
+        0,
+        378,
+        288
+      ],
+      "input_size_px": [
+        582,
+        806
+      ],
+      "warm_inference_ms": 31236,
+      "text": "ruokailu\nruo\nke\nhk\njk\nsk\nsk\nkyl- mio\nkyl- mio",
+      "raw_output": "<x_0.3242><y_0.3023>ruokailu\nruo\nke\nhk\njk\nsk\nsk\nkyl- mio\nkyl- mio<x_0.6699><y_0.6961><class_Picture>"
+    },
+    {
+      "name": "left-bottom",
+      "region_px": [
+        0,
+        234,
+        208,
+        521
+      ],
+      "input_size_px": [
+        582,
+        803
+      ],
+      "warm_inference_ms": 29591,
+      "text": "voateh, vaatoh, wc\net\ntaku uh, makuuh,",
+      "raw_output": "<x_0.3242><y_0.3031>voateh, vaatoh, wc\net\ntaku uh, makuuh,<x_0.6738><y_0.6867><class_Picture>"
+    },
+    {
+      "name": "right-bottom",
+      "region_px": [
+        170,
+        234,
+        378,
+        521
+      ],
+      "input_size_px": [
+        582,
+        803
+      ],
+      "warm_inference_ms": 36052,
+      "text": "kyi- mio\nkyi- mio\net.\nsauna\nsaunc\ntk,\nposuh,\npesu",
+      "raw_output": "<x_0.3232><y_0.3023>kyi- mio\nkyi- mio\net.\nsauna\nsaunc\ntk,\nposuh,\npesu<x_0.6738><y_0.6937><class_Picture>"
+    }
+  ],
+  "timestamp": "2026-11-13T18:47:07+00:00"
+}

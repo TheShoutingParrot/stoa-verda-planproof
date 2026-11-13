@@ -12,7 +12,7 @@ function textBlock(tag, content, parent) {
   parent.append(element);
 }
 
-function showReport(report) {
+function showReport(report, local = false) {
   reportBox.replaceChildren();
   evidenceList.replaceChildren();
   pins.querySelectorAll(':not([data-baseline])').forEach(pin => pin.remove());
@@ -22,11 +22,15 @@ function showReport(report) {
     return;
   }
   textBlock('strong', report.status === 'answered'
-    ? report.answer + (report.answer === 1 ? ' bedroom' : ' bedrooms')
+    ? report.answer + (local ? (report.answer === 1 ? ' bedroom label' : ' bedroom labels') : (report.answer === 1 ? ' bedroom' : ' bedrooms'))
     : 'Could not verify the count', reportBox);
   if (report.reason) textBlock('p', report.reason, reportBox);
   const time = report.latency_ms == null ? '' : ' · ' + (report.latency_ms / 1000).toFixed(1) + ' s';
-  textBlock('p', (report.served_model || report.model) + ' · ' + report.provider_host + time, reportBox);
+  if (local) {
+    textBlock('p', 'Nemotron Parse v1.2 read the whole scan locally' + time + '. The highlight locates the matching OCR text. Inspect it against the green apartment boundary.', reportBox);
+  } else {
+    textBlock('p', (report.served_model || report.model) + (report.provider_host ? ' · ' + report.provider_host : '') + time, reportBox);
+  }
   if (report.status !== 'answered') return;
   for (const [index, item] of report.evidence.entries()) {
     const [x, y, right, bottom] = item.box;
@@ -52,13 +56,22 @@ async function load() {
     const response = await fetch('/api/scan', {cache:'no-store'});
     if (!response.ok) throw new Error();
     const data = await response.json();
-    showReport(data.report);
+    if (data.report && data.report.status !== 'unavailable') {
+      showReport(data.report);
+    } else {
+      const response = await fetch('/data/finnish/parse-run.json', {cache:'no-store'});
+      showReport(response.ok ? await response.json() : data.report, response.ok);
+    }
     runButton.hidden = !data.configured;
-    service.textContent = data.configured ? '' : 'Live runs need a model endpoint and key on this server.';
+    service.textContent = data.configured ? '' : 'For a new Super VL image run, configure an endpoint and key on the server.';
   } catch {
     try {
       const saved = await fetch('/data/finnish/run.json', {cache:'no-store'});
-      showReport(saved.ok ? await saved.json() : null);
+      if (saved.ok) showReport(await saved.json());
+      else {
+        const local = await fetch('/data/finnish/parse-run.json', {cache:'no-store'});
+        showReport(local.ok ? await local.json() : null, local.ok);
+      }
     } catch { showReport(null); }
     service.textContent = 'Start the local server for live inference.';
   }

@@ -10,10 +10,10 @@ Requires Python 3.10+ and a modern browser. The core application uses the Python
 python3 server.py
 ```
 
-Open **http://127.0.0.1:4179/**. The companion **/finnish.html** page shows the original Finnish scan, local OCR comparison and the latest saved Super VL result, if available.
+Open **http://127.0.0.1:4179/**. The companion **/finnish.html** page shows the original Finnish scan, local OCR comparison and a saved NVIDIA Nemotron Parse run. A configured Super VL image endpoint can run the scan again.
 
 - **Swiss geometry.** Nine rooms labelled *Stanza* on floor 5 measure **124.50 m²** together. Switching to the printed values produces **124.49 m²**. Click room 5.11 to inspect **13.61707 m²** from its outline and **13.62 m²** from its label. Try “How many bathrooms?” for a different set of rooms. Supported queries are local rules for the labels on this sheet. The PDF and DXF are available in the viewer.
-- **Finnish scan.** The indicated apartment is outlined in green. Tesseract read no exact bedroom abbreviations. At 4× magnification it produced one fuzzy candidate, `moakuuh`. Click the candidate under *Inspect local OCR candidates* to locate the printed text. This is a page-wide OCR observation. A model run can separately report a bedroom count, its evidence boxes, or uncertainty.
+- **Finnish scan.** The indicated apartment is outlined in green. Tesseract read no exact bedroom abbreviations. At 4× magnification it produced one fuzzy candidate, `moakuuh`. Click the candidate under *Inspect local OCR candidates* to locate the printed text. The local Nemotron Parse v1.2 run independently transcribed `makuuh,` in the full scan and lower-left crop. Matching that reading to a Tesseract box inside the green outline yielded one bedroom label. Click **1. makuuh** to inspect its position. The saved run took 31.6 seconds for warm full-sheet inference, excluding load, OCR localization and crop checks. This is one known example. [Recorded output](public/data/finnish/parse-run.json) · [Local reproduction](scripts/local_parse.py).
 
 ## Run Nemotron 3.5 Super VL
 
