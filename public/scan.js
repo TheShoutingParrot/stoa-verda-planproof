@@ -131,3 +131,18 @@ async function showBaseline() {
   } catch { /* The saved OCR comparison is optional. */ }
 }
 showBaseline();
+
+async function showSuperCheck() {
+  try {
+    const response = await fetch('/data/finnish/super-vl-label-check.json');
+    if (!response.ok) return;
+    const record = await response.json();
+    if (record.image_sha256 !== expectedDigest || record.scope !== 'one label candidate, not an apartment count') return;
+    const accepted = record.classification === 'bedroom_label';
+    document.querySelector('#super-verdict').textContent = accepted
+      ? `NVIDIA’s hosted Nemotron 3.5 Super VL classified this mark as a bedroom label and expanded it to “${record.reading}”. Its input was the OCR reading and a text rendering of this crop. It did not count rooms on the full image.`
+      : 'NVIDIA’s hosted model could not confirm this candidate.';
+    document.querySelector('#super-check').hidden = false;
+  } catch { /* Show a hosted result only when a saved run is present. */ }
+}
+showSuperCheck();

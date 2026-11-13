@@ -1,0 +1,20 @@
+{
+  "model": "nvidia/nemotron-3.5-super-vl-120b-a12b",
+  "provider": "NVIDIA Build playground",
+  "provider_url": "https://build.nvidia.com/nvidia/nemotron-3.5-super-vl-120b-a12b/playground",
+  "date": "2026-11-13",
+  "scope": "one label candidate, not an apartment count",
+  "input_mode": "text: thresholded grayscale pixel grid of the target crop plus page dimensions, source position and actual Tesseract reading",
+  "image_sha256": "f1cf7f64462f9687e41b4a5848534cc409c32212cc3c6ae02b9e315039d6f6af",
+  "classification": "bedroom_label",
+  "reading": "makuuhuone",
+  "interpretation": "The model expanded the abbreviation to the Finnish word for bedroom. Its rationale relies on the OCR letter pattern. The native image was not attached.",
+  "answer": null,
+  "whole_plan_image_input": false,
+  "verda_served": false,
+  "ui_reported_seconds": 134.07,
+  "ui_reported_tokens_per_second": 59.38,
+  "ui_reported_time_to_first_token_seconds": 10.58,
+  "prompt": "Help verify one OCR candidate on a real Finnish apartment drawing (CubiCasa5K, 13066). The crop below is rendered from the original grayscale pixels: # = dark ink, + = gray ink, . = light paper, one character per pixel. Original page 378 x 521. Candidate bounds top-left [77,415,120,422]. Local OCR read \"moakuuh\" at confidence 27.3/100. Classify whether THIS mark is a Finnish bedroom label and give the likely reading if supported. A count for the whole apartment cannot be inferred from one crop. Do not give a whole-plan count. Return a JSON object with keys classification (bedroom_label, other, or uncertain), reading, and brief_reason.\n\n...............................................\n...............................................\n.................++.....................+......\n.+++++......++...++.....+..............+#+.....\n.######...+###...++.+...+..++...+#..+..+###+...\n.#.+#.#...#..+...+###...+..++...+#..#...#..#...\n.#.++.+...#..+...+###...+..++....#..#...#..#...\n.#..+.+...##+#+..+#.#+..+###+....####...#..#...\n..........+###.......+...+++......++....+..+...\n..............................................+\n...............................................",
+  "model_response_text": "{ \"classification\": \"bedroom_label\", \"reading\": \"makuuhuone\", \"brief_reason\": \"OCR confidence is low (27.3) and reads \"moakuuh\", but the captured \"makuu/akuuh\" sequence is diagnostic of Finnish \"makuuhuone\" (bedroom); no other standard Finnish room label (keittiö, olohuone, kylpyhuone, wc, eteinen, sauna, parveke, varasto) contains that pattern. Treat this mark as a bedroom label only; no whole-plan count is implied.\" }"
+}
