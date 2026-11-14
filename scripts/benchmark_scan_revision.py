@@ -211,7 +211,7 @@ def environment():
     )
 
 
-def read_arm(work, manifest, arm):
+def read_arm(work, manifest, arm, fingerprint=FINGERPRINT):
     root = work / arm
     config = json.loads((root / "config.json").read_text())
     rows = {}
@@ -242,7 +242,7 @@ def read_arm(work, manifest, arm):
     seal = dict(
         config_sha256=sha(canonical(config)),
         predictions_sha256=sha(canonical(rows)),
-        manifest_sha256=FINGERPRINT,
+        manifest_sha256=fingerprint,
         rows=len(rows),
     )
     return rows, seal, config
@@ -385,12 +385,12 @@ def paired_metrics(records):
     )
 
 
-def clustered_interval(records, draws=10000):
+def clustered_interval(records, draws=10000, seed=SEED):
     strata = defaultdict(lambda: defaultdict(list))
     for r in records:
         strata[r["style"]][r["path"]].append(int(r["new"]["correct"]) - int(r["old"]["correct"]))
     cohort = [[(sum(x), len(x)) for x in group.values()] for group in strata.values()]
-    rng = random.Random(SEED + "-bootstrap")
+    rng = random.Random(seed + "-bootstrap")
     outcomes = []
     for _ in range(draws):
         replicate = [pair for stratum in cohort for pair in rng.choices(stratum, k=len(stratum))]
@@ -398,6 +398,26 @@ def clustered_interval(records, draws=10000):
         outcomes.append(100 * sum(delta) / sum(size))
     outcomes.sort()
     return [round(outcomes[int(draws * 0.025)], 2), round(outcomes[int(draws * 0.975) - 1], 2)]
+
+
+def read_targets(archive, manifest):
+    """Read sponsor count answers for the frozen rows only. Call only after both arms are sealed."""
+    queries = {(r["path"], r["question"]) for r in manifest["rows"]}
+    targets = {}
+    with ZipFile(archive) as z:
+        raw = z.read(PREFIX + "questions.jsonl")
+        check(sha(raw) == MANIFEST, "Sponsor release mismatch.")
+        for line in raw.splitlines():
+            row = json.loads(line)
+            key = row["path"], row["question"]
+            if key in queries:
+                check(
+                    key not in targets and row["unit"] == "count" and type(row["answer"]) == int,
+                    "Duplicate or non-count answer.",
+                )
+                targets[key] = row["answer"]
+    check(queries == targets.keys(), "Missing score key.")
+    return targets
 
 
 def score(args, manifest):
@@ -426,21 +446,7 @@ def score(args, manifest):
         "manifest_sha256",
     ):
         check(configs["old"][label] == configs["new"][label], "Arm configuration differs: " + label)
-    queries = {(r["path"], r["question"]) for r in manifest["rows"]}
-    targets = {}
-    with ZipFile(args.archive) as z:
-        raw = z.read(PREFIX + "questions.jsonl")
-        check(sha(raw) == MANIFEST, "Sponsor release mismatch.")
-        for line in raw.splitlines():
-            row = json.loads(line)
-            key = row["path"], row["question"]
-            if key in queries:
-                check(
-                    key not in targets and row["unit"] == "count" and type(row["answer"]) == int,
-                    "Duplicate or non-count answer.",
-                )
-                targets[key] = row["answer"]
-    check(queries == targets.keys(), "Missing score key.")
+    targets = read_targets(args.archive, manifest)
     records = []
     for q in manifest["rows"]:
         gold = targets[q["path"], q["question"]]
