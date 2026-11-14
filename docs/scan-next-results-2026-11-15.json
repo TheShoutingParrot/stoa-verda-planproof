@@ -1,0 +1,4077 @@
+{
+  "observed_date": "2026-11-14",
+  "protocol": "docs/scan-next-protocol.md",
+  "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+  "arms": {
+    "before": "before",
+    "after": "after"
+  },
+  "scope": "Original PNG and original English count question; offline local readers only; a hosted hand-off is a deferral.",
+  "drawings": 72,
+  "questions": 608,
+  "seals": {
+    "before": {
+      "config_sha256": "bc9b120e654b3f2b3e734835805cd3beef768de0839ec9ee79b1a7ec43c4f7d6",
+      "predictions_sha256": "b5523194532929d32e2d56c61ad98d9518a755f8010fedd63a720e017deadd6e",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "rows": 608,
+      "arm": "before",
+      "revision": "b948d6744548417b7a037f32b9317c830ea7e52e",
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "9fcf07141dba78542a8d33fb0e49ee898157b87ccf91effea07a21143c4570de",
+        "scripts/scan_openings.py": "d50eccc5218848e9dd9416df602a0412268724ae53993d595bb9f52eafc98f8e",
+        "scripts/scan_reader.py": "403e392bb7ff6c785116a8b7353911a84d9278f9c101dc7346a5a679b29cd454",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "2deab62c3e2209a6578c25420d2b352a28e269b165174a9f747d717bfd0b415a",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "source_fingerprint": "9e5bc7772a72c25e7435f31d779913e73335a63a0c3b6f5239f47ccfb94de54d"
+    },
+    "before-control": {
+      "config_sha256": "bc9b120e654b3f2b3e734835805cd3beef768de0839ec9ee79b1a7ec43c4f7d6",
+      "predictions_sha256": "ff59d51d741899c1546fee246561bf366e006e3d4e69dbd2425665998a18fb73",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "rows": 608,
+      "arm": "before-control",
+      "revision": "b948d6744548417b7a037f32b9317c830ea7e52e",
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "9fcf07141dba78542a8d33fb0e49ee898157b87ccf91effea07a21143c4570de",
+        "scripts/scan_openings.py": "d50eccc5218848e9dd9416df602a0412268724ae53993d595bb9f52eafc98f8e",
+        "scripts/scan_reader.py": "403e392bb7ff6c785116a8b7353911a84d9278f9c101dc7346a5a679b29cd454",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "2deab62c3e2209a6578c25420d2b352a28e269b165174a9f747d717bfd0b415a",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "source_fingerprint": "9e5bc7772a72c25e7435f31d779913e73335a63a0c3b6f5239f47ccfb94de54d",
+      "timeouts_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "conditions_sha256": "9a601f415c4e3ea1112fbe613b163981bd099bc15c8d0b0f8b8c32b16468c5c3",
+      "extras_sha256": "4ebebb4dfbb4ac26827d3f3bdc4afb81bd34d8aa817d0d7c410126e7c16866b7"
+    },
+    "after": {
+      "config_sha256": "b973fc03807471820d160dd4426b53ac4b682e08b0622ed3b32b956072428d82",
+      "predictions_sha256": "46533194aaaa54fd4d48399136eae7165e8c546a1e4313f6c1b8fc9ecba3a6d7",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "rows": 608,
+      "arm": "after",
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "source_sha256": {
+        "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_layout.py": "7b35bc0238cafe85117d5812b673a9e3b1ef8caee6dd3173243e7a4aeb538d95",
+        "scripts/scan_objects.py": "e5a85ca9391e87f8329f317884ef6005707e3801b11f537d854ce415ac0c699b",
+        "scripts/scan_openings.py": "4a8a7d5823e238d72010ace9d84dfeef5176b5b38ac0175a85edf17168e81904",
+        "scripts/scan_reader.py": "b1416fc38b1bfa4a70860a37c8fd4c7106d93374442f24ddb09ce25a3970989c",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "8cbf7d66073e163950d8e379926aa4c2cec27ead0932e096fc07d57238633803",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "source_fingerprint": "275509b0fecae207a7613b55de6b3a6bf4252ca4a64eb909b6dbe7455aea8704",
+      "timeouts_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "conditions_sha256": "55073332fee85ad18684cdd7f61271ddd8fbc98c495cb12c8d556de9e5007270",
+      "extras_sha256": "9c4f83d2fe1b5010d3192c0dca6933d78969c55a925483fa56c9b101232f7a80"
+    },
+    "after-repeat": {
+      "config_sha256": "b973fc03807471820d160dd4426b53ac4b682e08b0622ed3b32b956072428d82",
+      "predictions_sha256": "fa25283fae70694f4cdaa43adad637775389103712d66733790493f07841b91d",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "rows": 608,
+      "arm": "after-repeat",
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "source_sha256": {
+        "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_layout.py": "7b35bc0238cafe85117d5812b673a9e3b1ef8caee6dd3173243e7a4aeb538d95",
+        "scripts/scan_objects.py": "e5a85ca9391e87f8329f317884ef6005707e3801b11f537d854ce415ac0c699b",
+        "scripts/scan_openings.py": "4a8a7d5823e238d72010ace9d84dfeef5176b5b38ac0175a85edf17168e81904",
+        "scripts/scan_reader.py": "b1416fc38b1bfa4a70860a37c8fd4c7106d93374442f24ddb09ce25a3970989c",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "8cbf7d66073e163950d8e379926aa4c2cec27ead0932e096fc07d57238633803",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "source_fingerprint": "275509b0fecae207a7613b55de6b3a6bf4252ca4a64eb909b6dbe7455aea8704",
+      "timeouts_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "conditions_sha256": "fdd9d0ed8e66a5ccaa6866c79b55f4798f88bd2425d8c5f8d94594d68ce5d0d5",
+      "extras_sha256": "9c4f83d2fe1b5010d3192c0dca6933d78969c55a925483fa56c9b101232f7a80"
+    }
+  },
+  "seal_sha256": {
+    "before": "412ddb3f9ea6297ce8d81a26ff45a320167a7b2ed4662a28b73395f9f8767a3a",
+    "before-control": "da24df533ec416e514768320d841b148166f777a4d57cfa835ebc725baef5cb4",
+    "after": "99d9829390914006c21024f7cccc9e55321f899f5d4129774d87f4bec6d86493",
+    "after-repeat": "76c2f107c6936efd4af66d66a9b2ff3746406dbe606d07910d3b52fcc24b334e"
+  },
+  "configurations": {
+    "before": {
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "9fcf07141dba78542a8d33fb0e49ee898157b87ccf91effea07a21143c4570de",
+        "scripts/scan_openings.py": "d50eccc5218848e9dd9416df602a0412268724ae53993d595bb9f52eafc98f8e",
+        "scripts/scan_reader.py": "403e392bb7ff6c785116a8b7353911a84d9278f9c101dc7346a5a679b29cd454",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "2deab62c3e2209a6578c25420d2b352a28e269b165174a9f747d717bfd0b415a",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "revision": "b948d6744548417b7a037f32b9317c830ea7e52e",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled",
+      "hosted": "forbidden; blank endpoint and no key"
+    },
+    "before-control": {
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "9fcf07141dba78542a8d33fb0e49ee898157b87ccf91effea07a21143c4570de",
+        "scripts/scan_openings.py": "d50eccc5218848e9dd9416df602a0412268724ae53993d595bb9f52eafc98f8e",
+        "scripts/scan_reader.py": "403e392bb7ff6c785116a8b7353911a84d9278f9c101dc7346a5a679b29cd454",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "2deab62c3e2209a6578c25420d2b352a28e269b165174a9f747d717bfd0b415a",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "revision": "b948d6744548417b7a037f32b9317c830ea7e52e",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled",
+      "hosted": "forbidden; blank endpoint and no key"
+    },
+    "after": {
+      "source_sha256": {
+        "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_layout.py": "7b35bc0238cafe85117d5812b673a9e3b1ef8caee6dd3173243e7a4aeb538d95",
+        "scripts/scan_objects.py": "e5a85ca9391e87f8329f317884ef6005707e3801b11f537d854ce415ac0c699b",
+        "scripts/scan_openings.py": "4a8a7d5823e238d72010ace9d84dfeef5176b5b38ac0175a85edf17168e81904",
+        "scripts/scan_reader.py": "b1416fc38b1bfa4a70860a37c8fd4c7106d93374442f24ddb09ce25a3970989c",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "8cbf7d66073e163950d8e379926aa4c2cec27ead0932e096fc07d57238633803",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled",
+      "hosted": "forbidden; blank endpoint and no key"
+    },
+    "after-repeat": {
+      "source_sha256": {
+        "scripts/benchmark_swiss.cjs": "9a6ec6be24561b05cb4898b3c3ee3ccb75142a395469cbb0f5c50fbe5776ea1b",
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_layout.py": "7b35bc0238cafe85117d5812b673a9e3b1ef8caee6dd3173243e7a4aeb538d95",
+        "scripts/scan_objects.py": "e5a85ca9391e87f8329f317884ef6005707e3801b11f537d854ce415ac0c699b",
+        "scripts/scan_openings.py": "4a8a7d5823e238d72010ace9d84dfeef5176b5b38ac0175a85edf17168e81904",
+        "scripts/scan_reader.py": "b1416fc38b1bfa4a70860a37c8fd4c7106d93374442f24ddb09ce25a3970989c",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "8cbf7d66073e163950d8e379926aa4c2cec27ead0932e096fc07d57238633803",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "manifest_sha256": "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled",
+      "hosted": "forbidden; blank endpoint and no key"
+    }
+  },
+  "scorings": [
+    {
+      "scored": "2026-11-14T23:14:13+00:00",
+      "harness": {
+        "sha256": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae",
+        "commit": "f8ad100097892aefdf3fa739600998891144ef1d",
+        "uncommitted_changes": false
+      },
+      "arms": {
+        "before": "before",
+        "after": "after"
+      },
+      "seal_sha256": {
+        "before": "412ddb3f9ea6297ce8d81a26ff45a320167a7b2ed4662a28b73395f9f8767a3a",
+        "before-control": "da24df533ec416e514768320d841b148166f777a4d57cfa835ebc725baef5cb4",
+        "after": "99d9829390914006c21024f7cccc9e55321f899f5d4129774d87f4bec6d86493",
+        "after-repeat": "76c2f107c6936efd4af66d66a9b2ff3746406dbe606d07910d3b52fcc24b334e"
+      },
+      "rescore": false
+    }
+  ],
+  "claim": {
+    "rule": "Improvement only if the primary interval's lower end is above zero against 'before' and, when before-control differs from before in any answer, also against before-control.",
+    "lower_end_against_before": 18.74,
+    "before_control_differs_from_before": false,
+    "lower_end_against_before_control": 18.74,
+    "improvement_shown": true
+  },
+  "primary_endpoint_against_before_control": {
+    "before": {
+      "questions": 608,
+      "answered": 334,
+      "exact": 189,
+      "wrong": 145,
+      "abstained": 274,
+      "accuracy": 0.3109,
+      "coverage": 0.5493,
+      "accuracy_when_answered": 0.5659
+    },
+    "after": {
+      "questions": 608,
+      "answered": 465,
+      "exact": 325,
+      "wrong": 140,
+      "abstained": 143,
+      "accuracy": 0.5345,
+      "coverage": 0.7648,
+      "accuracy_when_answered": 0.6989
+    },
+    "paired": {
+      "gained_exact": 145,
+      "lost_exact": 9,
+      "newly_answered": 131,
+      "newly_answered_exact": 127,
+      "dropped_answers": 0,
+      "both_answered": 334,
+      "both_abstained": 143
+    },
+    "mean_absolute_error_on_both_answered": {
+      "before": 1.272,
+      "after": 0.988
+    },
+    "delta_exact_pp": 22.37,
+    "clustered_bootstrap_delta_pp_95": [
+      18.74,
+      26.05
+    ]
+  },
+  "noise_floors": {
+    "before vs before-control (baseline under the after arm's conditions)": {
+      "arms": [
+        "before",
+        "before-control"
+      ],
+      "questions": 608,
+      "identical_configuration": true,
+      "answers_differing": 0,
+      "statuses_differing": 0,
+      "evidence_lists_differing": 0,
+      "methods_differing": 0
+    },
+    "after vs after-repeat (candidate repeat)": {
+      "arms": [
+        "after",
+        "after-repeat"
+      ],
+      "questions": 608,
+      "identical_configuration": true,
+      "answers_differing": 0,
+      "statuses_differing": 0,
+      "evidence_lists_differing": 0,
+      "methods_differing": 0
+    },
+    "before vs before-repeat (sealed baseline repeat)": {
+      "arms": [
+        "before",
+        "before-repeat"
+      ],
+      "questions": 608,
+      "identical_configuration": true,
+      "answers_differing": 0,
+      "statuses_differing": 0,
+      "evidence_lists_differing": 0,
+      "methods_differing": 0
+    }
+  },
+  "timeouts": {
+    "before-control": {
+      "timeouts": 0,
+      "prompts": [],
+      "settle": {
+        "arm": "before-control",
+        "runs": 1,
+        "first_run_timeouts": 0,
+        "standing": "first"
+      }
+    },
+    "after": {
+      "timeouts": 0,
+      "prompts": [],
+      "settle": {
+        "arm": "after",
+        "runs": 1,
+        "first_run_timeouts": 0,
+        "standing": "first"
+      }
+    },
+    "after-repeat": {
+      "timeouts": 0,
+      "prompts": [],
+      "settle": {
+        "arm": "after-repeat",
+        "runs": 1,
+        "first_run_timeouts": 0,
+        "standing": "first"
+      }
+    },
+    "before": "not logged (sealed before the log existed)",
+    "before-repeat": "not logged (sealed before the log existed)"
+  },
+  "overall": {
+    "before": {
+      "questions": 608,
+      "answered": 334,
+      "exact": 189,
+      "wrong": 145,
+      "abstained": 274,
+      "accuracy": 0.3109,
+      "coverage": 0.5493,
+      "accuracy_when_answered": 0.5659
+    },
+    "after": {
+      "questions": 608,
+      "answered": 465,
+      "exact": 325,
+      "wrong": 140,
+      "abstained": 143,
+      "accuracy": 0.5345,
+      "coverage": 0.7648,
+      "accuracy_when_answered": 0.6989
+    },
+    "paired": {
+      "gained_exact": 145,
+      "lost_exact": 9,
+      "newly_answered": 131,
+      "newly_answered_exact": 127,
+      "dropped_answers": 0,
+      "both_answered": 334,
+      "both_abstained": 143
+    },
+    "mean_absolute_error_on_both_answered": {
+      "before": 1.272,
+      "after": 0.988
+    },
+    "delta_exact_pp": 22.37,
+    "clustered_bootstrap_delta_pp_95": [
+      18.74,
+      26.05
+    ]
+  },
+  "comparable_eleven_families": {
+    "before": {
+      "questions": 542,
+      "answered": 334,
+      "exact": 189,
+      "wrong": 145,
+      "abstained": 208,
+      "accuracy": 0.3487,
+      "coverage": 0.6162,
+      "accuracy_when_answered": 0.5659
+    },
+    "after": {
+      "questions": 542,
+      "answered": 465,
+      "exact": 325,
+      "wrong": 140,
+      "abstained": 77,
+      "accuracy": 0.5996,
+      "coverage": 0.8579,
+      "accuracy_when_answered": 0.6989
+    },
+    "paired": {
+      "gained_exact": 145,
+      "lost_exact": 9,
+      "newly_answered": 131,
+      "newly_answered_exact": 127,
+      "dropped_answers": 0,
+      "both_answered": 334,
+      "both_abstained": 77
+    },
+    "mean_absolute_error_on_both_answered": {
+      "before": 1.272,
+      "after": 0.988
+    },
+    "delta_exact_pp": 25.09,
+    "clustered_bootstrap_delta_pp_95": [
+      21.04,
+      29.21
+    ]
+  },
+  "equal_style_weighted_exact_accuracy": {
+    "before": 0.3708,
+    "after": 0.6009,
+    "delta_pp": 23.01,
+    "styles": [
+      "high_quality",
+      "high_quality_architectural"
+    ]
+  },
+  "comparable_equal_style_weighted_exact_accuracy": {
+    "before": 0.4175,
+    "after": 0.6764,
+    "delta_pp": 25.89,
+    "styles": [
+      "high_quality",
+      "high_quality_architectural"
+    ]
+  },
+  "by_style": {
+    "high_quality": {
+      "before": {
+        "questions": 96,
+        "answered": 61,
+        "exact": 44,
+        "wrong": 17,
+        "abstained": 35,
+        "accuracy": 0.4583,
+        "coverage": 0.6354,
+        "accuracy_when_answered": 0.7213
+      },
+      "after": {
+        "questions": 96,
+        "answered": 81,
+        "exact": 67,
+        "wrong": 14,
+        "abstained": 15,
+        "accuracy": 0.6979,
+        "coverage": 0.8438,
+        "accuracy_when_answered": 0.8272
+      },
+      "paired": {
+        "gained_exact": 24,
+        "lost_exact": 1,
+        "newly_answered": 20,
+        "newly_answered_exact": 20,
+        "dropped_answers": 0,
+        "both_answered": 61,
+        "both_abstained": 15
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.557,
+        "after": 0.41
+      },
+      "delta_exact_pp": 23.96,
+      "clustered_bootstrap_delta_pp_95": [
+        15.0,
+        32.08
+      ]
+    },
+    "high_quality_architectural": {
+      "before": {
+        "questions": 512,
+        "answered": 273,
+        "exact": 145,
+        "wrong": 128,
+        "abstained": 239,
+        "accuracy": 0.2832,
+        "coverage": 0.5332,
+        "accuracy_when_answered": 0.5311
+      },
+      "after": {
+        "questions": 512,
+        "answered": 384,
+        "exact": 258,
+        "wrong": 126,
+        "abstained": 128,
+        "accuracy": 0.5039,
+        "coverage": 0.75,
+        "accuracy_when_answered": 0.6719
+      },
+      "paired": {
+        "gained_exact": 121,
+        "lost_exact": 8,
+        "newly_answered": 111,
+        "newly_answered_exact": 107,
+        "dropped_answers": 0,
+        "both_answered": 273,
+        "both_abstained": 128
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 1.432,
+        "after": 1.117
+      },
+      "delta_exact_pp": 22.07,
+      "clustered_bootstrap_delta_pp_95": [
+        18.13,
+        26.26
+      ]
+    }
+  },
+  "by_group": {
+    "objects": {
+      "before": {
+        "questions": 333,
+        "answered": 267,
+        "exact": 136,
+        "wrong": 131,
+        "abstained": 66,
+        "accuracy": 0.4084,
+        "coverage": 0.8018,
+        "accuracy_when_answered": 0.5094
+      },
+      "after": {
+        "questions": 333,
+        "answered": 267,
+        "exact": 145,
+        "wrong": 122,
+        "abstained": 66,
+        "accuracy": 0.4354,
+        "coverage": 0.8018,
+        "accuracy_when_answered": 0.5431
+      },
+      "paired": {
+        "gained_exact": 18,
+        "lost_exact": 9,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 267,
+        "both_abstained": 66
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 1.536,
+        "after": 1.18
+      },
+      "delta_exact_pp": 2.7,
+      "clustered_bootstrap_delta_pp_95": [
+        -0.31,
+        6.01
+      ]
+    },
+    "rooms": {
+      "before": {
+        "questions": 203,
+        "answered": 54,
+        "exact": 40,
+        "wrong": 14,
+        "abstained": 149,
+        "accuracy": 0.197,
+        "coverage": 0.266,
+        "accuracy_when_answered": 0.7407
+      },
+      "after": {
+        "questions": 203,
+        "answered": 136,
+        "exact": 119,
+        "wrong": 17,
+        "abstained": 67,
+        "accuracy": 0.5862,
+        "coverage": 0.67,
+        "accuracy_when_answered": 0.875
+      },
+      "paired": {
+        "gained_exact": 79,
+        "lost_exact": 0,
+        "newly_answered": 82,
+        "newly_answered_exact": 79,
+        "dropped_answers": 0,
+        "both_answered": 54,
+        "both_abstained": 67
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.278,
+        "after": 0.278
+      },
+      "delta_exact_pp": 38.92,
+      "clustered_bootstrap_delta_pp_95": [
+        31.53,
+        46.74
+      ]
+    },
+    "storeys": {
+      "before": {
+        "questions": 72,
+        "answered": 13,
+        "exact": 13,
+        "wrong": 0,
+        "abstained": 59,
+        "accuracy": 0.1806,
+        "coverage": 0.1806,
+        "accuracy_when_answered": 1.0
+      },
+      "after": {
+        "questions": 72,
+        "answered": 62,
+        "exact": 61,
+        "wrong": 1,
+        "abstained": 10,
+        "accuracy": 0.8472,
+        "coverage": 0.8611,
+        "accuracy_when_answered": 0.9839
+      },
+      "paired": {
+        "gained_exact": 48,
+        "lost_exact": 0,
+        "newly_answered": 49,
+        "newly_answered_exact": 48,
+        "dropped_answers": 0,
+        "both_answered": 13,
+        "both_abstained": 10
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.0,
+        "after": 0.0
+      },
+      "delta_exact_pp": 66.67,
+      "clustered_bootstrap_delta_pp_95": [
+        55.56,
+        77.78
+      ]
+    }
+  },
+  "by_track": {
+    "track1_openings": {
+      "before": {
+        "questions": 123,
+        "answered": 123,
+        "exact": 50,
+        "wrong": 73,
+        "abstained": 0,
+        "accuracy": 0.4065,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4065
+      },
+      "after": {
+        "questions": 123,
+        "answered": 123,
+        "exact": 59,
+        "wrong": 64,
+        "abstained": 0,
+        "accuracy": 0.4797,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4797
+      },
+      "paired": {
+        "gained_exact": 18,
+        "lost_exact": 9,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 123,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 2.504,
+        "after": 1.732
+      },
+      "delta_exact_pp": 7.32,
+      "clustered_bootstrap_delta_pp_95": [
+        -0.87,
+        16.24
+      ]
+    },
+    "track2_deferred": {
+      "before": {
+        "questions": 341,
+        "answered": 67,
+        "exact": 53,
+        "wrong": 14,
+        "abstained": 274,
+        "accuracy": 0.1554,
+        "coverage": 0.1965,
+        "accuracy_when_answered": 0.791
+      },
+      "after": {
+        "questions": 341,
+        "answered": 198,
+        "exact": 180,
+        "wrong": 18,
+        "abstained": 143,
+        "accuracy": 0.5279,
+        "coverage": 0.5806,
+        "accuracy_when_answered": 0.9091
+      },
+      "paired": {
+        "gained_exact": 127,
+        "lost_exact": 0,
+        "newly_answered": 131,
+        "newly_answered_exact": 127,
+        "dropped_answers": 0,
+        "both_answered": 67,
+        "both_abstained": 143
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.224,
+        "after": 0.224
+      },
+      "delta_exact_pp": 37.24,
+      "clustered_bootstrap_delta_pp_95": [
+        32.21,
+        42.33
+      ]
+    },
+    "untouched_fixtures": {
+      "before": {
+        "questions": 144,
+        "answered": 144,
+        "exact": 86,
+        "wrong": 58,
+        "abstained": 0,
+        "accuracy": 0.5972,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5972
+      },
+      "after": {
+        "questions": 144,
+        "answered": 144,
+        "exact": 86,
+        "wrong": 58,
+        "abstained": 0,
+        "accuracy": 0.5972,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5972
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 144,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.708,
+        "after": 0.708
+      },
+      "delta_exact_pp": 0.0,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "by_category": {
+    "balconies": {
+      "before": {
+        "questions": 18,
+        "answered": 6,
+        "exact": 6,
+        "wrong": 0,
+        "abstained": 12,
+        "accuracy": 0.3333,
+        "coverage": 0.3333,
+        "accuracy_when_answered": 1.0
+      },
+      "after": {
+        "questions": 18,
+        "answered": 10,
+        "exact": 9,
+        "wrong": 1,
+        "abstained": 8,
+        "accuracy": 0.5,
+        "coverage": 0.5556,
+        "accuracy_when_answered": 0.9
+      },
+      "paired": {
+        "gained_exact": 3,
+        "lost_exact": 0,
+        "newly_answered": 4,
+        "newly_answered_exact": 3,
+        "dropped_answers": 0,
+        "both_answered": 6,
+        "both_abstained": 8
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.0,
+        "after": 0.0
+      },
+      "delta_exact_pp": 16.67,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        33.33
+      ]
+    },
+    "bathrooms": {
+      "before": {
+        "questions": 26,
+        "answered": 9,
+        "exact": 8,
+        "wrong": 1,
+        "abstained": 17,
+        "accuracy": 0.3077,
+        "coverage": 0.3462,
+        "accuracy_when_answered": 0.8889
+      },
+      "after": {
+        "questions": 26,
+        "answered": 14,
+        "exact": 13,
+        "wrong": 1,
+        "abstained": 12,
+        "accuracy": 0.5,
+        "coverage": 0.5385,
+        "accuracy_when_answered": 0.9286
+      },
+      "paired": {
+        "gained_exact": 5,
+        "lost_exact": 0,
+        "newly_answered": 5,
+        "newly_answered_exact": 5,
+        "dropped_answers": 0,
+        "both_answered": 9,
+        "both_abstained": 12
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.111,
+        "after": 0.111
+      },
+      "delta_exact_pp": 19.23,
+      "clustered_bootstrap_delta_pp_95": [
+        3.85,
+        34.62
+      ]
+    },
+    "bedrooms": {
+      "before": {
+        "questions": 40,
+        "answered": 20,
+        "exact": 14,
+        "wrong": 6,
+        "abstained": 20,
+        "accuracy": 0.35,
+        "coverage": 0.5,
+        "accuracy_when_answered": 0.7
+      },
+      "after": {
+        "questions": 40,
+        "answered": 20,
+        "exact": 14,
+        "wrong": 6,
+        "abstained": 20,
+        "accuracy": 0.35,
+        "coverage": 0.5,
+        "accuracy_when_answered": 0.7
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 20,
+        "both_abstained": 20
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.35,
+        "after": 0.35
+      },
+      "delta_exact_pp": 0.0,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        0.0
+      ]
+    },
+    "doors": {
+      "before": {
+        "questions": 51,
+        "answered": 51,
+        "exact": 21,
+        "wrong": 30,
+        "abstained": 0,
+        "accuracy": 0.4118,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4118
+      },
+      "after": {
+        "questions": 51,
+        "answered": 51,
+        "exact": 29,
+        "wrong": 22,
+        "abstained": 0,
+        "accuracy": 0.5686,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5686
+      },
+      "paired": {
+        "gained_exact": 10,
+        "lost_exact": 2,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 51,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 1.667,
+        "after": 0.824
+      },
+      "delta_exact_pp": 15.69,
+      "clustered_bootstrap_delta_pp_95": [
+        3.92,
+        27.45
+      ]
+    },
+    "floors": {
+      "before": {
+        "questions": 72,
+        "answered": 13,
+        "exact": 13,
+        "wrong": 0,
+        "abstained": 59,
+        "accuracy": 0.1806,
+        "coverage": 0.1806,
+        "accuracy_when_answered": 1.0
+      },
+      "after": {
+        "questions": 72,
+        "answered": 62,
+        "exact": 61,
+        "wrong": 1,
+        "abstained": 10,
+        "accuracy": 0.8472,
+        "coverage": 0.8611,
+        "accuracy_when_answered": 0.9839
+      },
+      "paired": {
+        "gained_exact": 48,
+        "lost_exact": 0,
+        "newly_answered": 49,
+        "newly_answered_exact": 48,
+        "dropped_answers": 0,
+        "both_answered": 13,
+        "both_abstained": 10
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.0,
+        "after": 0.0
+      },
+      "delta_exact_pp": 66.67,
+      "clustered_bootstrap_delta_pp_95": [
+        55.56,
+        77.78
+      ]
+    },
+    "kitchens": {
+      "before": {
+        "questions": 47,
+        "answered": 11,
+        "exact": 9,
+        "wrong": 2,
+        "abstained": 36,
+        "accuracy": 0.1915,
+        "coverage": 0.234,
+        "accuracy_when_answered": 0.8182
+      },
+      "after": {
+        "questions": 47,
+        "answered": 41,
+        "exact": 37,
+        "wrong": 4,
+        "abstained": 6,
+        "accuracy": 0.7872,
+        "coverage": 0.8723,
+        "accuracy_when_answered": 0.9024
+      },
+      "paired": {
+        "gained_exact": 28,
+        "lost_exact": 0,
+        "newly_answered": 30,
+        "newly_answered_exact": 28,
+        "dropped_answers": 0,
+        "both_answered": 11,
+        "both_abstained": 6
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.182,
+        "after": 0.182
+      },
+      "delta_exact_pp": 59.57,
+      "clustered_bootstrap_delta_pp_95": [
+        46.81,
+        72.34
+      ]
+    },
+    "saunas": {
+      "before": {
+        "questions": 42,
+        "answered": 4,
+        "exact": 3,
+        "wrong": 1,
+        "abstained": 38,
+        "accuracy": 0.0714,
+        "coverage": 0.0952,
+        "accuracy_when_answered": 0.75
+      },
+      "after": {
+        "questions": 42,
+        "answered": 35,
+        "exact": 34,
+        "wrong": 1,
+        "abstained": 7,
+        "accuracy": 0.8095,
+        "coverage": 0.8333,
+        "accuracy_when_answered": 0.9714
+      },
+      "paired": {
+        "gained_exact": 31,
+        "lost_exact": 0,
+        "newly_answered": 31,
+        "newly_answered_exact": 31,
+        "dropped_answers": 0,
+        "both_answered": 4,
+        "both_abstained": 7
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.25,
+        "after": 0.25
+      },
+      "delta_exact_pp": 73.81,
+      "clustered_bootstrap_delta_pp_95": [
+        59.52,
+        85.71
+      ]
+    },
+    "separate WC rooms": {
+      "before": {
+        "questions": 30,
+        "answered": 4,
+        "exact": 0,
+        "wrong": 4,
+        "abstained": 26,
+        "accuracy": 0.0,
+        "coverage": 0.1333,
+        "accuracy_when_answered": 0.0
+      },
+      "after": {
+        "questions": 30,
+        "answered": 16,
+        "exact": 12,
+        "wrong": 4,
+        "abstained": 14,
+        "accuracy": 0.4,
+        "coverage": 0.5333,
+        "accuracy_when_answered": 0.75
+      },
+      "paired": {
+        "gained_exact": 12,
+        "lost_exact": 0,
+        "newly_answered": 12,
+        "newly_answered_exact": 12,
+        "dropped_answers": 0,
+        "both_answered": 4,
+        "both_abstained": 14
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 1.0,
+        "after": 1.0
+      },
+      "delta_exact_pp": 40.0,
+      "clustered_bootstrap_delta_pp_95": [
+        23.33,
+        56.67
+      ]
+    },
+    "showers": {
+      "before": {
+        "questions": 66,
+        "answered": 0,
+        "exact": 0,
+        "wrong": 0,
+        "abstained": 66,
+        "accuracy": 0.0,
+        "coverage": 0.0,
+        "accuracy_when_answered": null
+      },
+      "after": {
+        "questions": 66,
+        "answered": 0,
+        "exact": 0,
+        "wrong": 0,
+        "abstained": 66,
+        "accuracy": 0.0,
+        "coverage": 0.0,
+        "accuracy_when_answered": null
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 0,
+        "both_abstained": 66
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": null,
+        "after": null
+      },
+      "delta_exact_pp": 0.0,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        0.0
+      ]
+    },
+    "sinks": {
+      "before": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 38,
+        "wrong": 34,
+        "abstained": 0,
+        "accuracy": 0.5278,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5278
+      },
+      "after": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 38,
+        "wrong": 34,
+        "abstained": 0,
+        "accuracy": 0.5278,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5278
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 72,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.917,
+        "after": 0.917
+      },
+      "delta_exact_pp": 0.0,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        0.0
+      ]
+    },
+    "toilet bowls": {
+      "before": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 48,
+        "wrong": 24,
+        "abstained": 0,
+        "accuracy": 0.6667,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.6667
+      },
+      "after": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 48,
+        "wrong": 24,
+        "abstained": 0,
+        "accuracy": 0.6667,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.6667
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 72,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.5,
+        "after": 0.5
+      },
+      "delta_exact_pp": 0.0,
+      "clustered_bootstrap_delta_pp_95": [
+        0.0,
+        0.0
+      ]
+    },
+    "windows": {
+      "before": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 29,
+        "wrong": 43,
+        "abstained": 0,
+        "accuracy": 0.4028,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4028
+      },
+      "after": {
+        "questions": 72,
+        "answered": 72,
+        "exact": 30,
+        "wrong": 42,
+        "abstained": 0,
+        "accuracy": 0.4167,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4167
+      },
+      "paired": {
+        "gained_exact": 8,
+        "lost_exact": 7,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 72,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 3.097,
+        "after": 2.375
+      },
+      "delta_exact_pp": 1.39,
+      "clustered_bootstrap_delta_pp_95": [
+        -8.33,
+        12.5
+      ]
+    }
+  },
+  "regressions": [
+    {
+      "id": "e8e459fb468d115a",
+      "path": "data/cubicasa5k/high_quality-488.png",
+      "style": "high_quality",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 6,
+      "before": {
+        "status": "answered",
+        "answer": 6
+      },
+      "after": {
+        "status": "answered",
+        "answer": 7
+      }
+    },
+    {
+      "id": "d68da0faade1fc93",
+      "path": "data/cubicasa5k/high_quality_architectural-1701.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 6,
+      "before": {
+        "status": "answered",
+        "answer": 6
+      },
+      "after": {
+        "status": "answered",
+        "answer": 8
+      }
+    },
+    {
+      "id": "073f8686654a5597",
+      "path": "data/cubicasa5k/high_quality_architectural-1914.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 4,
+      "before": {
+        "status": "answered",
+        "answer": 4
+      },
+      "after": {
+        "status": "answered",
+        "answer": 5
+      }
+    },
+    {
+      "id": "7b22fd9a47c9e0b8",
+      "path": "data/cubicasa5k/high_quality_architectural-20003.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 5,
+      "before": {
+        "status": "answered",
+        "answer": 5
+      },
+      "after": {
+        "status": "answered",
+        "answer": 6
+      }
+    },
+    {
+      "id": "d887f061957cc223",
+      "path": "data/cubicasa5k/high_quality_architectural-6716.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 6,
+      "before": {
+        "status": "answered",
+        "answer": 6
+      },
+      "after": {
+        "status": "answered",
+        "answer": 7
+      }
+    },
+    {
+      "id": "1336fd669aaa2a46",
+      "path": "data/cubicasa5k/high_quality_architectural-7606.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 10,
+      "before": {
+        "status": "answered",
+        "answer": 10
+      },
+      "after": {
+        "status": "answered",
+        "answer": 11
+      }
+    },
+    {
+      "id": "01848aa882c87a73",
+      "path": "data/cubicasa5k/high_quality_architectural-7715.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 5,
+      "before": {
+        "status": "answered",
+        "answer": 5
+      },
+      "after": {
+        "status": "answered",
+        "answer": 4
+      }
+    },
+    {
+      "id": "18e986efdd349750",
+      "path": "data/cubicasa5k/high_quality_architectural-8571.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 15,
+      "before": {
+        "status": "answered",
+        "answer": 15
+      },
+      "after": {
+        "status": "answered",
+        "answer": 16
+      }
+    },
+    {
+      "id": "fd7cbb836d2465a8",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 9,
+      "before": {
+        "status": "answered",
+        "answer": 9
+      },
+      "after": {
+        "status": "answered",
+        "answer": 10
+      }
+    }
+  ],
+  "newly_wrong": [
+    {
+      "id": "c551a482e0711fe8",
+      "path": "data/cubicasa5k/high_quality_architectural-1116.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 3
+      }
+    },
+    {
+      "id": "47e01b347e4035e8",
+      "path": "data/cubicasa5k/high_quality_architectural-1284.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "d7efb9179884d10d",
+      "path": "data/cubicasa5k/high_quality_architectural-20028.png",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "41d96bd431fdaf78",
+      "path": "data/cubicasa5k/high_quality_architectural-7705.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    }
+  ],
+  "gains": [
+    {
+      "id": "22d42db709936ad3",
+      "path": "data/cubicasa5k/high_quality-1140.png",
+      "style": "high_quality",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 8,
+      "before": {
+        "status": "answered",
+        "answer": 9
+      },
+      "after": {
+        "status": "answered",
+        "answer": 8
+      }
+    },
+    {
+      "id": "a22760e7bd97d7ae",
+      "path": "data/cubicasa5k/high_quality-1140.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "1291ebc29e163af4",
+      "path": "data/cubicasa5k/high_quality-1140.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "5923928d56149c03",
+      "path": "data/cubicasa5k/high_quality-1140.png",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "9b415dc9af5558ba",
+      "path": "data/cubicasa5k/high_quality-1140.png",
+      "style": "high_quality",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 4,
+      "before": {
+        "status": "answered",
+        "answer": 6
+      },
+      "after": {
+        "status": "answered",
+        "answer": 4
+      }
+    },
+    {
+      "id": "494c41f7b5a8ce72",
+      "path": "data/cubicasa5k/high_quality-1569.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "5300d8215387988d",
+      "path": "data/cubicasa5k/high_quality-1569.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "ad388db6751bcbb9",
+      "path": "data/cubicasa5k/high_quality-1569.png",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "0a45b0e875aadd6e",
+      "path": "data/cubicasa5k/high_quality-1692.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 3,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 3
+      }
+    },
+    {
+      "id": "f789d5237006a252",
+      "path": "data/cubicasa5k/high_quality-1692.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "df03608451666875",
+      "path": "data/cubicasa5k/high_quality-1692.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "80b254b2bfd6b4ae",
+      "path": "data/cubicasa5k/high_quality-19.png",
+      "style": "high_quality",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 12,
+      "before": {
+        "status": "answered",
+        "answer": 11
+      },
+      "after": {
+        "status": "answered",
+        "answer": 12
+      }
+    },
+    {
+      "id": "e3a1c2cb0c28050b",
+      "path": "data/cubicasa5k/high_quality-19.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "33e6cdfd3a23bcd5",
+      "path": "data/cubicasa5k/high_quality-3074.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "89e0e90926fb9ff9",
+      "path": "data/cubicasa5k/high_quality-488.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "e0391203795ac910",
+      "path": "data/cubicasa5k/high_quality-488.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "90ae1d46155ca9b6",
+      "path": "data/cubicasa5k/high_quality-6521.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "4298ee7f904d6c09",
+      "path": "data/cubicasa5k/high_quality-6521.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "3a60c5f3d4c4cca2",
+      "path": "data/cubicasa5k/high_quality-8230.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "dc1fa278c705eed3",
+      "path": "data/cubicasa5k/high_quality-8230.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "ecea70cca0d2fa46",
+      "path": "data/cubicasa5k/high_quality-8816.png",
+      "style": "high_quality",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 14,
+      "before": {
+        "status": "answered",
+        "answer": 10
+      },
+      "after": {
+        "status": "answered",
+        "answer": 14
+      }
+    },
+    {
+      "id": "9f12a0f2d1e9024a",
+      "path": "data/cubicasa5k/high_quality-8816.png",
+      "style": "high_quality",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "73f56d6178d08822",
+      "path": "data/cubicasa5k/high_quality-8816.png",
+      "style": "high_quality",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "bad4e2baa1b886dc",
+      "path": "data/cubicasa5k/high_quality-8816.png",
+      "style": "high_quality",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "14ffe6540f62654c",
+      "path": "data/cubicasa5k/high_quality_architectural-1041.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "0750aff587f5238c",
+      "path": "data/cubicasa5k/high_quality_architectural-1116.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 18,
+      "before": {
+        "status": "answered",
+        "answer": 16
+      },
+      "after": {
+        "status": "answered",
+        "answer": 18
+      }
+    },
+    {
+      "id": "696751caa040ad05",
+      "path": "data/cubicasa5k/high_quality_architectural-1141.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "a64df487d726895e",
+      "path": "data/cubicasa5k/high_quality_architectural-123.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "8906387963250b90",
+      "path": "data/cubicasa5k/high_quality_architectural-1242.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "e7dc84cd9cbdbfc0",
+      "path": "data/cubicasa5k/high_quality_architectural-1284.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "1ecf74136af434c5",
+      "path": "data/cubicasa5k/high_quality_architectural-1284.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "14e6d228b39335be",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "c3041daaf324613b",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "39a54ef94c69e857",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "3cd420e857fb6766",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "a5457354c69b1053",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "ae52f3268ad2204e",
+      "path": "data/cubicasa5k/high_quality_architectural-1601.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 5,
+      "before": {
+        "status": "answered",
+        "answer": 7
+      },
+      "after": {
+        "status": "answered",
+        "answer": 5
+      }
+    },
+    {
+      "id": "0725d874fe1324a9",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "bd7ea8b12d8b4aa9",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "f261711ffb91c20f",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "00a7ba17f544d1ac",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "c1d75ec87c7b6cb8",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "af89de5aba383084",
+      "path": "data/cubicasa5k/high_quality_architectural-1652.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "dc08b3d127240cf9",
+      "path": "data/cubicasa5k/high_quality_architectural-1701.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "2107f550b2e06b98",
+      "path": "data/cubicasa5k/high_quality_architectural-1842.png",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "212cc0edd987848e",
+      "path": "data/cubicasa5k/high_quality_architectural-1842.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "530ae2369923e378",
+      "path": "data/cubicasa5k/high_quality_architectural-1842.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "0fc9e22ffe8a2a13",
+      "path": "data/cubicasa5k/high_quality_architectural-1914.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "b0dd8f7445b68a77",
+      "path": "data/cubicasa5k/high_quality_architectural-20003.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "731243afa73d37c2",
+      "path": "data/cubicasa5k/high_quality_architectural-20028.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "3d3af8b83c3f082f",
+      "path": "data/cubicasa5k/high_quality_architectural-20028.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "9b8bc09eef32fbba",
+      "path": "data/cubicasa5k/high_quality_architectural-20028.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "93bd509bf4c01f78",
+      "path": "data/cubicasa5k/high_quality_architectural-2035.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "7dffbc0ab68cfdf0",
+      "path": "data/cubicasa5k/high_quality_architectural-2035.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "d4755a4ea4234025",
+      "path": "data/cubicasa5k/high_quality_architectural-2035.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "e8116c6f3d01476b",
+      "path": "data/cubicasa5k/high_quality_architectural-2035.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "aeff7bdbf35726c3",
+      "path": "data/cubicasa5k/high_quality_architectural-2149.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "d979cf233e44a15f",
+      "path": "data/cubicasa5k/high_quality_architectural-2510.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "ca96d4d92d9a236f",
+      "path": "data/cubicasa5k/high_quality_architectural-2510.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "33c73d4a73c02fd0",
+      "path": "data/cubicasa5k/high_quality_architectural-2510.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "a26d38a2aa8ebc38",
+      "path": "data/cubicasa5k/high_quality_architectural-2539.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "dba941027b1add2d",
+      "path": "data/cubicasa5k/high_quality_architectural-2539.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "5e7589f94b3a4f86",
+      "path": "data/cubicasa5k/high_quality_architectural-3060.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "a25d26b222b18a4f",
+      "path": "data/cubicasa5k/high_quality_architectural-3060.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "7c4d4f0259415e15",
+      "path": "data/cubicasa5k/high_quality_architectural-3060.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "82c2106a6b22e899",
+      "path": "data/cubicasa5k/high_quality_architectural-32.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "681a233cd0ab5f31",
+      "path": "data/cubicasa5k/high_quality_architectural-32.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "3a6201450b33c0a5",
+      "path": "data/cubicasa5k/high_quality_architectural-3580.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "a92346ab62d86cd9",
+      "path": "data/cubicasa5k/high_quality_architectural-3580.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 10,
+      "before": {
+        "status": "answered",
+        "answer": 8
+      },
+      "after": {
+        "status": "answered",
+        "answer": 10
+      }
+    },
+    {
+      "id": "3572f952fa819b9d",
+      "path": "data/cubicasa5k/high_quality_architectural-3608.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "1fda6d3bea1da297",
+      "path": "data/cubicasa5k/high_quality_architectural-3890.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "e0788eb19a9895ca",
+      "path": "data/cubicasa5k/high_quality_architectural-3890.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "62dd4f2059b0ec1b",
+      "path": "data/cubicasa5k/high_quality_architectural-3984.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "c2159a05e6c4ecd0",
+      "path": "data/cubicasa5k/high_quality_architectural-3984.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "74ff51e3c861300d",
+      "path": "data/cubicasa5k/high_quality_architectural-4555.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "6164f09ac1472723",
+      "path": "data/cubicasa5k/high_quality_architectural-4594.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "673a3cc1b3a0c8d9",
+      "path": "data/cubicasa5k/high_quality_architectural-4594.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "19ba496b823a06c7",
+      "path": "data/cubicasa5k/high_quality_architectural-4594.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "8aed5c6ed2ffacc5",
+      "path": "data/cubicasa5k/high_quality_architectural-4594.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 5,
+      "before": {
+        "status": "answered",
+        "answer": 4
+      },
+      "after": {
+        "status": "answered",
+        "answer": 5
+      }
+    },
+    {
+      "id": "1a6fe97d8865bb18",
+      "path": "data/cubicasa5k/high_quality_architectural-541.png",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "54f06ed771e3a661",
+      "path": "data/cubicasa5k/high_quality_architectural-541.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "1c5268388b653931",
+      "path": "data/cubicasa5k/high_quality_architectural-541.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 5,
+      "before": {
+        "status": "answered",
+        "answer": 6
+      },
+      "after": {
+        "status": "answered",
+        "answer": 5
+      }
+    },
+    {
+      "id": "d243be0cf75531c4",
+      "path": "data/cubicasa5k/high_quality_architectural-5642.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "69d8fe79ec1d5584",
+      "path": "data/cubicasa5k/high_quality_architectural-5765.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "9d3091411227b89e",
+      "path": "data/cubicasa5k/high_quality_architectural-6007.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "30b886a9f5029d6e",
+      "path": "data/cubicasa5k/high_quality_architectural-6007.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "16c1738a9c565ea0",
+      "path": "data/cubicasa5k/high_quality_architectural-6007.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "5029525e06b5c6c9",
+      "path": "data/cubicasa5k/high_quality_architectural-6152.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 11,
+      "before": {
+        "status": "answered",
+        "answer": 10
+      },
+      "after": {
+        "status": "answered",
+        "answer": 11
+      }
+    },
+    {
+      "id": "83523149d357a113",
+      "path": "data/cubicasa5k/high_quality_architectural-6152.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "0dc5829a25688209",
+      "path": "data/cubicasa5k/high_quality_architectural-6303.png",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "f91c28a605679a4a",
+      "path": "data/cubicasa5k/high_quality_architectural-6303.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "46c3a1804322da6d",
+      "path": "data/cubicasa5k/high_quality_architectural-6303.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "4c48ec651fcbf974",
+      "path": "data/cubicasa5k/high_quality_architectural-6303.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 4,
+      "before": {
+        "status": "answered",
+        "answer": 2
+      },
+      "after": {
+        "status": "answered",
+        "answer": 4
+      }
+    },
+    {
+      "id": "9137bc41da37d04f",
+      "path": "data/cubicasa5k/high_quality_architectural-6378.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 10,
+      "before": {
+        "status": "answered",
+        "answer": 5
+      },
+      "after": {
+        "status": "answered",
+        "answer": 10
+      }
+    },
+    {
+      "id": "57be8e7199bc7f19",
+      "path": "data/cubicasa5k/high_quality_architectural-6378.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "eaf3ea1afceeee76",
+      "path": "data/cubicasa5k/high_quality_architectural-6378.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "887109cb55e9824a",
+      "path": "data/cubicasa5k/high_quality_architectural-6378.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "bf307d383c58bf0f",
+      "path": "data/cubicasa5k/high_quality_architectural-6378.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 6,
+      "before": {
+        "status": "answered",
+        "answer": 5
+      },
+      "after": {
+        "status": "answered",
+        "answer": 6
+      }
+    },
+    {
+      "id": "e8aa6214c70aeeaf",
+      "path": "data/cubicasa5k/high_quality_architectural-6428.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "8d628af8dd9ad4fd",
+      "path": "data/cubicasa5k/high_quality_architectural-654.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "c5f78a9cc2236110",
+      "path": "data/cubicasa5k/high_quality_architectural-6549.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 13,
+      "before": {
+        "status": "answered",
+        "answer": 12
+      },
+      "after": {
+        "status": "answered",
+        "answer": 13
+      }
+    },
+    {
+      "id": "b5d571c1615abf20",
+      "path": "data/cubicasa5k/high_quality_architectural-6549.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "f72ef30d0d955e35",
+      "path": "data/cubicasa5k/high_quality_architectural-6549.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "725ee9a74bf1f0fd",
+      "path": "data/cubicasa5k/high_quality_architectural-6549.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "04cfd80af9428077",
+      "path": "data/cubicasa5k/high_quality_architectural-6549.png",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "question": "How many windows are shown on this floor plan?",
+      "gold": 18,
+      "before": {
+        "status": "answered",
+        "answer": 15
+      },
+      "after": {
+        "status": "answered",
+        "answer": 18
+      }
+    },
+    {
+      "id": "88db0c4ca9a2c817",
+      "path": "data/cubicasa5k/high_quality_architectural-6596.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 9,
+      "before": {
+        "status": "answered",
+        "answer": 1
+      },
+      "after": {
+        "status": "answered",
+        "answer": 9
+      }
+    },
+    {
+      "id": "245b7bbc5a833e81",
+      "path": "data/cubicasa5k/high_quality_architectural-6631.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "883c77e87b4efd8e",
+      "path": "data/cubicasa5k/high_quality_architectural-6716.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 9,
+      "before": {
+        "status": "answered",
+        "answer": 7
+      },
+      "after": {
+        "status": "answered",
+        "answer": 9
+      }
+    },
+    {
+      "id": "b23e6f6141d399ca",
+      "path": "data/cubicasa5k/high_quality_architectural-6716.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "d627a6c27ca5cdf2",
+      "path": "data/cubicasa5k/high_quality_architectural-6716.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "b62f2c3103acf2d9",
+      "path": "data/cubicasa5k/high_quality_architectural-6716.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "64b01e85d8eb6fa1",
+      "path": "data/cubicasa5k/high_quality_architectural-7061.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "502e8aba480f683e",
+      "path": "data/cubicasa5k/high_quality_architectural-7119.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "7edb8215568c5eb7",
+      "path": "data/cubicasa5k/high_quality_architectural-7119.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "991171beaf7277d9",
+      "path": "data/cubicasa5k/high_quality_architectural-7606.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "b912c9081ad10596",
+      "path": "data/cubicasa5k/high_quality_architectural-7606.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "f9220dd78a80693a",
+      "path": "data/cubicasa5k/high_quality_architectural-7715.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "b66ec3c431a0b727",
+      "path": "data/cubicasa5k/high_quality_architectural-812.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "1ef07e8394e2abef",
+      "path": "data/cubicasa5k/high_quality_architectural-812.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "1d22f1d7393d4acc",
+      "path": "data/cubicasa5k/high_quality_architectural-812.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "5465e75f90780f17",
+      "path": "data/cubicasa5k/high_quality_architectural-8138.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "334e004accf46ef5",
+      "path": "data/cubicasa5k/high_quality_architectural-8138.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "702c1fc59706231c",
+      "path": "data/cubicasa5k/high_quality_architectural-8208.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "b62780614c20329a",
+      "path": "data/cubicasa5k/high_quality_architectural-8208.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "44bf48337698c969",
+      "path": "data/cubicasa5k/high_quality_architectural-8571.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "f82b9c72d3b60ea8",
+      "path": "data/cubicasa5k/high_quality_architectural-8571.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "ac4b6e14b0ff102d",
+      "path": "data/cubicasa5k/high_quality_architectural-8571.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "93006139a4848aca",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "3954e159040f5abc",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "cdccf5625585c323",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "019872cd56aaa9f2",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "0cb9f2298e174535",
+      "path": "data/cubicasa5k/high_quality_architectural-8726.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "18d9c5860cb9e8ca",
+      "path": "data/cubicasa5k/high_quality_architectural-875.png",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "83df2bbc377dca27",
+      "path": "data/cubicasa5k/high_quality_architectural-875.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "3344d59fbf680ddd",
+      "path": "data/cubicasa5k/high_quality_architectural-9433.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "9f3058421ca6d44a",
+      "path": "data/cubicasa5k/high_quality_architectural-9489.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "398bcafb1b4fbec2",
+      "path": "data/cubicasa5k/high_quality_architectural-9489.png",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "gold": 0,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 0
+      }
+    },
+    {
+      "id": "8188f985b83ef14d",
+      "path": "data/cubicasa5k/high_quality_architectural-9577.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "793f47f193032966",
+      "path": "data/cubicasa5k/high_quality_architectural-9577.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "2ef6b949e36ef857",
+      "path": "data/cubicasa5k/high_quality_architectural-9598.png",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "gold": 13,
+      "before": {
+        "status": "answered",
+        "answer": 11
+      },
+      "after": {
+        "status": "answered",
+        "answer": 13
+      }
+    },
+    {
+      "id": "915a34e20e83c477",
+      "path": "data/cubicasa5k/high_quality_architectural-9598.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "93863656006762b6",
+      "path": "data/cubicasa5k/high_quality_architectural-9598.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "34144f8f958c54f2",
+      "path": "data/cubicasa5k/high_quality_architectural-9796.png",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "gold": 2,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 2
+      }
+    },
+    {
+      "id": "dfb2f16bba0b6646",
+      "path": "data/cubicasa5k/high_quality_architectural-9796.png",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    },
+    {
+      "id": "40d1e6ebeffa7c58",
+      "path": "data/cubicasa5k/high_quality_architectural-9796.png",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "question": "How many saunas are on this floor plan?",
+      "gold": 1,
+      "before": {
+        "status": "abstained",
+        "answer": null
+      },
+      "after": {
+        "status": "answered",
+        "answer": 1
+      }
+    }
+  ],
+  "harness_deferrals": [],
+  "gate_sensitivity": {
+    "with_13_november_gate_record": {
+      "drawings": 40,
+      "before": {
+        "questions": 401,
+        "answered": 215,
+        "exact": 131,
+        "wrong": 84,
+        "abstained": 186,
+        "accuracy": 0.3267,
+        "coverage": 0.5362,
+        "accuracy_when_answered": 0.6093
+      },
+      "after": {
+        "questions": 401,
+        "answered": 304,
+        "exact": 221,
+        "wrong": 83,
+        "abstained": 97,
+        "accuracy": 0.5511,
+        "coverage": 0.7581,
+        "accuracy_when_answered": 0.727
+      },
+      "paired": {
+        "gained_exact": 98,
+        "lost_exact": 8,
+        "newly_answered": 89,
+        "newly_answered_exact": 86,
+        "dropped_answers": 0,
+        "both_answered": 215,
+        "both_abstained": 97
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 0.833,
+        "after": 0.684
+      },
+      "delta_exact_pp": 22.44,
+      "clustered_bootstrap_delta_pp_95": [
+        18.3,
+        26.68
+      ]
+    },
+    "without_13_november_gate_record": {
+      "drawings": 32,
+      "before": {
+        "questions": 207,
+        "answered": 119,
+        "exact": 58,
+        "wrong": 61,
+        "abstained": 88,
+        "accuracy": 0.2802,
+        "coverage": 0.5749,
+        "accuracy_when_answered": 0.4874
+      },
+      "after": {
+        "questions": 207,
+        "answered": 161,
+        "exact": 104,
+        "wrong": 57,
+        "abstained": 46,
+        "accuracy": 0.5024,
+        "coverage": 0.7778,
+        "accuracy_when_answered": 0.646
+      },
+      "paired": {
+        "gained_exact": 47,
+        "lost_exact": 1,
+        "newly_answered": 42,
+        "newly_answered_exact": 41,
+        "dropped_answers": 0,
+        "both_answered": 119,
+        "both_abstained": 46
+      },
+      "mean_absolute_error_on_both_answered": {
+        "before": 2.067,
+        "after": 1.538
+      },
+      "delta_exact_pp": 22.22,
+      "clustered_bootstrap_delta_pp_95": [
+        15.43,
+        29.09
+      ]
+    }
+  },
+  "timing": {
+    "note": "before-control and after ran back to back under recorded conditions; the sealed before arm is not a timing reference.",
+    "inference_seconds": {
+      "before-control": 403.14,
+      "after": 676.76,
+      "after-repeat": 711.1
+    },
+    "after_over_before_control": 1.679,
+    "run_conditions": {
+      "before-control": [
+        {
+          "load_wait": {
+            "limit": 12.0,
+            "max_wait_s": 1800,
+            "waited_s": 0,
+            "met": true
+          },
+          "started": "2026-11-14T22:41:29+00:00",
+          "uptime_start": "0:41  up 65 days,  4:19, 7 users, load averages: 7.12 8.92 8.63",
+          "load_start": [
+            7.12,
+            8.92,
+            8.63
+          ],
+          "harness": {
+            "sha256": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae",
+            "commit": "f8ad100097892aefdf3fa739600998891144ef1d",
+            "uncommitted_changes": false
+          },
+          "prompts_already_sealed": 0,
+          "ended": "2026-11-14T22:48:14+00:00",
+          "uptime_end": "0:48  up 65 days,  4:26, 7 users, load averages: 13.18 14.11 11.58",
+          "load_end": [
+            13.18,
+            14.11,
+            11.58
+          ],
+          "wall_seconds": 405.1,
+          "timeouts_total": 0
+        }
+      ],
+      "after": [
+        {
+          "load_wait": {
+            "limit": 12.0,
+            "max_wait_s": 1800,
+            "waited_s": 30,
+            "met": true
+          },
+          "started": "2026-11-14T22:48:58+00:00",
+          "uptime_start": "0:48  up 65 days,  4:26, 7 users, load averages: 9.02 12.93 11.26",
+          "load_start": [
+            9.02,
+            12.93,
+            11.26
+          ],
+          "harness": {
+            "sha256": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae",
+            "commit": "f8ad100097892aefdf3fa739600998891144ef1d",
+            "uncommitted_changes": false
+          },
+          "prompts_already_sealed": 0,
+          "ended": "2026-11-14T23:00:17+00:00",
+          "uptime_end": "1:00  up 65 days,  4:38, 7 users, load averages: 15.24 16.19 14.34",
+          "load_end": [
+            15.24,
+            16.19,
+            14.34
+          ],
+          "wall_seconds": 679.0,
+          "timeouts_total": 0
+        }
+      ],
+      "after-repeat": [
+        {
+          "load_wait": {
+            "limit": 12.0,
+            "max_wait_s": 1800,
+            "waited_s": 30,
+            "met": true
+          },
+          "started": "2026-11-14T23:00:58+00:00",
+          "uptime_start": "1:00  up 65 days,  4:38, 7 users, load averages: 9.56 14.62 13.85",
+          "load_start": [
+            9.56,
+            14.62,
+            13.85
+          ],
+          "harness": {
+            "sha256": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae",
+            "commit": "f8ad100097892aefdf3fa739600998891144ef1d",
+            "uncommitted_changes": false
+          },
+          "prompts_already_sealed": 0,
+          "ended": "2026-11-14T23:12:51+00:00",
+          "uptime_end": "1:12  up 65 days,  4:50, 7 users, load averages: 25.44 18.28 15.63",
+          "load_end": [
+            25.44,
+            18.28,
+            15.63
+          ],
+          "wall_seconds": 713.5,
+          "timeouts_total": 0
+        }
+      ]
+    }
+  },
+  "run_history": [
+    {
+      "at": "2026-11-14T22:41:29+00:00",
+      "arm": "before-control",
+      "event": "start",
+      "revision": "b948d6744548417b7a037f32b9317c830ea7e52e",
+      "session": 1,
+      "prompts_already_sealed": 0,
+      "harness": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae"
+    },
+    {
+      "at": "2026-11-14T22:48:15+00:00",
+      "arm": "before-control",
+      "event": "sealed",
+      "seal": "da24df533ec416e514768320d841b148166f777a4d57cfa835ebc725baef5cb4",
+      "timeouts": 0
+    },
+    {
+      "at": "2026-11-14T22:48:58+00:00",
+      "arm": "after",
+      "event": "start",
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "session": 1,
+      "prompts_already_sealed": 0,
+      "harness": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae"
+    },
+    {
+      "at": "2026-11-14T23:00:18+00:00",
+      "arm": "after",
+      "event": "sealed",
+      "seal": "99d9829390914006c21024f7cccc9e55321f899f5d4129774d87f4bec6d86493",
+      "timeouts": 0
+    },
+    {
+      "at": "2026-11-14T23:00:58+00:00",
+      "arm": "after-repeat",
+      "event": "start",
+      "revision": "cbf542b04552be07254da7e8b5c7d51fab766c3e",
+      "session": 1,
+      "prompts_already_sealed": 0,
+      "harness": "6ae71b6a96554cd33bc47f93c9c5d9efabe31a9c838635b8ef80dd26a9f7b5ae"
+    },
+    {
+      "at": "2026-11-14T23:12:52+00:00",
+      "arm": "after-repeat",
+      "event": "sealed",
+      "seal": "76c2f107c6936efd4af66d66a9b2ff3746406dbe606d07910d3b52fcc24b334e",
+      "timeouts": 0
+    }
+  ]
+}
