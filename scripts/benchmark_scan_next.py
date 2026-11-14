@@ -74,7 +74,7 @@ TRACKS = {
 BASELINE_ARMS = ("before", "before-repeat", "before-control")
 AFTER_ARMS = ("after", "after-repeat")
 # Full SHA of the frozen candidate. Unset until phase B sets it in one commit before any after arm runs.
-AFTER_REVISION = None
+AFTER_REVISION = "cbf542b04552be07254da7e8b5c7d51fab766c3e"
 ARM_NAME = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
 COORDS = "xyxy_top_left_0_to_1000"
 # Deferrals the harness records when the reader raises or returns a report that fails validation.
