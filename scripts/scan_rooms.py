@@ -190,6 +190,7 @@ def inventory(image_bytes):
     if min(w,h) <= 0 or w*h>35_000_000:
         return {}
     passes = []
+    orientation = 1
     if sys.platform == "darwin" and shutil.which("osascript"):
         with tempfile.NamedTemporaryFile(suffix=".png") as image:
             image.write(image_bytes)
@@ -202,11 +203,12 @@ def inventory(image_bytes):
                         oriented.extend(workers.map(lambda o: _vision(image.name,o),(2,3,4)))
                 best = max(range(len(oriented)), key=lambda i: _legibility(oriented[i]))
                 passes = oriented[best]
+                orientation = best+1
                 if _legibility(passes) < 12:
                     alternate = _vision(image.name, best+1, "sv")
                     passes = passes + alternate
                 if best != 0:
-                    return _summarize(passes, image_bytes)
+                    return dict(_summarize(passes, image_bytes), orientation=orientation)
             except (OSError, subprocess.SubprocessError, ValueError):
                 pass
     if shutil.which("tesseract"):
@@ -214,7 +216,8 @@ def inventory(image_bytes):
             passes = passes + _tesseract(image_bytes,w,h)
         except (OSError,subprocess.SubprocessError,ValueError):
             pass
-    return _summarize(passes, image_bytes)
+    # The reading direction that won is reused when a room is read again at a larger scale.
+    return dict(_summarize(passes, image_bytes), orientation=orientation)
 
 
 def _same(a,b):
