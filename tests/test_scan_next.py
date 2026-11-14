@@ -95,12 +95,21 @@ class ArmsAndSeals(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def test_baseline_arms_are_pinned_and_after_needs_a_commit(self):
+    def test_baseline_arms_are_pinned_and_after_arms_need_the_pinned_candidate(self):
+        self.assertIsNone(nxt.AFTER_REVISION)  # phase B pins it in one commit before running
         self.assertEqual(nxt.arm_revision("before", None), nxt.BASE)
         self.assertEqual(nxt.arm_revision("before-repeat", nxt.BASE), nxt.BASE)
-        for arm, rev in (("before", "HEAD"), ("after", None), ("after", "working"), ("Bad Name", "HEAD")):
+        head = nxt.resolve("HEAD")
+        for arm, rev in (("before", "HEAD"), ("after", None), ("after", "working"), ("Bad Name", "HEAD"),
+                         ("after", "HEAD"), ("peek", "HEAD")):
             with self.assertRaises(ValueError):
                 nxt.arm_revision(arm, rev)
+        with patch.object(nxt, "AFTER_REVISION", head):
+            self.assertEqual(nxt.arm_revision("after", "HEAD"), head)
+            self.assertEqual(nxt.arm_revision("after-repeat", head), head)
+            for arm, rev in (("after", nxt.BASE), ("after", "HEAD~1"), ("after2", "HEAD"), ("peek", "HEAD")):
+                with self.assertRaises(ValueError):
+                    nxt.arm_revision(arm, rev)
 
     def test_seal_detects_changed_outputs_and_snapshot_files(self):
         root = make_arm(self.work, self.manifest, "before", [("answered", 0), ("abstained", None)] * 2)
@@ -117,9 +126,9 @@ class ArmsAndSeals(unittest.TestCase):
 
     def test_scoring_never_opens_answers_unless_both_arms_are_sealed(self):
         args = SimpleNamespace(work=self.work, archive=self.work / "unused.zip", before="before", after="after",
-                               report=None)
+                               report=None, rescore=False)
         with patch.object(nxt, "FINGERPRINT", None), patch.object(nxt.revision, "read_targets") as targets, \
-                patch.object(nxt.revision, "ZipFile") as archive:
+                patch.object(nxt.revision, "ZipFile") as archive, patch.object(nxt, "AFTER_REVISION", "1" * 40):
             with self.assertRaisesRegex(ValueError, "Missing sealed arm: before"):
                 nxt.score(args, self.manifest)
             make_arm(self.work, self.manifest, "before", [("answered", 0)] * 4)
@@ -176,6 +185,39 @@ class ArmsAndSeals(unittest.TestCase):
         for arm, digest in nxt.BASELINE_SEALS.items():
             _, seal, _ = nxt.verify_arm(nxt.WORK, manifest, arm)
             self.assertEqual(nxt.sha(nxt.canonical(seal)), digest)
+
+    def test_score_takes_one_after_arm_at_the_pinned_revision_once(self):
+        records = [("answered", 0), ("abstained", None), ("answered", 0), ("unknown", None)]
+        make_arm(self.work, self.manifest, "before", records)
+        make_arm(self.work, self.manifest, "before-repeat", records)
+        for arm in nxt.AFTER_ARMS:
+            make_arm(self.work, self.manifest, arm, [("answered", 0)] * 4, revision="1" * 40)
+        make_arm(self.work, self.manifest, "peek", [("answered", 0)] * 4, revision="2" * 40)
+        targets = {(q["path"], q["question"]): 0 for q in self.manifest["rows"]}
+        base = dict(work=self.work, archive=self.work / "unused.zip", before="before", after="after", report=None,
+                    rescore=False)
+        with patch.object(nxt, "FINGERPRINT", None), patch.object(nxt, "AFTER_REVISION", "1" * 40), \
+                patch.object(nxt, "BASE_SOURCE_FINGERPRINT", None), \
+                patch.object(nxt.revision, "source_bytes", return_value=b"VALUE = 1\n"), \
+                patch.object(nxt.revision, "read_targets", return_value=targets) as opened, \
+                redirect_stdout(io.StringIO()):
+            for change, message in ((dict(before="before-repeat"), "comparator is the sealed arm 'before'"),
+                                    (dict(after="peek"), "Only the arm 'after'"),
+                                    (dict(after="after-repeat"), "Only the arm 'after'")):
+                with self.assertRaisesRegex(ValueError, message):
+                    nxt.score(SimpleNamespace(**dict(base, **change)), self.manifest)
+            with patch.object(nxt, "AFTER_REVISION", "2" * 40), self.assertRaisesRegex(ValueError, "not at AFTER_REV"):
+                nxt.score(SimpleNamespace(**base), self.manifest)
+            opened.assert_not_called()
+            first = nxt.score(SimpleNamespace(**base), self.manifest)
+            self.assertEqual(len(first["scorings"]), 1)
+            opened.reset_mock()
+            with self.assertRaisesRegex(ValueError, "needs --rescore"):
+                nxt.score(SimpleNamespace(**base), self.manifest)
+            opened.assert_not_called()
+            second = nxt.score(SimpleNamespace(**dict(base, rescore=True)), self.manifest)
+        self.assertEqual([s["rescore"] for s in second["scorings"]], [False, True])
+        self.assertEqual(json.loads((self.work / "summary.json").read_text())["scorings"], second["scorings"])
 
     def test_offline_guard_blocks_sockets(self):
         with nxt.offline():
@@ -244,7 +286,8 @@ class InvalidReports(unittest.TestCase):
             manifest = dict(images=2, rows=rows_for(paths))
             root = make_arm(work, manifest, "after", [], seal=False)
             reader = fake_reader([answered(1), self.BAD[0][1], ValueError("cv2.error"), answered(2)])
-            nxt.infer(reader, manifest, work / "inputs", root, "after")
+            with redirect_stdout(io.StringIO()):
+                nxt.infer(reader, manifest, work / "inputs", root, "after")
             _, seal, _ = nxt.seal_of(work, manifest, "after")
             nxt.save(root / "seal.json", seal)
             rows, _, _ = nxt.verify_arm(work, manifest, "after")

@@ -70,6 +70,9 @@ TRACKS = {
     "untouched_fixtures": {"toilet bowls", "sinks"},
 }
 BASELINE_ARMS = ("before", "before-repeat")
+AFTER_ARMS = ("after", "after-repeat")
+# Full SHA of the frozen candidate. Unset until phase B sets it in one commit before any after arm runs.
+AFTER_REVISION = None
 ARM_NAME = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
 COORDS = "xyxy_top_left_0_to_1000"
 # Deferrals the harness records when the reader raises or returns a report that fails validation.
@@ -444,9 +447,12 @@ def arm_revision(arm, revision_ref):
     if arm in BASELINE_ARMS:
         check(revision_ref in (None, BASE), "Baseline arms are pinned to " + BASE)
         return BASE
+    check(arm in AFTER_ARMS, "Only the arms " + ", ".join(BASELINE_ARMS + AFTER_ARMS) + " can run.")
+    check(AFTER_REVISION is not None, "AFTER_REVISION is not pinned; commit the frozen candidate's full SHA first.")
+    check(FULL_SHA.match(AFTER_REVISION) and AFTER_REVISION != BASE, "AFTER_REVISION must be a full SHA, not the baseline.")
     check(revision_ref and revision_ref != "working", "This arm needs --revision <committed revision>.")
     commit = resolve(revision_ref)
-    check(commit != BASE, "The after arm must differ from the baseline revision.")
+    check(commit == AFTER_REVISION, "The after arms are pinned to AFTER_REVISION " + AFTER_REVISION)
     return commit
 
 
@@ -763,6 +769,14 @@ def summarize(records, styles, seed):
     )
 
 
+def harness_identity():
+    """Which harness ran a command: file digest, checkout commit and whether the file is committed as is."""
+    here = Path(__file__).resolve()
+    git = lambda *a: subprocess.run(["git", *a], cwd=here.parent, capture_output=True, text=True).stdout.strip()
+    return dict(sha256=sha(here.read_bytes()), commit=git("rev-parse", "HEAD"),
+                uncommitted_changes=bool(git("status", "--porcelain", "--", here.name)))
+
+
 def check_pair(configs):
     for label in ("weights_sha256", "detector_source", "detector_revision", "environment", "network", "manifest_sha256"):
         check(configs[0][label] == configs[1][label], "Arm configuration differs: " + label)
@@ -771,6 +785,9 @@ def check_pair(configs):
 def score(args, manifest):
     fingerprint = fingerprint_of(manifest)
     check(FINGERPRINT is None or fingerprint == FINGERPRINT, "Changed scan-next manifest.")
+    check(args.before == "before", "The comparator is the sealed arm 'before'; no other before arm is scored.")
+    check(args.after == "after", "Only the arm 'after' is scored; after-repeat is a noise floor.")
+    check(AFTER_REVISION is not None, "AFTER_REVISION is not pinned.")
     # Verify both seals before the sponsor answers are opened.
     before, bseal, bconfig = verify_arm(args.work, manifest, args.before)
     after, aseal, aconfig = verify_arm(args.work, manifest, args.after)
@@ -779,10 +796,21 @@ def score(args, manifest):
         BASE_SOURCE_FINGERPRINT is None or bseal["source_fingerprint"] == BASE_SOURCE_FINGERPRINT,
         "Unexpected baseline sources.",
     )
-    check(FULL_SHA.match(aconfig["revision"]) and aconfig["revision"] != BASE, "The after arm needs a committed revision.")
+    check(aconfig["revision"] == AFTER_REVISION, "The after arm is not at AFTER_REVISION.")
     for name, digest in aconfig["source_sha256"].items():
         check(sha(revision.source_bytes(aconfig["revision"], name)) == digest, "After-arm source differs from Git: " + name)
     check_pair((bconfig, aconfig))
+    scorings = json.loads((args.work / "scorings.json").read_text()) if (args.work / "scorings.json").exists() else []
+    check(not scorings or args.rescore, "This cohort was scored on %s; a second scoring needs --rescore and is "
+          "recorded in the summary." % scorings[-1]["scored"] if scorings else "")
+    scorings.append(dict(
+        scored=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        harness=harness_identity(),
+        arms=dict(before=args.before, after=args.after),
+        seal_sha256=dict(before=sha(canonical(bseal)), after=sha(canonical(aseal))),
+        rescore=bool(args.rescore),
+    ))
+    save(args.work / "scorings.json", scorings)  # written before the sponsor answers are opened
     targets = revision.read_targets(args.archive, manifest)
     records = join(manifest, before, after, targets)
     out = dict(
@@ -796,6 +824,7 @@ def score(args, manifest):
         seals=dict(before=bseal, after=aseal),
         seal_sha256=dict(before=sha(canonical(bseal)), after=sha(canonical(aseal))),
         configurations=dict(before=bconfig, after=aconfig),
+        scorings=scorings,
         **summarize(records, QUOTAS, SEED),
         inference_seconds={
             label: round(sum(r[key]["elapsed_ms"] for r in records) / 1000, 2)
@@ -1168,6 +1197,7 @@ def main():
     p.add_argument("--no-scratch", action="store_true")
     p.add_argument("--references", type=Path, help="Upstream-format ZIP with model.svg, F1_scaled.png, F1_original.png")
     p.add_argument("--report", type=Path)
+    p.add_argument("--rescore", action="store_true", help="Allow a second scoring; it is recorded in the summary")
     p.add_argument("--limit", type=int, default=3)
     a = p.parse_args()
     a.work.mkdir(parents=True, exist_ok=True)
