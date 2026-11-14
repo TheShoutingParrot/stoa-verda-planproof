@@ -1,0 +1,700 @@
+{
+  "observed_date": "2026-11-14",
+  "manifest_sha256": "62781971de4e842eccf0070119d4721b183339bdc3f7dd07fd904d82e6b7d12c",
+  "scope": "Original PNG and original English count question; offline local specialists only; hosted fallback unavailable.",
+  "metric": "Exact numeric count. Strict product count/box schema enforced; object localization accuracy requires separate measurement.",
+  "drawings": 48,
+  "questions": 398,
+  "seals": {
+    "old": {
+      "config_sha256": "08508110e042a37b2e421bd69ae9d4b6236f984317f2a39655f02a973425408f",
+      "predictions_sha256": "afcbe05f49cae6b758fcd7b4a3697839bd800c1f479a7d27c5e0c46ba8802c35",
+      "manifest_sha256": "62781971de4e842eccf0070119d4721b183339bdc3f7dd07fd904d82e6b7d12c",
+      "rows": 398
+    },
+    "new": {
+      "config_sha256": "9f5ba635470d349f59cd108b875aae8cf2a79ed69da54a0dbdc15c519d033629",
+      "predictions_sha256": "a543b8447cb774e86c49f39634faa858eac60083bd82f63e02265c9fa97f3325",
+      "manifest_sha256": "62781971de4e842eccf0070119d4721b183339bdc3f7dd07fd904d82e6b7d12c",
+      "rows": 398
+    }
+  },
+  "configurations": {
+    "old": {
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "92475746fa84552a3f80b1e57c2e500f973a800dae63d180e35886ba27028899",
+        "scripts/scan_reader.py": "6edac749fc705958c1d24f55aec32b4b581c98c4554dacf6fe0c97227d84a002",
+        "scripts/scan_rooms.py": "a8c806214f30c638065644a317b7abbe9127603a16c304144cf365268c6cb0a9"
+      },
+      "revision": "4d79ac0d2d62150f416f730ff5dbbf38486be208",
+      "manifest_sha256": "62781971de4e842eccf0070119d4721b183339bdc3f7dd07fd904d82e6b7d12c",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled"
+    },
+    "new": {
+      "source_sha256": {
+        "scripts/nemotron.py": "6bd6efe1a5850bd6ef9975e4a14449e70ad773d6ac4a6461969af2925cc22f15",
+        "scripts/scan_objects.py": "9fcf07141dba78542a8d33fb0e49ee898157b87ccf91effea07a21143c4570de",
+        "scripts/scan_openings.py": "d50eccc5218848e9dd9416df602a0412268724ae53993d595bb9f52eafc98f8e",
+        "scripts/scan_reader.py": "403e392bb7ff6c785116a8b7353911a84d9278f9c101dc7346a5a679b29cd454",
+        "scripts/scan_room_labels.py": "51474e245fd34bc73c5c454d7c1cbc785e9fd0471a24622692487949ff517dd3",
+        "scripts/scan_rooms.py": "2deab62c3e2209a6578c25420d2b352a28e269b165174a9f747d717bfd0b415a",
+        "scripts/scan_storeys.py": "d1a648ca2c9c48479994f8700bfed2eaad0a3916094026d521d7a07e30e75ad1"
+      },
+      "revision": "content-addressed working files",
+      "manifest_sha256": "62781971de4e842eccf0070119d4721b183339bdc3f7dd07fd904d82e6b7d12c",
+      "detector_source": {
+        "floortrans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "floortrans/models/__init__.py": "9eb6b4906a922a8ceee9e925e89495408a0b163a64b30e13b52334957973b646",
+        "floortrans/models/hg_furukawa_original.py": "05a07265d9ec8cade5228b834645af00c655e1413b21d02b0b3183d041f7752a",
+        "floortrans/models/model_1427.py": "1b602dc086d3ea7f0eaefb480156c10e6e09bae073c08976c43fb0493613b921"
+      },
+      "weights_sha256": "dd20b4e1bf1d670f2125107b079df06958b1ccd36e49a464ab739aeb00b8e7a2",
+      "detector_revision": "c34440266665a11f4484eb06cd2e4b7d72ad76c1",
+      "environment": {
+        "python": "3.12.13",
+        "system": "Darwin",
+        "macos": "26.5.1",
+        "device": "mps",
+        "packages": {
+          "torch": "2.15.0",
+          "numpy": "2.5.4",
+          "pillow": "13.0.0",
+          "opencv-python-headless": "5.0.0.93"
+        },
+        "tesseract": "tesseract 5.5.3"
+      },
+      "network": "disabled"
+    }
+  },
+  "overall": {
+    "old": {
+      "questions": 398,
+      "answered": 234,
+      "exact": 156,
+      "wrong": 78,
+      "abstained": 164,
+      "accuracy": 0.392,
+      "coverage": 0.5879,
+      "accuracy_when_answered": 0.6667
+    },
+    "new": {
+      "questions": 398,
+      "answered": 240,
+      "exact": 167,
+      "wrong": 73,
+      "abstained": 158,
+      "accuracy": 0.4196,
+      "coverage": 0.603,
+      "accuracy_when_answered": 0.6958
+    },
+    "paired": {
+      "gained_exact": 15,
+      "lost_exact": 4,
+      "newly_answered": 6,
+      "newly_answered_exact": 6,
+      "dropped_answers": 0,
+      "both_answered": 234,
+      "both_abstained": 158
+    },
+    "mean_absolute_error_on_both_answered": {
+      "old": 0.966,
+      "new": 0.795
+    }
+  },
+  "stratified_drawing_bootstrap_delta_accuracy_pp_95": [
+    0.75,
+    4.87
+  ],
+  "by_family": {
+    "objects": {
+      "old": {
+        "questions": 177,
+        "answered": 177,
+        "exact": 103,
+        "wrong": 74,
+        "abstained": 0,
+        "accuracy": 0.5819,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5819
+      },
+      "new": {
+        "questions": 177,
+        "answered": 177,
+        "exact": 108,
+        "wrong": 69,
+        "abstained": 0,
+        "accuracy": 0.6102,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.6102
+      },
+      "paired": {
+        "gained_exact": 9,
+        "lost_exact": 4,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 177,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 1.254,
+        "new": 1.028
+      }
+    },
+    "rooms": {
+      "old": {
+        "questions": 173,
+        "answered": 57,
+        "exact": 53,
+        "wrong": 4,
+        "abstained": 116,
+        "accuracy": 0.3064,
+        "coverage": 0.3295,
+        "accuracy_when_answered": 0.9298
+      },
+      "new": {
+        "questions": 173,
+        "answered": 58,
+        "exact": 54,
+        "wrong": 4,
+        "abstained": 115,
+        "accuracy": 0.3121,
+        "coverage": 0.3353,
+        "accuracy_when_answered": 0.931
+      },
+      "paired": {
+        "gained_exact": 1,
+        "lost_exact": 0,
+        "newly_answered": 1,
+        "newly_answered_exact": 1,
+        "dropped_answers": 0,
+        "both_answered": 57,
+        "both_abstained": 115
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.07,
+        "new": 0.07
+      }
+    },
+    "storeys": {
+      "old": {
+        "questions": 48,
+        "answered": 0,
+        "exact": 0,
+        "wrong": 0,
+        "abstained": 48,
+        "accuracy": 0.0,
+        "coverage": 0.0,
+        "accuracy_when_answered": null
+      },
+      "new": {
+        "questions": 48,
+        "answered": 5,
+        "exact": 5,
+        "wrong": 0,
+        "abstained": 43,
+        "accuracy": 0.1042,
+        "coverage": 0.1042,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 5,
+        "lost_exact": 0,
+        "newly_answered": 5,
+        "newly_answered_exact": 5,
+        "dropped_answers": 0,
+        "both_answered": 0,
+        "both_abstained": 43
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": null,
+        "new": null
+      }
+    }
+  },
+  "by_category": {
+    "balconies": {
+      "old": {
+        "questions": 19,
+        "answered": 5,
+        "exact": 5,
+        "wrong": 0,
+        "abstained": 14,
+        "accuracy": 0.2632,
+        "coverage": 0.2632,
+        "accuracy_when_answered": 1.0
+      },
+      "new": {
+        "questions": 19,
+        "answered": 5,
+        "exact": 5,
+        "wrong": 0,
+        "abstained": 14,
+        "accuracy": 0.2632,
+        "coverage": 0.2632,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 5,
+        "both_abstained": 14
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.0,
+        "new": 0.0
+      }
+    },
+    "bathrooms": {
+      "old": {
+        "questions": 22,
+        "answered": 12,
+        "exact": 12,
+        "wrong": 0,
+        "abstained": 10,
+        "accuracy": 0.5455,
+        "coverage": 0.5455,
+        "accuracy_when_answered": 1.0
+      },
+      "new": {
+        "questions": 22,
+        "answered": 12,
+        "exact": 12,
+        "wrong": 0,
+        "abstained": 10,
+        "accuracy": 0.5455,
+        "coverage": 0.5455,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 12,
+        "both_abstained": 10
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.0,
+        "new": 0.0
+      }
+    },
+    "bedrooms": {
+      "old": {
+        "questions": 37,
+        "answered": 23,
+        "exact": 19,
+        "wrong": 4,
+        "abstained": 14,
+        "accuracy": 0.5135,
+        "coverage": 0.6216,
+        "accuracy_when_answered": 0.8261
+      },
+      "new": {
+        "questions": 37,
+        "answered": 24,
+        "exact": 20,
+        "wrong": 4,
+        "abstained": 13,
+        "accuracy": 0.5405,
+        "coverage": 0.6486,
+        "accuracy_when_answered": 0.8333
+      },
+      "paired": {
+        "gained_exact": 1,
+        "lost_exact": 0,
+        "newly_answered": 1,
+        "newly_answered_exact": 1,
+        "dropped_answers": 0,
+        "both_answered": 23,
+        "both_abstained": 13
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.174,
+        "new": 0.174
+      }
+    },
+    "doors": {
+      "old": {
+        "questions": 35,
+        "answered": 35,
+        "exact": 16,
+        "wrong": 19,
+        "abstained": 0,
+        "accuracy": 0.4571,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4571
+      },
+      "new": {
+        "questions": 35,
+        "answered": 35,
+        "exact": 18,
+        "wrong": 17,
+        "abstained": 0,
+        "accuracy": 0.5143,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.5143
+      },
+      "paired": {
+        "gained_exact": 2,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 35,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 1.486,
+        "new": 0.857
+      }
+    },
+    "floors": {
+      "old": {
+        "questions": 48,
+        "answered": 0,
+        "exact": 0,
+        "wrong": 0,
+        "abstained": 48,
+        "accuracy": 0.0,
+        "coverage": 0.0,
+        "accuracy_when_answered": null
+      },
+      "new": {
+        "questions": 48,
+        "answered": 5,
+        "exact": 5,
+        "wrong": 0,
+        "abstained": 43,
+        "accuracy": 0.1042,
+        "coverage": 0.1042,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 5,
+        "lost_exact": 0,
+        "newly_answered": 5,
+        "newly_answered_exact": 5,
+        "dropped_answers": 0,
+        "both_answered": 0,
+        "both_abstained": 43
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": null,
+        "new": null
+      }
+    },
+    "kitchens": {
+      "old": {
+        "questions": 36,
+        "answered": 8,
+        "exact": 8,
+        "wrong": 0,
+        "abstained": 28,
+        "accuracy": 0.2222,
+        "coverage": 0.2222,
+        "accuracy_when_answered": 1.0
+      },
+      "new": {
+        "questions": 36,
+        "answered": 8,
+        "exact": 8,
+        "wrong": 0,
+        "abstained": 28,
+        "accuracy": 0.2222,
+        "coverage": 0.2222,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 8,
+        "both_abstained": 28
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.0,
+        "new": 0.0
+      }
+    },
+    "saunas": {
+      "old": {
+        "questions": 39,
+        "answered": 7,
+        "exact": 7,
+        "wrong": 0,
+        "abstained": 32,
+        "accuracy": 0.1795,
+        "coverage": 0.1795,
+        "accuracy_when_answered": 1.0
+      },
+      "new": {
+        "questions": 39,
+        "answered": 7,
+        "exact": 7,
+        "wrong": 0,
+        "abstained": 32,
+        "accuracy": 0.1795,
+        "coverage": 0.1795,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 7,
+        "both_abstained": 32
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.0,
+        "new": 0.0
+      }
+    },
+    "separate WC rooms": {
+      "old": {
+        "questions": 20,
+        "answered": 2,
+        "exact": 2,
+        "wrong": 0,
+        "abstained": 18,
+        "accuracy": 0.1,
+        "coverage": 0.1,
+        "accuracy_when_answered": 1.0
+      },
+      "new": {
+        "questions": 20,
+        "answered": 2,
+        "exact": 2,
+        "wrong": 0,
+        "abstained": 18,
+        "accuracy": 0.1,
+        "coverage": 0.1,
+        "accuracy_when_answered": 1.0
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 2,
+        "both_abstained": 18
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.0,
+        "new": 0.0
+      }
+    },
+    "sinks": {
+      "old": {
+        "questions": 46,
+        "answered": 46,
+        "exact": 29,
+        "wrong": 17,
+        "abstained": 0,
+        "accuracy": 0.6304,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.6304
+      },
+      "new": {
+        "questions": 46,
+        "answered": 46,
+        "exact": 29,
+        "wrong": 17,
+        "abstained": 0,
+        "accuracy": 0.6304,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.6304
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 46,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.674,
+        "new": 0.674
+      }
+    },
+    "toilet bowls": {
+      "old": {
+        "questions": 48,
+        "answered": 48,
+        "exact": 38,
+        "wrong": 10,
+        "abstained": 0,
+        "accuracy": 0.7917,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.7917
+      },
+      "new": {
+        "questions": 48,
+        "answered": 48,
+        "exact": 38,
+        "wrong": 10,
+        "abstained": 0,
+        "accuracy": 0.7917,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.7917
+      },
+      "paired": {
+        "gained_exact": 0,
+        "lost_exact": 0,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 48,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.292,
+        "new": 0.292
+      }
+    },
+    "windows": {
+      "old": {
+        "questions": 48,
+        "answered": 48,
+        "exact": 20,
+        "wrong": 28,
+        "abstained": 0,
+        "accuracy": 0.4167,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4167
+      },
+      "new": {
+        "questions": 48,
+        "answered": 48,
+        "exact": 23,
+        "wrong": 25,
+        "abstained": 0,
+        "accuracy": 0.4792,
+        "coverage": 1.0,
+        "accuracy_when_answered": 0.4792
+      },
+      "paired": {
+        "gained_exact": 7,
+        "lost_exact": 4,
+        "newly_answered": 0,
+        "newly_answered_exact": 0,
+        "dropped_answers": 0,
+        "both_answered": 48,
+        "both_abstained": 0
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 2.604,
+        "new": 2.229
+      }
+    }
+  },
+  "by_style": {
+    "high_quality": {
+      "old": {
+        "questions": 208,
+        "answered": 126,
+        "exact": 97,
+        "wrong": 29,
+        "abstained": 82,
+        "accuracy": 0.4663,
+        "coverage": 0.6058,
+        "accuracy_when_answered": 0.7698
+      },
+      "new": {
+        "questions": 208,
+        "answered": 130,
+        "exact": 106,
+        "wrong": 24,
+        "abstained": 78,
+        "accuracy": 0.5096,
+        "coverage": 0.625,
+        "accuracy_when_answered": 0.8154
+      },
+      "paired": {
+        "gained_exact": 10,
+        "lost_exact": 1,
+        "newly_answered": 4,
+        "newly_answered_exact": 4,
+        "dropped_answers": 0,
+        "both_answered": 126,
+        "both_abstained": 78
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 0.413,
+        "new": 0.246
+      }
+    },
+    "high_quality_architectural": {
+      "old": {
+        "questions": 190,
+        "answered": 108,
+        "exact": 59,
+        "wrong": 49,
+        "abstained": 82,
+        "accuracy": 0.3105,
+        "coverage": 0.5684,
+        "accuracy_when_answered": 0.5463
+      },
+      "new": {
+        "questions": 190,
+        "answered": 110,
+        "exact": 61,
+        "wrong": 49,
+        "abstained": 80,
+        "accuracy": 0.3211,
+        "coverage": 0.5789,
+        "accuracy_when_answered": 0.5545
+      },
+      "paired": {
+        "gained_exact": 5,
+        "lost_exact": 3,
+        "newly_answered": 2,
+        "newly_answered_exact": 2,
+        "dropped_answers": 0,
+        "both_answered": 108,
+        "both_abstained": 80
+      },
+      "mean_absolute_error_on_both_answered": {
+        "old": 1.611,
+        "new": 1.435
+      }
+    }
+  },
+  "inference_seconds": {
+    "old": 364.72,
+    "new": 283.42
+  }
+}

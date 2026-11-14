@@ -1,0 +1,7 @@
+# Reading the floor panels on a scan
+
+Planproof answers a question about how many storeys a drawing shows. For a multi-storey plan it looks for distinct printed level captions, including Finnish forms such as *1. kerros*, *2 KRS*, *alakerta*, *yläkerta* and *kellarikerros*. OCR reads the original PNG and maps captions back to their source coordinates. Repeated OCR detections of one caption count once.
+
+The reader checks the sheet at two grayscale thresholds and with two widths for joining nearby ink. A multi-storey answer requires separated level captions and matching counts of large drawn regions across at least two views. For a single-storey answer all four views must show one large region enclosing the room labels, with at least three labels across two room types. The evidence links either to each printed level caption or to the single room-labelled panel. A sheet with ambiguous panels falls through to the configured vision reader.
+
+On 218 previously examined development drawings, the local reader answered 77 questions and all 77 counts matched the sponsor answer. They comprised 62 single-storey, 13 two-storey and two three-storey drawings. The remaining 141 went to fallback. Several duplex sheets showed only one legible level caption and could not support an exact local count. The direct comparison on fresh drawings is reported separately. [48-drawing evaluation](scan-revision-evaluation.md)

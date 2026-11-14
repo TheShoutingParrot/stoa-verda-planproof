@@ -117,3 +117,19 @@ test('an inconclusive recheck retains its previous saved result and marks', asyn
   assert.match(elm('scan-status').textContent,/recheck returned unknown/);
   assert.equal(elm('scan-overlay').children.length,original.evidence.length);
 });
+
+
+test('scan review links open the named saved question and never start inference', async () => {
+  const target = {question:'How many windows?', status:'answered', answer:1, image_sha256:'verified',
+    evidence:[{label:'Window',box:[10,20,45,25]}]};
+  for (const [question,expected] of [[target.question,'1'],['Count showers','—']]) {
+    const {elm,calls}=harness('library-scan.js','/scan-drawing.html?'+new URLSearchParams({path:scan,question}),
+      () => ({imageSha256:'verified', configured:true, drawing:{path:scan,kind:'scan',name:'example.png'},
+        saved:[original,target]}));
+    await flush();
+    assert.equal(elm('scan-question').value,question);
+    assert.equal(elm('scan-answer').textContent,expected);
+    assert.equal(calls.length,1);
+    assert.equal(calls[0][1]?.method,undefined);
+  }
+});

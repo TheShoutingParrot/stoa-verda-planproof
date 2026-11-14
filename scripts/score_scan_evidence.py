@@ -220,6 +220,21 @@ def reports(path):
     return rows
 
 
+def paired_predictions(questions, before=None, after=None):
+    if (before is None) != (after is None):
+        raise ValueError('Pass both original prediction sets together.')
+    if before is not None:
+        return reports(before), reports(after)
+    arms = ({}, {})
+    for row in questions:
+        for arm, name in zip(arms, ('old', 'new')):
+            prediction = row[name]
+            if prediction['id'] != row['id'] or prediction['question'] != row['question']:
+                raise ValueError('Embedded prediction belongs to a different question.')
+            arm[(row['path'],row['question'])] = prediction
+    return arms
+
+
 def run(questions, upstream, before, after):
     buckets = {name: defaultdict(Counter) for name in ('before','after')}
     comparable = {name: defaultdict(Counter) for name in buckets}
@@ -265,9 +280,12 @@ def run(questions, upstream, before, after):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    for arg in ('questions', 'upstream', 'before', 'after', 'output'):
+    for arg in ('questions', 'upstream', 'output'):
         parser.add_argument('--'+arg, type=Path, required=True)
+    for arm in ('before', 'after'):
+        parser.add_argument('--'+arm, type=Path, help='Optional prediction directory for the original benchmark format.')
     args = parser.parse_args()
-    output = run(json.loads(args.questions.read_text()), args.upstream, reports(args.before), reports(args.after))
+    questions = json.loads(args.questions.read_text())
+    output = run(questions, args.upstream, *paired_predictions(questions, args.before, args.after))
     args.output.write_text(json.dumps(output, indent=2)+'\n')
     print(json.dumps({k:v['all'] for k,v in output['by_reader'].items()}))

@@ -122,7 +122,8 @@ class ScanTests(unittest.TestCase):
                         reason='Inference endpoint returned HTTP 429.')]
         replay.write_text(json.dumps(dict(version=1, reports=reports)))
         digest = hashlib.sha256(replay.read_bytes()).hexdigest()
-        patcher = patch.multiple(scan, REPLAY_FILE=replay, REPLAY_SHA256=digest)
+        patcher = patch.multiple(scan, REPLAY_FILE=replay, REPLAY_SHA256=digest,
+                                 REVISION_REPLAY_FILE=replay.with_name('missing-revision-bundle'))
         patcher.start()
         self.addCleanup(patcher.stop)
         return replay
@@ -171,6 +172,40 @@ class ScanTests(unittest.TestCase):
         self.assertTrue(all(f not in UI_FIELDS for f in
                             ('gold','correct','latency_ms','timestamp','usage','attempts','headers','api_key')))
 
+    def test_revision_replay_contains_only_measured_counts_and_preserves_studio_evidence(self):
+        from scripts.export_scan_replay import UI_FIELDS
+        data = scan.REVISION_REPLAY_FILE.read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(), scan.REVISION_REPLAY_SHA256)
+        reports = json.loads(data)['reports']
+        self.assertEqual(len(reports),240)
+        self.assertEqual(len({(r['path'],r['question']) for r in reports}),240)
+        historical = json.loads(scan.REPLAY_FILE.read_bytes())['reports']
+        self.assertTrue({r['path'] for r in historical}.isdisjoint(r['path'] for r in reports))
+        for r in reports:
+            self.assertFalse(set(r)-set(UI_FIELDS))
+            self.assertEqual((r['status'],len(r['evidence'])),('answered',r['answer']))
+            for item in r['evidence'] + r.get('coverage_evidence',[]):
+                self.assertEqual(set(item),{'label','box'})
+        rooms = [r for r in reports if r['method']=='local_room_labels' and r['answer']==0]
+        self.assertEqual(len(rooms),1)
+        self.assertEqual(len(rooms[0]['coverage_evidence']),2)
+
+    def test_distinct_portable_bundles_coexist_and_degrade_independently(self):
+        historical = self.replay_fixture()
+        revision = historical.with_name('revision.json')
+        second = dict(self.raw, origin='Measured scan revision · local floor panels',
+                      question='Count the storeys', method='local_storey_panels')
+        revision.write_text(json.dumps(dict(version=1, reports=[second])))
+        with patch.multiple(scan, REVISION_REPLAY_FILE=revision,
+                            REVISION_REPLAY_SHA256=hashlib.sha256(revision.read_bytes()).hexdigest()):
+            saved = {r['question']:r for r in scan.scan_info(self.lib,self.path)['saved']}
+            self.assertEqual(len(saved),4)
+            self.assertEqual(saved[second['question']]['method'],'local_storey_panels')
+            historical.unlink()
+            self.assertEqual([r['question'] for r in scan.scan_info(self.lib,self.path)['saved']], [second['question']])
+            revision.write_bytes(b'corrupted')
+            self.assertEqual(scan.scan_info(self.lib,self.path)['saved'],[])
+
     def test_newer_interactive_wins_and_weak_candidate_preserves_saved_answers(self):
         self.replay_fixture()
         prior = dict(self.raw, question='How many saunas?', answer=0,evidence=[])
@@ -183,3 +218,55 @@ class ScanTests(unittest.TestCase):
         (location/'interactive.json').write_text(json.dumps(dict(self.raw,answer=0,evidence=[],origin='Rechecked locally')))
         new = scan.scan_answer(self.lib,self.path,self.q)
         self.assertEqual((new['answer'],new['origin']),(0,'Rechecked locally'))
+
+
+class RevisionExportTests(unittest.TestCase):
+    def test_export_verifies_source_and_omits_offline_abstentions_and_private_fields(self):
+        from scripts import export_scan_replay as exporter
+        from zipfile import ZipFile
+        with tempfile.TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            (base/'new/outputs').mkdir(parents=True)
+            (base/'old').mkdir()
+            archive = base/'synthetic.zip'
+            rows, predictions = [], {}
+            with ZipFile(archive,'w') as originals:
+                for n in range(48):
+                    image = f'data/cubicasa5k/fixture-{n}.png'
+                    data = str(n).encode()
+                    originals.writestr('junction-dataset/'+image,data)
+                    digest = exporter.sha(data)
+                    for q in range(8 + (n<14)):
+                        text = f'Count synthetic target {q}'
+                        rid = exporter.sha((image+'|'+text).encode())[:16]
+                        rows.append(dict(id=rid,path=image,question=text,image_sha256=digest))
+                        out = dict(id=rid,question=text,image_sha256=digest,status='abstained',answer=None,
+                                   evidence=[],method='offline_fallback',elapsed_ms=12345)
+                        if n==0 and q==0:
+                            out.update(status='answered',answer=1,method='local_room_labels',
+                                       evidence=[dict(label='MH',box=[10,20,30,40],private_metadata='discard')])
+                        predictions[rid] = out
+                        (base/'new/outputs'/(rid+'.json')).write_bytes(exporter.canonical(out))
+            manifest = dict(images=48,rows=rows)
+            manifest_file = base/'inputs.json'
+            manifest_file.write_bytes(exporter.canonical(manifest))
+            manifest_sha = exporter.sha(exporter.canonical(manifest))
+            pins = {}
+            for arm in ('old','new'):
+                seal = dict(rows=398, manifest_sha256=manifest_sha, config_sha256='synthetic',
+                            predictions_sha256=exporter.sha(exporter.canonical(predictions)))
+                (base/arm/'seal.json').write_bytes(exporter.canonical(seal))
+                pins[arm] = exporter.sha(exporter.canonical(seal))
+            with patch.multiple(exporter, REVISION_MANIFEST_SHA=manifest_sha, REVISION_SEALS=pins):
+                result = json.loads(exporter.export_revision(manifest_file,base,archive))
+                self.assertEqual(len(result['reports']),1)
+                report = result['reports'][0]
+                self.assertEqual((report['status'],report['model']),('answered','Room label OCR'))
+                self.assertEqual(report['evidence'],[{'label':'MH','box':[10,20,30,40]}])
+                self.assertNotIn('elapsed_ms',report)
+                output = base/'new/outputs'/(rows[-1]['id']+'.json')
+                changed = json.loads(output.read_bytes())
+                changed['elapsed_ms'] = 1
+                output.write_bytes(exporter.canonical(changed))
+                with self.assertRaisesRegex(ValueError,'do not match the seal'):
+                    exporter.export_revision(manifest_file,base,archive)

@@ -21,6 +21,8 @@ The original drawings provide an independent check on the overlay. Across 24 com
 
 ## Reproduction
 
+Use release commit `4d79ac0` in a separate checkout to reproduce the original scan reader and the exact inference-source fingerprints from this measurement. The newer reader has its own [48-drawing comparison](scan-revision-evaluation.md).
+
 Download the official split files `cubicasa5k/train.txt`, `val.txt` and `test.txt` from the upstream ZIP linked above. Their SHA-256 digests are in the manifest. Place the sponsor release under the path described in [the full English evaluation](full-english.md), or supply `--archive`. The following commands use the frozen exclusions and stage only the public prompts and unmodified input PNGs.
 
 ```sh

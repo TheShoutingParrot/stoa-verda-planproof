@@ -1,7 +1,8 @@
 'use strict';
 
 const node = id => document.getElementById(id);
-const scanPath = new URLSearchParams(window.location.search).get('path');
+const requested = new URLSearchParams(window.location.search);
+const scanPath = requested.get('path');
 let info, reports = [], selectedReport = -1, selectionRevision = 0, running = false, openRequest = 0;
 
 function message(text, retry = false) {
@@ -115,7 +116,22 @@ async function loadScan() {
     node('scan-question').disabled = false;
     node('scan-service').hidden = false;
     node('scan-service').textContent = info.configured ? 'Counts use local readers when available. Other questions use the configured vision model.' : info.local ? 'Local readers are available for supported count questions.' : 'Configure a reader to ask a new question. Saved results are available offline.';
-    listOptions(); showReport(reports.length ? 0 : -1); message('');
+    listOptions();
+    const requestedQuestion = requested.get('question')?.trim();
+    if (requestedQuestion) {
+      const index = reports.findIndex(report => normalize(report.question) === normalize(requestedQuestion));
+      showReport(index);
+      if (index < 0) {
+        node('scan-question').value = requestedQuestion;
+        node('answer-question').textContent = requestedQuestion;
+        node('answer-reason').textContent = 'No saved count for this question.';
+        node('saved-questions').selectedIndex = -1;
+        syncAction();
+      }
+    } else {
+      showReport(reports.length ? 0 : -1);
+    }
+    message('');
   } catch (error) { if (ticket === openRequest) message(error.message, true); }
 }
 async function ask(refresh = false) {

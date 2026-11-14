@@ -1,0 +1,3220 @@
+{
+  "seed": "planproof-scan-revision-2026-11-14-independent-v2",
+  "previous_manifest_sha256": "37c2984cafd660f1e052b8679aa488caf09b5bf963fabac2cffcca4c6a6744ac",
+  "extra_exclusions": [],
+  "source_questions_sha256": "0e6322c74561a63f42bac35f5c1be8a2c6a37516b14a81e66ab88b74950a6d1f",
+  "upstream_splits_sha256": {
+    "train": "80904159dfc4a732db9d8f77dbdd6374f74789986d9b3d4a4040b84268dc61e6",
+    "val": "0a3b54194a383930d61f48d2f157c8e866de2b7d9aa7a01ce21571eccf6eb7c3",
+    "test": "3997ee6378007f10e945b2621921127477530abe8f8c053f43e327a365f5ce5a"
+  },
+  "eligible_by_style": {
+    "high_quality": 43,
+    "high_quality_architectural": 225
+  },
+  "styles": {
+    "high_quality": 24,
+    "high_quality_architectural": 24
+  },
+  "images": 48,
+  "questions": 398,
+  "category_counts": {
+    "balconies": 19,
+    "bathrooms": 22,
+    "bedrooms": 37,
+    "doors": 35,
+    "floors": 48,
+    "kitchens": 36,
+    "saunas": 39,
+    "separate WC rooms": 20,
+    "sinks": 46,
+    "toilet bowls": 48,
+    "windows": 48
+  },
+  "rows": [
+    {
+      "id": "5486664f381b00da",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "94e228ed344a7921",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "04a1d4679eb91edd",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "c447d950ec17dc58",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "1019100c0bb6b145",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "f3383dab9389f6d7",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "95043e5fb014821b",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "865971897ef9295c",
+      "path": "data/cubicasa5k/high_quality-1025.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "a7c42e58c634f4c16e666b219f02d72a31c1e1a21789165c9c4820a94c88de51"
+    },
+    {
+      "id": "4d5763aef5bfc9a0",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "d2ccac4df48f0cca",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "f4fec68d2eb053bd",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "e28093a211e22f3a",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "873e5a890dbaa12e",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "a52ff53d571b3a3e",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "2558ea677af347d9",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "6df56bf44a5b36fb",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "dea0548d22fa3a2a",
+      "path": "data/cubicasa5k/high_quality-1282.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "31e341c08675994a2b64815fde0199f795c9c015fb42e7882e5698b909e733ad"
+    },
+    {
+      "id": "8f3f95761459d95e",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "cd6955871dde0664",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "467b1cc1566cdb56",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "8c1bd2dc376b5f07",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "7fa9f665d1267237",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "4037e36322b0261b",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "87c9c66cbfb57a5e",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "6460b53fd89f2c05",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "c819eb7f6b2696e0",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "5089a9afe91b3def",
+      "path": "data/cubicasa5k/high_quality-1403.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "8b6ebd8ba8366aa064bdf2f75d29a0820fa932d5d27c237014ce3e20f01c3473"
+    },
+    {
+      "id": "a51bfca03a46ccbd",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "0153fe0218d473c8",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "d3e0c54f9016b1b1",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "9d30e2c8c5efdf74",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "528f34bc97fa609e",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "0d15923cae4a3a00",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "478d7048411b281d",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "675418e2084cc668",
+      "path": "data/cubicasa5k/high_quality-20174.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "75eb5d8fb81b72d5358ca00d44050412076acaaf55f35a21218d6cad99635a0d"
+    },
+    {
+      "id": "b6d44c09bbb63fa1",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "f29deca3dcf563c6",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "838e8e5fcfe88351",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "9b4b5062bed4c3ac",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "997aaed4a5c92022",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "e3ead469d8ca8d31",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "667ee535acccdfb7",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "1cf244ba5cba1ded",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "6978dd38d16dff7b",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "89850400278a4e28",
+      "path": "data/cubicasa5k/high_quality-20183.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "499c7a5c1fefcd735907da15402b45d06b38325e50c27c10fb73d69738879eba"
+    },
+    {
+      "id": "e63174c431b19b6b",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "43ed3d1cf8cb6e4a",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "e595e46ff7c08456",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "60d73a0f1ff8ede1",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "2d1c5c36ddc3fcdf",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "4b148cc9102ea0be",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "bc85e674b5465de9",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "b8715b5a0700350d",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "a42f9482f3dd09cc",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "25bcc6823059f307",
+      "path": "data/cubicasa5k/high_quality-20197.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "e5e188abe814b6cfc7b97e912f3cb1255ace6b8dac507c3a30dca095cb5624eb"
+    },
+    {
+      "id": "0ef56213fed8999d",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "a1a6c4656b16f691",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "584c7b51df54a508",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "69323b0f1307d47e",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "3566a016f106a671",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "346d32cf0d7a1394",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "8f81d579f7857697",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "6d9024fa9303f9a9",
+      "path": "data/cubicasa5k/high_quality-20198.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "3ac61a2d412a857c9c34b375e4004dbc18163051e17c421ae5235a60d7dbadcc"
+    },
+    {
+      "id": "c29b902f98ce5ac8",
+      "path": "data/cubicasa5k/high_quality-3106.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "a218a77f4911774c7b3cbf000e1d33a5ecef66dae2f8e5629eb78dd6a8a5ece4"
+    },
+    {
+      "id": "ca645881d6b8a150",
+      "path": "data/cubicasa5k/high_quality-3106.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "a218a77f4911774c7b3cbf000e1d33a5ecef66dae2f8e5629eb78dd6a8a5ece4"
+    },
+    {
+      "id": "b30f14f19db6eb58",
+      "path": "data/cubicasa5k/high_quality-3106.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "a218a77f4911774c7b3cbf000e1d33a5ecef66dae2f8e5629eb78dd6a8a5ece4"
+    },
+    {
+      "id": "1f2e8bcddca3e9b1",
+      "path": "data/cubicasa5k/high_quality-3106.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "a218a77f4911774c7b3cbf000e1d33a5ecef66dae2f8e5629eb78dd6a8a5ece4"
+    },
+    {
+      "id": "48bcd55e60c0fe01",
+      "path": "data/cubicasa5k/high_quality-3106.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "a218a77f4911774c7b3cbf000e1d33a5ecef66dae2f8e5629eb78dd6a8a5ece4"
+    },
+    {
+      "id": "db44dfe02c255b47",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "7982b79d03ad715b",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "2349f18420060d81",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "2b724041ea65636d",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "3a661003e3757110",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "57fec4bd1843eb75",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "ad3891dae8accad3",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "6ac39ccd602b1039",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "d7eead8adc477ccc",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "3756ef2a24e3907d",
+      "path": "data/cubicasa5k/high_quality-3247.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "31567e29c3695ef95ee9efc65724ebc096f84803a16bbb2f2bb58ae3fb239759"
+    },
+    {
+      "id": "f00e1a468a463d16",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "014ecc8d75141e30",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "351865e198f6891e",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "feee248643253a1a",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "b2ce113aa2cc2045",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "fd1711897acc35a5",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "6d6bc07e51599f05",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "e3b898feedd0a339",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "f9b435302b247df5",
+      "path": "data/cubicasa5k/high_quality-3638.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "090ec944f11bb78259b60021c7245cf4a9d04aa254e9b0b164a952e7be60ea14"
+    },
+    {
+      "id": "8dd16edd6e88ad97",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "d73841e99ff2e630",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "1f90baa098ab115f",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "6b02ede4c3bc0a22",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "a497522712bdc0e9",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "b287e1928f478a17",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "5711d47a56c191e4",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "56ce8c9f7da08f86",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "783aa0bdd3c46fe1",
+      "path": "data/cubicasa5k/high_quality-3676.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "98790af609ce9cc67d05790d117829fa4d099ea5345381ff2b6451b0f76bc19c"
+    },
+    {
+      "id": "6ac04f6b047ccc2a",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "c40a93a8b56148a8",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "45a4666de5624ef0",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "47d8b9dd25c17632",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "68b43cda57a3d402",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "2bc9f5b38758b440",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "d064426f7f97bf7f",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "33ae9fecaf0ac381",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "397aeff8008dc44b",
+      "path": "data/cubicasa5k/high_quality-3801.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "9b5d32b55b13a6037011203748653183af33fd841474587442148b6d3aa20dfb"
+    },
+    {
+      "id": "b6b22c02a9b266b0",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "10845788392f4b69",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "4ca5f04fdcfa936d",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "3a67337b7f1cab6a",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "f36db0ea61e184a1",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "7c8aca8b324734da",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "626c88a498130b95",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "90852810dd721e6a",
+      "path": "data/cubicasa5k/high_quality-4712.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "8959c3517839a5982a6b61d60fa6349d57efd8c8e9dbe0ca31769216608d8f52"
+    },
+    {
+      "id": "ca1fd46b7cf14372",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "86cd6429eedd29ce",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "d66dc97a61ec84bc",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "3c31cbe7a6c4fb5b",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "f555d644cdf393bc",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "639016d620b54a05",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "e69af9a5a434a24a",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "dc511523ac00db32",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "0c8603ec12161900",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "d7eadc677a7d67f1",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "496342c4f35ceece",
+      "path": "data/cubicasa5k/high_quality-4767.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "26af85d03c1b35ef850cea577252a99d824676e59b9fa0eed558dab530d0285d"
+    },
+    {
+      "id": "f6b8fb6549848f11",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "fc1353007c74c4f4",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "3b6b4b437edb2f31",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "566cad55f52806ed",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "9ddeb9ef3a54c7a0",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "32cb5c103d344339",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "e863c1a0eb4cd8f8",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "65a5974c02113393",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "eb5ea2060015a373",
+      "path": "data/cubicasa5k/high_quality-477.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "1703d616ec62cb34332b4b80f8610a7b4e104757dcc2e19839f4778721488dc5"
+    },
+    {
+      "id": "e1617225db8c951e",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "b1bbd2d5b122b018",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "a94bb9c1534b3f43",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "2e774479e39f22a7",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "ddf7868c4b52876d",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "bb4bae33c67a296d",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "e9bf037ee1cce7e7",
+      "path": "data/cubicasa5k/high_quality-4815.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "5570bd98766631529cab69f8aa024d147d171bd3f87462cd7f1396cb423feb6d"
+    },
+    {
+      "id": "043925109faa78df",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "6214e7e30f0b7254",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "f382be662a8f198d",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "d22b041f3aaf1d53",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "7cc6a56600a18640",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "6af8fc1395b48c2f",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "fa0a2e3ea3eecc17",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "c953aa9a0121ab15",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "53b7a80e097fe025",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "81eeee7fb4d9da8b",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "f9b4854f116f88fb",
+      "path": "data/cubicasa5k/high_quality-5588.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "0a9c5e853f1de45dc1b5d28169cf27234acddd69edc4d9d615c1da9a0ad8e9b9"
+    },
+    {
+      "id": "fee59e1697b09f7e",
+      "path": "data/cubicasa5k/high_quality-5836.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "26130c279fa148e6f1632126c19eebc530299f59fb885cc262d149b570173880"
+    },
+    {
+      "id": "5d00aff1ec5cafd0",
+      "path": "data/cubicasa5k/high_quality-5836.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "26130c279fa148e6f1632126c19eebc530299f59fb885cc262d149b570173880"
+    },
+    {
+      "id": "6f0d99971e9b3e3c",
+      "path": "data/cubicasa5k/high_quality-5836.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "26130c279fa148e6f1632126c19eebc530299f59fb885cc262d149b570173880"
+    },
+    {
+      "id": "9b08a2fb0939ae90",
+      "path": "data/cubicasa5k/high_quality-5836.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "26130c279fa148e6f1632126c19eebc530299f59fb885cc262d149b570173880"
+    },
+    {
+      "id": "42d7475ac98825e1",
+      "path": "data/cubicasa5k/high_quality-5836.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "26130c279fa148e6f1632126c19eebc530299f59fb885cc262d149b570173880"
+    },
+    {
+      "id": "44435052ef3ae6d1",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "32d6fb35fb800610",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "f8894560345c4872",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "961bfb970b6d6223",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "f2aeca30aaa316f0",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "fae4d5ddcd8da559",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "07c120ca0cb2b141",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "930f1480504c70ef",
+      "path": "data/cubicasa5k/high_quality-6058.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "59bb95ba3f13aabc388540edf60ecbeec68d691e34b26b0b795146b1af8454e8"
+    },
+    {
+      "id": "4ffffcc2c34d3ff4",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "338404fa9670a3de",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "528c0aea7a48c037",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "da89d4bcb65db2b6",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "f410ac7d6de166da",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "e84b7579f8b3570d",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "b05f07e927c8104d",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality",
+      "category": "separate WC rooms",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "c489aa8ea297df77",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "f9837de896495882",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "d9f02943403d27b7",
+      "path": "data/cubicasa5k/high_quality-837.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "f71fc99753ce5e84a24ca64716b49f01b3bddebd0bd023ae4ba8c4a672adf656"
+    },
+    {
+      "id": "ab55846bb8b44c6c",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "a1687f9f2d140ad2",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "d4904fdf9eab9e3b",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "379f2aec9be06f92",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "37387fd1286093ed",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "b6651adc227ab81c",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "47dc8ccaa5210145",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "3b61230e3069e878",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "4d2f8e3687c7b493",
+      "path": "data/cubicasa5k/high_quality-8380.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "526f5e425b275ae6b127702fbee02f44e7cd96ab9984ed351799019c119e9288"
+    },
+    {
+      "id": "d851101c774f93a3",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality",
+      "category": "bathrooms",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "c6a0c9513af24a9d",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "62c4b0e59ca679a0",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "208d717e6e38ecb7",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "88d41bacf216de36",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "b6ce57fe7a552105",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "0311f57642151df6",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "874679983bec48c9",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "caca32d6b2b1e23d",
+      "path": "data/cubicasa5k/high_quality-90.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "f0bb187a9d8e61aa28f43e4a8fe6b321ea62de9df5d4c5bb5956994adbdf675a"
+    },
+    {
+      "id": "443a52f027757351",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "8edf58e8548fff2f",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "7ea976d45f6c9a1e",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "2c8870c462b0437e",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "2fa2648f3dc36d19",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "d120a9eeece37e9f",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "8dc462216f788148",
+      "path": "data/cubicasa5k/high_quality-9671.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "8e50869e6a4eb9aaa01e2583d785959f6aff39cb4bcc54da07166f4659d614ae"
+    },
+    {
+      "id": "78f52bfb2f81fde7",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality",
+      "category": "balconies",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "1b7aec2c3d866f95",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality",
+      "category": "bedrooms",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "d4a8705609290a09",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality",
+      "category": "doors",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "16bf652debe03523",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality",
+      "category": "floors",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "e93359a28f2abdc0",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality",
+      "category": "kitchens",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "42246e96ee74feca",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality",
+      "category": "saunas",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "c5c79c4be05112d6",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "sinks",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "337bdb6684806af1",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality",
+      "category": "toilet bowls",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "1f23663e4c510320",
+      "path": "data/cubicasa5k/high_quality-9864.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality",
+      "category": "windows",
+      "image_sha256": "69f0b31a942cad7d463a2c7c8f5575f9c4798226bf40c23902de1b594fae2c94"
+    },
+    {
+      "id": "0a38e803bbdb4817",
+      "path": "data/cubicasa5k/high_quality_architectural-1191.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "0d5f505034d6462d529dc15ff74205f08c7210a2fc524a657beafc560d1f06f3"
+    },
+    {
+      "id": "2da8a4ca0428da29",
+      "path": "data/cubicasa5k/high_quality_architectural-1191.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "0d5f505034d6462d529dc15ff74205f08c7210a2fc524a657beafc560d1f06f3"
+    },
+    {
+      "id": "546a467444004ca0",
+      "path": "data/cubicasa5k/high_quality_architectural-1191.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "0d5f505034d6462d529dc15ff74205f08c7210a2fc524a657beafc560d1f06f3"
+    },
+    {
+      "id": "c0af284c392a0be5",
+      "path": "data/cubicasa5k/high_quality_architectural-1191.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "0d5f505034d6462d529dc15ff74205f08c7210a2fc524a657beafc560d1f06f3"
+    },
+    {
+      "id": "d34c4af83b5fe0ed",
+      "path": "data/cubicasa5k/high_quality_architectural-1191.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "0d5f505034d6462d529dc15ff74205f08c7210a2fc524a657beafc560d1f06f3"
+    },
+    {
+      "id": "26431d8e9f896904",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "77f76dc661ed1a40",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "59e85868cc11476c",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "a57bf14a8fb98a5f",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "5792eeb8e70e908d",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "11cd81537fa48e85",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "0e032916e066b16a",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "212fd09e011d7e9a",
+      "path": "data/cubicasa5k/high_quality_architectural-1319.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "189d012f6a95931a4aeecfa8f0c463bf36571a20cc78eed6585938bda1e46c13"
+    },
+    {
+      "id": "8a7c43f2cf610fda",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "48de838b40572b65",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "a98831a20cc7c4ff",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "13be5cf1c3910737",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "3459c405657832ad",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "4c701a4126e34b94",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "3021ca8becafe6f1",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "7e3ab3ade1b0ba38",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "136b0aa209179143",
+      "path": "data/cubicasa5k/high_quality_architectural-165.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "ea17f4b9af80d2cd2b13dc25338dcb10ebaa38214ca344716facb3d151f2bcaf"
+    },
+    {
+      "id": "5815dfae38a5c6c4",
+      "path": "data/cubicasa5k/high_quality_architectural-1669.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "5d9792c239d1021387363cb056851a076d0dc412ae50912338340cd4a9812e5e"
+    },
+    {
+      "id": "469f39aa5702afc0",
+      "path": "data/cubicasa5k/high_quality_architectural-1669.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "5d9792c239d1021387363cb056851a076d0dc412ae50912338340cd4a9812e5e"
+    },
+    {
+      "id": "28863cc915d70864",
+      "path": "data/cubicasa5k/high_quality_architectural-1669.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "5d9792c239d1021387363cb056851a076d0dc412ae50912338340cd4a9812e5e"
+    },
+    {
+      "id": "c00c257cb897f2e5",
+      "path": "data/cubicasa5k/high_quality_architectural-1669.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "5d9792c239d1021387363cb056851a076d0dc412ae50912338340cd4a9812e5e"
+    },
+    {
+      "id": "2a2929e89b2a1c5c",
+      "path": "data/cubicasa5k/high_quality_architectural-1669.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "5d9792c239d1021387363cb056851a076d0dc412ae50912338340cd4a9812e5e"
+    },
+    {
+      "id": "3bd8aed32e37bae6",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "086a7d3ea24141ac",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "9260026113d47b6d",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "78286895d65f3f40",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "04ed6aa285461e76",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "d8a0511b12d4a67d",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "ae97260c1f49c5ea",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "2d0b969126851e99",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "3ebebcc86a0a0f23",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "6b7c0d176fa537fe",
+      "path": "data/cubicasa5k/high_quality_architectural-1767.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "7c4f922a07e659f4af6144b8727e916652d48402f36c9d649664a9b7de470629"
+    },
+    {
+      "id": "f9ab20c7efe7308a",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "321b4cd6e027939f",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "56911f232feb1f93",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "1a5c99c4ba76cd68",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "b32e8fd08d5ae2d5",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "5b767b4f5d8b2a0d",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "70f3a98bcb635edb",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "0bbc3b9d33216fad",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "87467c559ab83525",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "48066562615455ca",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "010a763ba032bb55",
+      "path": "data/cubicasa5k/high_quality_architectural-1837.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "bd79c6bdc3d569cbe686b1603691fd91a625546531de2f9ef1e2932963619b46"
+    },
+    {
+      "id": "1cdf76e78c4b5a03",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "34006242e3dfa557",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "9a5f18f8c9654575",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "4127b91607b3d025",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "b780323b82cad677",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "ef90803cb6056240",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "a73fa726094045dd",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "24ad32a3499e5361",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "47b44bd9defc9a9f",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "b729cf7d0f8ce87b",
+      "path": "data/cubicasa5k/high_quality_architectural-1966.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "5b28b96483fc7016792cf2ee8d5915859db0e6b23bb3331ab9e0d4cfc72bc92c"
+    },
+    {
+      "id": "95f7456962e629b8",
+      "path": "data/cubicasa5k/high_quality_architectural-1982.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "aae864aaf28570df9d032953f0a19595f7c7ce05b04ecf199c21ec11613d50ce"
+    },
+    {
+      "id": "d04b54e4ded9a09e",
+      "path": "data/cubicasa5k/high_quality_architectural-1982.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "aae864aaf28570df9d032953f0a19595f7c7ce05b04ecf199c21ec11613d50ce"
+    },
+    {
+      "id": "c0ef41d73eaf0f2c",
+      "path": "data/cubicasa5k/high_quality_architectural-1982.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "aae864aaf28570df9d032953f0a19595f7c7ce05b04ecf199c21ec11613d50ce"
+    },
+    {
+      "id": "fc8341a0d8e44b2f",
+      "path": "data/cubicasa5k/high_quality_architectural-1982.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "aae864aaf28570df9d032953f0a19595f7c7ce05b04ecf199c21ec11613d50ce"
+    },
+    {
+      "id": "6b07632b4db504f2",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "0bd83fb363892285",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "008a2e2f9d1898d7",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "83fa0bbb7eba5b69",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "20dd6c59a230e595",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "18f5e80b8ab496cb",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "65884cbc39ca0e2d",
+      "path": "data/cubicasa5k/high_quality_architectural-20000.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "e6a05c50d3ab1352dc40c6eb855de09a4110c3029bd01a525a66c286b9fab5ab"
+    },
+    {
+      "id": "2c5ac1e5d53f8721",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "50a3d86cd1b02745",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "a6064f18cb951963",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "e61fc257075baa31",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "834e8b7065c90613",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "37e5dbcb69871b28",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "18017a4a599a13d2",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "5d60ed80d096e6fa",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "a6b6ba444139a26e",
+      "path": "data/cubicasa5k/high_quality_architectural-2037.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "a3972a4b9e3c495d550658646b7d1d88881852e1c13fadd7b5d861fd71f3c4e6"
+    },
+    {
+      "id": "78c5a6d21506a278",
+      "path": "data/cubicasa5k/high_quality_architectural-2204.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "8bb8c3db785d84d39304664a4e25291a31339830b6ada319dbf370441cfb5f15"
+    },
+    {
+      "id": "c2f5315f60326810",
+      "path": "data/cubicasa5k/high_quality_architectural-2204.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "8bb8c3db785d84d39304664a4e25291a31339830b6ada319dbf370441cfb5f15"
+    },
+    {
+      "id": "9b1025e97e442bb9",
+      "path": "data/cubicasa5k/high_quality_architectural-2204.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "8bb8c3db785d84d39304664a4e25291a31339830b6ada319dbf370441cfb5f15"
+    },
+    {
+      "id": "e21e207966990ccd",
+      "path": "data/cubicasa5k/high_quality_architectural-2204.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "8bb8c3db785d84d39304664a4e25291a31339830b6ada319dbf370441cfb5f15"
+    },
+    {
+      "id": "0954696052e643ae",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "23d6e717c7be2aae",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "ec99bbe738aee396",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "8d1948bdfd104791",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "6352f554d9d081f7",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "f3a80391181d990b",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "533f33e338c59366",
+      "path": "data/cubicasa5k/high_quality_architectural-4014.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "d85199b5df71f4d0d466bd65cc4dc727316ca59cf6ccb15ae2aca44e6132a2ae"
+    },
+    {
+      "id": "9ac1eb3a9da597ba",
+      "path": "data/cubicasa5k/high_quality_architectural-4707.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "b02cab417381cad888321e53bd284faa6aefd7f55b23a4552d9f8264b63c3954"
+    },
+    {
+      "id": "b1abd405b9c336fc",
+      "path": "data/cubicasa5k/high_quality_architectural-4707.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "b02cab417381cad888321e53bd284faa6aefd7f55b23a4552d9f8264b63c3954"
+    },
+    {
+      "id": "15b70408ae6be149",
+      "path": "data/cubicasa5k/high_quality_architectural-4707.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "b02cab417381cad888321e53bd284faa6aefd7f55b23a4552d9f8264b63c3954"
+    },
+    {
+      "id": "14270cd8ff0d01f1",
+      "path": "data/cubicasa5k/high_quality_architectural-4707.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "b02cab417381cad888321e53bd284faa6aefd7f55b23a4552d9f8264b63c3954"
+    },
+    {
+      "id": "1cf0b116ddd29671",
+      "path": "data/cubicasa5k/high_quality_architectural-4707.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "b02cab417381cad888321e53bd284faa6aefd7f55b23a4552d9f8264b63c3954"
+    },
+    {
+      "id": "4385e041048c6987",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "d31474425a48a2d7",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "dc10826f2ab2d891",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "eed038868a9a95ad",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "ffb5b5b4cdaa795b",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "f568b9bc00fa8aed",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "42ed1372240698ca",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "3fd85bf845af9573",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "95b4639b2dc1c172",
+      "path": "data/cubicasa5k/high_quality_architectural-4898.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "7db8fbc69fcb0ec027baa306327a3d7b93a99f136ae57db1248fada92e51e1ed"
+    },
+    {
+      "id": "9083e27f46719284",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "fc03b76260e9d5c4",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "00e8974aef53931e",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "e8e81f8b53c3fe54",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "b1a7513d5058c8b0",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "9255cc7893531cc3",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "a76bb9e7bf920faa",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "3c39c30ed0f7f4e4",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "8c12b061903b166b",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "c21712fac38bcac9",
+      "path": "data/cubicasa5k/high_quality_architectural-5018.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "3611b41a237712cae6120b4997f27debcd51640c6e4837ed2b4616848901f9d0"
+    },
+    {
+      "id": "88ffdce9541f8ee8",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "475cda1e2090d3bb",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "627c59a9f4756661",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "c781982d579714c7",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "44a42c1934bf0f5c",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "beea7ae3b0b70452",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "bffa4bcc572279d1",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "a955609a4d7c7541",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "32cc88ebf541f848",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "3333b6a278baf30d",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "dde7575934a4cbe9",
+      "path": "data/cubicasa5k/high_quality_architectural-5089.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "d543f8edd2a7f83f8d20626c2ff2394074270f8dc083b7bb39a2981eccb46d73"
+    },
+    {
+      "id": "ec70fb2c75e52472",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "f3ddcc3ca5400005",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "0408225aef8a7b9a",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "82414958d43384dd",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "8cb67e41c662b0bf",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "e059a7d0767b1bd1",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "d27aa23874f711bc",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "4d663410c6c49c39",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "b801aa0815a144d6",
+      "path": "data/cubicasa5k/high_quality_architectural-6166.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "3cf4fbaf8e9181753e8003366adf61d3f198673ccf28ee4fc47f37599e53fde0"
+    },
+    {
+      "id": "33ba10aba390cad6",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "6d789e6779157847",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "cd17fd4c59f0414e",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "0cd282381fd03c26",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "f53e3ad1839e39c3",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "94f5da908f30f75f",
+      "path": "data/cubicasa5k/high_quality_architectural-6276.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "55d565928d2c8f6967404482c4747c8654f9b43023ed6382a1ca175cf4b83789"
+    },
+    {
+      "id": "384eb14a3fae0640",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "72917e041ba76106",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "4c7a0e17282b4ddd",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "824f39013db1f397",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "6ddda394f82c77b7",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "b27b05aa599593fd",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "9aa2bf80fceed899",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "3fb27fd6dba3e053",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "e16f8708a50c9a9c",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "a54d3013685574ac",
+      "path": "data/cubicasa5k/high_quality_architectural-6697.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "be3a86af369f05d07afe29fa9f4b49957836d653d1be5c3149dffc7421e191e6"
+    },
+    {
+      "id": "84f57ff422af2101",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "87c7418c7a906a44",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many bathrooms or washrooms (e.g. KH, KPH, PH, PESUH, SH) are on this floor plan, not counting separate WC rooms?",
+      "style": "high_quality_architectural",
+      "category": "bathrooms",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "8fcfa69b0074d4a9",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "a6d662281eac0e7c",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "ac9f4b3c9c03f5ff",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "14da947835dc5118",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many separate WC rooms (toilet rooms marked WC) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "separate WC rooms",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "aa55b5e5729eefd8",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "774dc156ccbc0440",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "e8944544d014ce6e",
+      "path": "data/cubicasa5k/high_quality_architectural-8269.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "07f104a6ffd3822f351d281ad00ecf78632e046643f6cb5f33045135ff647c27"
+    },
+    {
+      "id": "a73bafe16640b8c2",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "21d92dd7aa6fe908",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "e46cfa987c5620e5",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "91fc386cac03c371",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "c6036b25ee7bd074",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "df26a4ead1dc2126",
+      "path": "data/cubicasa5k/high_quality_architectural-8285.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "29b31c7107574783603d7c7e82b2e0d8e506652d3a631edf6296c3d52235f8c4"
+    },
+    {
+      "id": "218b224d149dfa3d",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "80dc03985157d043",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "81669ad624362207",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "d6308942a0a6d883",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "0777bbfbcdac1147",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "dff7aa6f1608316e",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "65c5583801ae5673",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "ad832a0e40340d59",
+      "path": "data/cubicasa5k/high_quality_architectural-8573.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "b7cd1d82e4a8a82a066306c0e1cb7f626b760665b2314a56ebae2a546278a9f4"
+    },
+    {
+      "id": "32c43a2580935779",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "0970134ee267e965",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "f5ea67a2b01d6ab5",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "d1587312ac93ffec",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "e97804e41369f878",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "090d59c33ffd5f71",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "c05035c328f0293b",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "122774113261e992",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "cd5ffa0a3e1d5732",
+      "path": "data/cubicasa5k/high_quality_architectural-9443.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "a41537a01bb892b7f3233a1b3e89e8390f77016aaf49864a5591264fb1e3e872"
+    },
+    {
+      "id": "1ff7dd4a363de8f0",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many balconies (parveke, including glazed balconies) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "balconies",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "c502ce8b60032410",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "bedrooms",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "1aeaaa085b8458ca",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many doors are shown on this floor plan? Count doorways fitted with a door; open doorways without a door leaf do not count.",
+      "style": "high_quality_architectural",
+      "category": "doors",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "715b8d36b68a8aa6",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many floors (storeys) does this floor plan show?",
+      "style": "high_quality_architectural",
+      "category": "floors",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "2fac105b72479a30",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many kitchens (including kitchenettes, open kitchens and utility kitchens) are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "kitchens",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "d59edd0a6aa5de82",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many saunas are on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "saunas",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "04b67e04e82d3efe",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many sinks and wash basins (kitchen and bathroom combined; a double-bowl sink counts as one) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "sinks",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "23fc72fbdbe62ad7",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many toilet bowls (WC seats) are drawn on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "toilet bowls",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    },
+    {
+      "id": "ade9e43f8d642a96",
+      "path": "data/cubicasa5k/high_quality_architectural-9886.png",
+      "question": "How many windows are shown on this floor plan?",
+      "style": "high_quality_architectural",
+      "category": "windows",
+      "image_sha256": "4b38f31f56125c60db4c2d9e646bf78709d290ec3b027f42e959e95442e73504"
+    }
+  ]
+}

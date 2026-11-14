@@ -5,10 +5,18 @@ from tempfile import TemporaryDirectory
 import unittest
 from zipfile import ZipFile
 
-from scripts.score_scan_evidence import match_count, reference_boxes, run
+from scripts.score_scan_evidence import match_count, paired_predictions, reference_boxes, run
 
 
 class GroundingScore(unittest.TestCase):
+    def test_reads_revision_pairs_and_rejects_cross_question_results(self):
+        question = dict(id='q', path='drawing.png', question='How many windows?')
+        pred = dict(question, status='answered', answer=2)
+        old, new = paired_predictions([dict(question, old=pred, new=pred)])
+        self.assertEqual(old[('drawing.png','How many windows?')],new[('drawing.png','How many windows?')])
+        with self.assertRaisesRegex(ValueError,'different question'):
+            paired_predictions([dict(question, old=pred, new=dict(pred, id='other'))])
+
     def test_transformed_fixture_and_opening_use_scaled_raster_dimensions(self):
         svg = b"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100">
         <g transform="matrix(1,0,0,1,50,10)"><g class="FixedFurniture Sink"
