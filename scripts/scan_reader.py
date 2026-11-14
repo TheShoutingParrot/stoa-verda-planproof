@@ -6,7 +6,7 @@ import sys
 import time
 from urllib.parse import urlsplit
 
-from . import nemotron, scan_objects, scan_rooms, scan_storeys
+from . import nemotron, scan_layout, scan_objects, scan_rooms, scan_storeys
 
 VERSION = 'scan-reader-3'
 
@@ -34,6 +34,7 @@ def run(image, question, base, model, api_key, timeout=90, *, baseline_report=No
     for predictor, origin, local_model in (
         (scan_rooms.predict, 'Local room labels', 'Room label OCR'),
         (scan_storeys.predict, 'Local floor panels', 'Floor plan and caption reader'),
+        (scan_layout.predict, 'Local room map', 'CubiCasa5K room map with label OCR'),
         (scan_objects.predict, 'Local object detector', 'CubiCasa5K')
     ):
         result = predictor(data, question)

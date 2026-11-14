@@ -1,7 +1,17 @@
+import os
+from pathlib import Path
+import shutil
+import sys
+import tempfile
 import unittest
 from unittest.mock import patch
+from zipfile import ZipFile
 
-from scripts import scan_rooms as reader
+from scripts import nemotron, scan_library, scan_reader, scan_rooms as reader
+
+ARCHIVE = Path(os.getenv("PLANPROOF_ARCHIVE") or
+               Path(__file__).resolve().parents[1] / ".local/evaluation/swiss-frontier/inputs/junction-dataset.zip")
+BEDROOMS = "How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?"
 
 
 def row(text, x, y=200, confidence=1, engine="vision"):
@@ -120,6 +130,54 @@ class ScanRoomTests(unittest.TestCase):
                       "How many kitchens on the third floor?","What is the area of the kitchen?"):
                 self.assertIsNone(reader.predict(b"anything",q))
         self.assertIsNone(reader.predict(b"broken","Count the bedrooms"))
+
+    def test_inventory_reports_the_reading_direction_it_used(self):
+        self.assertEqual(reader.inventory(b"broken"), {})
+        png = b"\x89PNG\r\n\x1a\n" + b"\0"*8 + (64).to_bytes(4,"big") + (48).to_bytes(4,"big") + b"\0"*8
+        mirrored = [row("MH",100),row("KPH",300),row("OH",500),row("2H+KK",700),row("ET",850)]
+        def vision(path, orientation, language="default"):
+            return list(mirrored) if orientation == 2 else []
+        with patch.object(reader,"_vision",side_effect=vision), patch.object(reader.sys,"platform","darwin"), \
+                patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
+                patch.object(reader,"_tesseract",side_effect=AssertionError("a mirrored sheet skips Tesseract")):
+            inv = reader.inventory.__wrapped__(png)
+        self.assertEqual((inv["orientation"], inv["vision"], len(inv["labels"]["bedroom"])), (2, True, 1))
+        with patch.object(reader,"_vision",return_value=list(mirrored)), patch.object(reader.sys,"platform","darwin"), \
+                patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
+                patch.object(reader,"_tesseract",return_value=[]):
+            upright = reader.inventory.__wrapped__(png)
+        self.assertEqual((upright["orientation"], upright["vision"]), (1, True))
+        # A failed Vision pass leaves Tesseract words only; absence of a label then proves nothing.
+        with patch.object(reader,"_vision",side_effect=OSError("no OCR service")), patch.object(reader.sys,"platform","darwin"), \
+                patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
+                patch.object(reader,"_tesseract",return_value=[row("MAKUUHUONE",100,engine="tesseract")]):
+            partial = reader.inventory.__wrapped__(png)
+        self.assertEqual((partial["orientation"], partial["vision"], len(partial["labels"]["bedroom"])), (1, False, 1))
+
+    @unittest.skipUnless(sys.platform == "darwin" and shutil.which("osascript") and ARCHIVE.is_file(),
+                         "needs macOS Vision and the sponsor archive")
+    def test_studio_scan_1767_still_grounds_zero_bedrooms(self):
+        name = "high_quality_architectural-1767.png"
+        with ZipFile(ARCHIVE) as archive:
+            member = "junction-dataset/data/cubicasa5k/" + name
+            if member not in archive.NameToInfo:
+                self.skipTest("the staged archive does not hold this drawing")
+            data = archive.read(member)
+        with tempfile.TemporaryDirectory() as folder:
+            image = Path(folder) / name
+            image.write_bytes(data)
+            with patch.object(scan_reader.nemotron, "run", side_effect=AssertionError("hosted call")), \
+                    patch.object(scan_reader.scan_layout, "predict", side_effect=AssertionError("label reader answers first")):
+                report = scan_reader.run(image, BEDROOMS, "", nemotron.MODEL, None)
+        self.assertEqual((report["status"], report["answer"], report["evidence"]), ("answered", 0, []))
+        self.assertEqual((report["method"], report["origin"]), ("local_room_labels", "Local room labels"))
+        designation, living = report["coverage_evidence"]
+        self.assertEqual(designation["label"], "Apartment designation 1H+KT")
+        self.assertEqual(reader.letters(living["label"]), "OH")
+        path = "data/cubicasa5k/" + name
+        saved = scan_library._safe_report(dict(report, path=path), path, report["image_sha256"], BEDROOMS, report["origin"])
+        self.assertEqual((saved["answer"], len(saved["coverage_evidence"])), (0, 2))
+        self.assertIn("one habitable room", saved["reason"])
 
 
 if __name__ == "__main__":
