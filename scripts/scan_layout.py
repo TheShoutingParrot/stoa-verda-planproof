@@ -103,9 +103,10 @@ def describe(rooms, icons):
     # dimension line read as wall must not bridge two panels, so hairlines are opened away.
     body = cv2.morphologyEx((interior | (classes == WALL)).astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
     labels, bodies = _components(body, 1)
+    room_area = np.bincount(labels[interior], minlength=labels.max()+1)
     panel_map = np.zeros(classes.shape, np.uint8)
     panels = []
-    sized = sorted(((int(interior[labels == index].sum()), index, box) for index, _, box in bodies), reverse=True)
+    sized = sorted(((int(room_area[index]), index, box) for index, _, box in bodies), reverse=True)
     for rooms_area, index, box in sized[:40]:
         if rooms_area < max(.004*classes.size, .02*sized[0][0]):
             break
@@ -166,7 +167,7 @@ ZOOM_MARGIN = 24
 
 
 def zoom_tiles(image, layout, kinds=(BATH,), limit=6):
-    """Cut the wet rooms out of the source image and enlarge them onto one white sheet.
+    """Cut the largest regions of the given room kinds out of the source image and enlarge them onto one white sheet.
 
     Returns (sheet, tiles); each tile maps a sheet rectangle back to source pixels.
     """
@@ -293,7 +294,6 @@ def build_plan(inv, layout, zoomed=(), ink_views=()):
             'faint_bench': round(layout['faint_bench']/inside, 5), 'labels': labels,
             'titles': inv.get('titles', []), 'storeys': inv.get('storeys', []),
             'floor_markers': inv.get('floor_markers', []), 'unclear_wc': unclear_wc,
-            'explicit_no_sauna': len(inv.get('explicit_no_sauna', ())),
             'ink': [len(view) for view in ink_views],
             'sheet_read': bool(inv.get('vision')), 'looked': looked}
 
@@ -356,7 +356,7 @@ def storeys(plan):
     if len(panels) == 1:
         if plan['storeys'] or plan['floor_markers']:
             return None  # a level caption on a one-panel sheet points at a floor that is not separated
-        if len(plan['ink']) == 4 and min(plan['ink']) >= 2:
+        if len(plan['ink']) != 4 or min(plan['ink']) >= 2:
             return None  # two panels drawn wall to wall merge in the room map but not in the ink
         return _report(1, [_mark('Floor plan drawn as one connected body of rooms', panels[0]['box'])])
     captions = len(plan['storeys'])
@@ -501,26 +501,10 @@ def balconies(plan):
     return _report(0, [], 'Every outdoor area on the plan is labelled as a terrace or porch.', _distinct(coverage))
 
 
-def bedrooms(plan):
-    """Bedroom labels that each sit in a bedroom region, with no bedroom region left unnamed."""
-    labels = _named(plan, 'bedroom')
-    if not labels or any(_kind_at(plan, item) != BEDROOM for item in labels):
-        return None
-    numbers = [scan_rooms.re.fullmatch(r'(?:MH|SOVRUM)\s*[- ]?(\d{1,2})', scan_rooms.letters(item['label']))
-               for item in labels]
-    if any(found and int(found[1]) > len(labels) for found in numbers):
-        return None
-    named = {item['region'] for item in labels}
-    for index, region in enumerate(plan['regions'], 1):
-        if region['kind'] == BEDROOM and region['share'] >= .04 and index not in named:
-            return None
-    return _report(len(labels), [_mark('Bedroom label ' + item['label'], item['box']) for item in labels])
-
-
 RULES = {'storeys': storeys, 'kitchen': kitchens, 'sauna': saunas, 'wc': separate_wcs,
-         'washroom': bathrooms, 'balcony': balconies, 'bedroom': bedrooms}
+         'washroom': bathrooms, 'balcony': balconies}
 # Room regions that are read again at a larger scale before the family's rule runs.
-SECOND_LOOK = {'sauna': BATH, 'wc': BATH, 'washroom': BATH, 'bedroom': BEDROOM}
+SECOND_LOOK = {'sauna': BATH, 'wc': BATH, 'washroom': BATH}
 
 
 def answer(plan, name):

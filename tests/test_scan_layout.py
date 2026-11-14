@@ -33,7 +33,7 @@ def plan(regions=(), labels=(), panels=None, benches=(), toilets=0, **extra):
               'symbols': {'bench': list(benches), 'tub': [], 'sink': [],
                           'toilet': [{'share': .002, 'box': [0, 0, 5, 5], 'region': 0, 'score': .9}] * toilets},
               'faint_bench': 0, 'titles': [], 'storeys': [], 'floor_markers': [], 'unclear_wc': 0,
-              'explicit_no_sauna': 0, 'ink': [1, 1, 1, 1], 'sheet_read': True, 'looked': True}
+              'ink': [1, 1, 1, 1], 'sheet_read': True, 'looked': True}
     record.update(extra)
     return record
 
@@ -60,6 +60,7 @@ class LayoutRuleTests(unittest.TestCase):
         self.assertIsNone(scan_layout.answer(plan(ink=[3, 3, 3, 2]), 'storeys'))
         self.assertEqual(scan_layout.answer(plan(ink=[2, 1, 3, 1]), 'storeys')['answer'], 1)
         self.assertEqual(scan_layout.answer(plan(ink=[0, 0, 0, 0]), 'storeys')['answer'], 1)
+        self.assertIsNone(scan_layout.answer(plan(ink=[]), 'storeys'))
         self.assertIsNone(scan_layout.answer(plan(panels=[]), 'storeys'))
 
     def test_separate_bodies_count_storeys_and_an_ambiguous_body_declines(self):
@@ -184,20 +185,13 @@ class LayoutRuleTests(unittest.TestCase):
         checked(one, QUESTIONS['balcony'])
         self.assertIsNone(scan_layout.answer(plan([outdoor], [dict(parveke, region=0, cls=0)]), 'balcony'))
 
-    def test_bedrooms_need_a_label_in_every_bedroom_region(self):
-        rooms = [region(scan_layout.BEDROOM, .15, [100, 100, 300, 300], labels=[0]),
-                 region(scan_layout.BEDROOM, .12, [320, 100, 500, 300], labels=[1])]
-        names = [label('bedroom', 'MH', [180, 180, 210, 200], 1, scan_layout.BEDROOM, 'zoom'),
-                 label('bedroom', 'MH 2', [400, 180, 440, 200], 2, scan_layout.BEDROOM)]
-        both = scan_layout.answer(plan(rooms, names), 'bedroom')
-        self.assertEqual((both['answer'], [e['box'] for e in both['evidence']]), (2, [names[0]['box'], names[1]['box']]))
-        checked(both, 'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?')
-        self.assertIsNone(scan_layout.answer(plan(rooms, names[:1]), 'bedroom'))
-        self.assertIsNone(scan_layout.answer(plan(rooms, []), 'bedroom'))
-        self.assertIsNone(scan_layout.answer(plan(rooms, [names[0], dict(names[1], region=0, cls=0)]), 'bedroom'))
-        self.assertIsNone(scan_layout.answer(plan(rooms, [names[0], dict(names[1], label='MH 3')]), 'bedroom'))
-        nook = region(scan_layout.BEDROOM, .02, [520, 100, 560, 160])
-        self.assertEqual(scan_layout.answer(plan(rooms + [nook], names), 'bedroom')['answer'], 2)
+    def test_bedrooms_stay_with_the_label_reader(self):
+        rooms = [region(scan_layout.BEDROOM, .15, [100, 100, 300, 300], labels=[0])]
+        names = [label('bedroom', 'MH', [180, 180, 210, 200], 1, scan_layout.BEDROOM)]
+        self.assertIsNone(scan_layout.answer(plan(rooms, names), 'bedroom'))
+        self.assertIsNone(scan_layout.category('How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?'))
+        self.assertEqual(scan_layout.category(QUESTIONS['sauna']), 'sauna')
+        self.assertEqual(scan_layout.category(STOREYS), 'storeys')
 
     def test_second_look_is_read_once_per_room_kind_and_never_for_other_families(self):
         png = b'\x89PNG\r\n\x1a\n' + b'synthetic'
@@ -215,12 +209,15 @@ class LayoutRuleTests(unittest.TestCase):
                 patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 3, 'vision': True}), \
                 patch.object(scan_layout.scan_storeys, 'panel_views', return_value=[]), \
                 patch.object(scan_layout, 'zoom_rows', side_effect=look):
-            for name in ('storeys', 'kitchen', 'balcony', 'sauna', 'wc', 'washroom', 'bedroom', 'sauna', 'storeys'):
+            for name in ('storeys', 'kitchen', 'balcony'):
+                self.assertEqual(scan_layout.plan(png, name)['regions'], [])
+            self.assertEqual(looks, [])
+            for name in ('sauna', 'wc', 'washroom', 'sauna', 'storeys'):
                 self.assertEqual(scan_layout.plan(png, name)['regions'], [])
             self.assertIs(scan_layout.plan(png, 'wc'), scan_layout.plan(png, 'sauna'))
             self.assertIsNot(scan_layout.plan(png, 'wc'), scan_layout.plan(png, 'storeys'))
         self.assertEqual(infer.call_count, 1)
-        self.assertEqual(looks, [(3, (scan_layout.BATH,)), (3, (scan_layout.BEDROOM,))])
+        self.assertEqual(looks, [(3, (scan_layout.BATH,))])
 
     def test_incomplete_readings_never_support_a_count_from_absence(self):
         bath = region(scan_layout.BATH, .07, [400, 400, 520, 560], toilets=1, sinks=1)
@@ -253,7 +250,7 @@ class LayoutRuleTests(unittest.TestCase):
         with patch.object(scan_layout, 'plan', side_effect=AssertionError('unexpected inference')):
             for question in ('How many windows are shown on this floor plan?', 'How many kitchens on the third floor?',
                              'How many showers and bathtubs are drawn on this floor plan in total?',
-                             'How many bedrooms are in the largest apartment?', None):
+                             'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?', None):
                 self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', question))
         with patch.object(scan_layout.scan_objects, '_load', side_effect=AssertionError('unexpected model load')):
             self.assertIsNone(scan_layout.predict(b'not a png', STOREYS))
