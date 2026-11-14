@@ -2,6 +2,7 @@
 
 import io
 import json
+import shutil
 import socket
 import struct
 import sys
@@ -28,7 +29,7 @@ def rows_for(paths, categories=("windows", "bedrooms")):
     return rows
 
 
-def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n", revision=nxt.BASE, seal=True):
+def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n", revision=nxt.BASE, seal=True, timeouts=None):
     root = work / arm
     (root / "outputs").mkdir(parents=True)
     (root / "src/scripts").mkdir(parents=True)
@@ -41,6 +42,10 @@ def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n", revision=nxt.B
         nxt.save(root / "outputs" / (q["id"] + ".json"),
                  dict(id=q["id"], question=q["question"], image_sha256=q["image_sha256"], status=status,
                       answer=answer, evidence=[], method="synthetic", elapsed_ms=1))
+    if timeouts is not None:  # arms run by the hardened harness carry both run records
+        nxt.save(root / "timeouts.json", [dict(program="osascript", timeout_s=20, prompt=i + 1, id=f"p{i}")
+                                         for i in range(timeouts)])
+        nxt.save(root / "conditions.json", [dict(wall_seconds=1.0)])
     if not seal:
         return root
     _, seal, _ = nxt.seal_of(work, manifest, arm)
@@ -190,8 +195,9 @@ class ArmsAndSeals(unittest.TestCase):
         records = [("answered", 0), ("abstained", None), ("answered", 0), ("unknown", None)]
         make_arm(self.work, self.manifest, "before", records)
         make_arm(self.work, self.manifest, "before-repeat", records)
+        make_arm(self.work, self.manifest, "before-control", records, timeouts=0)
         for arm in nxt.AFTER_ARMS:
-            make_arm(self.work, self.manifest, arm, [("answered", 0)] * 4, revision="1" * 40)
+            make_arm(self.work, self.manifest, arm, [("answered", 0)] * 4, revision="1" * 40, timeouts=0)
         make_arm(self.work, self.manifest, "peek", [("answered", 0)] * 4, revision="2" * 40)
         targets = {(q["path"], q["question"]): 0 for q in self.manifest["rows"]}
         base = dict(work=self.work, archive=self.work / "unused.zip", before="before", after="after", report=None,
@@ -218,6 +224,48 @@ class ArmsAndSeals(unittest.TestCase):
             second = nxt.score(SimpleNamespace(**dict(base, rescore=True)), self.manifest)
         self.assertEqual([s["rescore"] for s in second["scorings"]], [False, True])
         self.assertEqual(json.loads((self.work / "summary.json").read_text())["scorings"], second["scorings"])
+
+    def test_score_needs_settled_control_and_repeat_runs_and_applies_the_claim_rule(self):
+        before = [("answered", 0), ("abstained", None), ("answered", 0), ("unknown", None)]
+        targets = {(q["path"], q["question"]): 0 for q in self.manifest["rows"]}
+        args = SimpleNamespace(work=self.work, archive=self.work / "unused.zip", before="before", after="after",
+                               report=None, rescore=False)
+        with patch.object(nxt, "FINGERPRINT", None), patch.object(nxt, "AFTER_REVISION", "1" * 40), \
+                patch.object(nxt, "BASE_SOURCE_FINGERPRINT", None), \
+                patch.object(nxt.revision, "source_bytes", return_value=b"VALUE = 1\n"), \
+                patch.object(nxt.revision, "read_targets", return_value=targets) as opened, \
+                redirect_stdout(io.StringIO()):
+            make_arm(self.work, self.manifest, "before", before)
+            make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40, timeouts=1)
+            with self.assertRaisesRegex(ValueError, "Missing sealed arm: before-control"):
+                nxt.score(args, self.manifest)
+            make_arm(self.work, self.manifest, "before-control", before, timeouts=0)
+            with self.assertRaisesRegex(ValueError, "Missing sealed arm: after-repeat"):
+                nxt.score(args, self.manifest)
+            make_arm(self.work, self.manifest, "after-repeat", [("answered", 0)] * 4, revision="1" * 40, timeouts=0)
+            with self.assertRaisesRegex(ValueError, "after logged time-outs; run settle"):
+                nxt.score(args, self.manifest)
+            opened.assert_not_called()
+            nxt.save(self.work / "settle-after.json", dict(runs=2, standing="first"))
+            make_arm(self.work, self.manifest, "before-repeat", before)
+            out = nxt.score(args, self.manifest)
+            self.assertEqual(out["claim"]["before_control_differs_from_before"], False)
+            self.assertTrue(out["claim"]["improvement_shown"])
+            self.assertEqual(out["timeouts"]["after"]["timeouts"], 1)
+            self.assertEqual(set(out["timing"]["inference_seconds"]), {"before-control", "after", "after-repeat"})
+            # A control that differs from before in one answer: the claim must also hold against it.
+            other = self.work / "control-differs"
+            for arm, records, rev in (("before", before, nxt.BASE), ("before-repeat", before, nxt.BASE),
+                                      ("before-control", [("answered", 0)] * 4, nxt.BASE),
+                                      ("after", [("answered", 0)] * 4, "1" * 40),
+                                      ("after-repeat", [("answered", 0)] * 4, "1" * 40)):
+                make_arm(other, self.manifest, arm, records, revision=rev,
+                         timeouts=None if arm in nxt.BASELINE_SEALS else 0)
+            out = nxt.score(SimpleNamespace(**dict(vars(args), work=other)), self.manifest)
+        claim = out["claim"]
+        self.assertEqual((claim["before_control_differs_from_before"], claim["lower_end_against_before_control"],
+                          claim["improvement_shown"]), (True, 0.0, False))
+        self.assertGreater(claim["lower_end_against_before"], 0)
 
     def test_offline_guard_blocks_sockets(self):
         with nxt.offline():
@@ -296,6 +344,119 @@ class InvalidReports(unittest.TestCase):
             with patch.object(nxt, "FINGERPRINT", None), redirect_stdout(io.StringIO()) as out:
                 nxt.verify(SimpleNamespace(work=work, arm="after"), manifest)
             self.assertIn("reader_error 1, invalid_report 1", out.getvalue())
+
+
+class RunConditions(unittest.TestCase):
+    def setUp(self):
+        self.tmp = TemporaryDirectory()
+        self.work = Path(self.tmp.name)
+        paths = ["data/cubicasa5k/high_quality-1.png", "data/cubicasa5k/high_quality_architectural-2.png"]
+        self.manifest = dict(images=2, rows=rows_for(paths))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_control_arm_is_a_third_baseline_run(self):
+        self.assertEqual(nxt.arm_revision("before-control", None), nxt.BASE)
+        with self.assertRaises(ValueError):
+            nxt.arm_revision("before-control", "HEAD")
+        self.assertNotIn("before-control", nxt.BASELINE_SEALS)
+
+    def test_timeout_log_records_and_reraises_unchanged(self):
+        entries, where = [], dict(prompt=7, id="abc")
+        real = nxt.subprocess.run
+        with nxt.timeout_log(entries, where):
+            self.assertEqual(nxt.subprocess.run(["echo", "hi"], capture_output=True, text=True).stdout, "hi\n")
+            with self.assertRaises(nxt.subprocess.TimeoutExpired) as caught:
+                nxt.subprocess.run(["sleep", "5"], capture_output=True, timeout=0.2)
+            with self.assertRaises(nxt.subprocess.CalledProcessError):  # other errors pass through unrecorded
+                nxt.subprocess.run(["false"], check=True)
+        self.assertIs(nxt.subprocess.run, real)
+        self.assertEqual(caught.exception.timeout, 0.2)
+        self.assertEqual(len(entries), 1)
+        self.assertEqual({k: entries[0][k] for k in ("program", "timeout_s", "prompt", "id")},
+                         dict(program="sleep", timeout_s=0.2, prompt=7, id="abc"))
+
+    def test_infer_logs_each_time_out_with_its_prompt_and_the_reader_sees_the_same_exception(self):
+        seen = []
+
+        def run(image, question, base, model, key):
+            if "bedrooms" in question:  # a reader that, like scan_rooms, carries on with less text
+                try:
+                    nxt.subprocess.run(["sleep", "5"], timeout=0.1)
+                except nxt.subprocess.SubprocessError as exc:
+                    seen.append(type(exc))
+            return answered(0)
+
+        reader = fake_reader([])
+        reader.run = run
+        paths = sorted({q["path"] for q in self.manifest["rows"]})
+        (self.work / "inputs").mkdir()
+        for p in paths:
+            (self.work / "inputs" / Path(p).name).write_bytes(p.encode())
+        root = make_arm(self.work, self.manifest, "after", [], seal=False)
+        with redirect_stdout(io.StringIO()) as out:
+            logged = nxt.infer(reader, self.manifest, self.work / "inputs", root, "after")
+        self.assertEqual(seen, [nxt.subprocess.TimeoutExpired] * 2)
+        self.assertEqual([(e["program"], e["prompt"], e["drawing"]) for e in logged],
+                         [("sleep", 2, 1), ("sleep", 4, 2)])
+        self.assertEqual(json.loads((root / "timeouts.json").read_text()), logged)
+        self.assertIn("time-outs 2", out.getvalue())
+        self.assertTrue(all(json.loads(p.read_text())["status"] == "answered" for p in (root / "outputs").iterdir()))
+
+    def test_load_wait_proceeds_when_low_or_after_the_limit(self):
+        now = [0.0]
+        clock, sleep = (lambda: now[0]), (lambda s: now.__setitem__(0, now[0] + s))
+        with redirect_stdout(io.StringIO()):
+            low = nxt.wait_for_load(12, 1800, load=lambda: [5.0, 1, 1], sleep=sleep, clock=clock)
+            high = nxt.wait_for_load(12, 1800, load=lambda: [40.0, 1, 1], sleep=sleep, clock=clock)
+        self.assertEqual((low["met"], low["waited_s"]), (True, 0))
+        self.assertEqual((high["met"], high["waited_s"]), (False, 1800))
+
+    def settle(self, arm="after"):
+        with redirect_stdout(io.StringIO()):
+            return nxt.settle(SimpleNamespace(work=self.work, arm=arm), self.manifest)
+
+    def test_settle_sets_a_timed_out_run_aside_and_keeps_the_run_with_fewer(self):
+        for first, second, standing in ((2, 0, "second"), (1, 3, "first"), (2, 2, "first"), (3, 1, "second")):
+            with self.subTest(first=first, second=second):
+                for d in list(self.work.iterdir()):
+                    shutil.rmtree(d) if d.is_dir() else d.unlink()
+                make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40, timeouts=first)
+                first_seal = (self.work / "after/seal.json").read_text()
+                with self.assertRaisesRegex(ValueError, "run settle"):
+                    nxt.check_settled(self.work, "after")
+                self.assertEqual(self.settle(), 2)
+                self.assertFalse((self.work / "after").exists())
+                make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40, timeouts=second)
+                self.assertEqual(self.settle(), 0)
+                record = json.loads((self.work / "settle-after.json").read_text())
+                self.assertEqual((record["runs"], record["standing"]), (2, standing))
+                self.assertEqual((self.work / "after/seal.json").read_text() == first_seal, standing == "first")
+                self.assertEqual(nxt.check_settled(self.work, "after")["timeouts"], min(first, second))
+                self.assertEqual(self.settle(), 0)  # settled once; nothing moves again
+        with self.assertRaisesRegex(ValueError, "new arms only"):
+            self.settle("before")
+
+    def test_a_clean_run_stands_and_unlogged_arms_cannot_be_scored(self):
+        make_arm(self.work, self.manifest, "before-control", [("answered", 0)] * 4, timeouts=0)
+        self.assertEqual(self.settle("before-control"), 0)
+        self.assertEqual(nxt.check_settled(self.work, "before-control")["timeouts"], 0)
+        make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40)
+        with self.assertRaisesRegex(ValueError, "No time-out log"):
+            nxt.check_settled(self.work, "after")
+
+    def test_run_records_are_sealed(self):
+        root = make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40, timeouts=0)
+        _, seal, _ = nxt.verify_arm(self.work, self.manifest, "after")
+        self.assertEqual(set(seal) - {"config_sha256", "predictions_sha256", "manifest_sha256", "rows", "arm",
+                                      "revision", "source_sha256", "source_fingerprint"},
+                         {"timeouts_sha256", "conditions_sha256"})
+        nxt.save(root / "timeouts.json", [])  # same content, rewritten: still verifies
+        nxt.verify_arm(self.work, self.manifest, "after")
+        nxt.save(root / "conditions.json", [dict(wall_seconds=2.0)])
+        with self.assertRaisesRegex(ValueError, "Broken arm seal"):
+            nxt.verify_arm(self.work, self.manifest, "after")
 
 
 class Summary(unittest.TestCase):

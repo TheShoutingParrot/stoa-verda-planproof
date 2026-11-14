@@ -69,7 +69,8 @@ TRACKS = {
     "track2_deferred": GROUPS["rooms"] | GROUPS["storeys"] | {"showers"},
     "untouched_fixtures": {"toilet bowls", "sinks"},
 }
-BASELINE_ARMS = ("before", "before-repeat")
+# before-control is a third run of the baseline, made back to back with the after arm (E1).
+BASELINE_ARMS = ("before", "before-repeat", "before-control")
 AFTER_ARMS = ("after", "after-repeat")
 # Full SHA of the frozen candidate. Unset until phase B sets it in one commit before any after arm runs.
 AFTER_REVISION = None
@@ -79,6 +80,11 @@ COORDS = "xyxy_top_left_0_to_1000"
 HARNESS_DEFERRALS = ("reader_error", "invalid_report")
 # Exceptions of the inference guards; these still abort the run.
 GUARDS = ("Network access is forbidden during inference.", "Hosted calls forbidden.")
+# Run conditions: an arm starts once the 1-minute load average is below LOAD_LIMIT, or after LOAD_WAIT
+# seconds regardless. Each arm keeps a time-out log and its run conditions; both are sealed.
+LOAD_LIMIT = 12.0
+LOAD_WAIT = 1800
+RUN_RECORDS = ("timeouts.json", "conditions.json")
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 # Pinned after the freeze and the first baseline snapshot (see docs/scan-next-protocol.md).
@@ -493,6 +499,9 @@ def seal_of(work, manifest, arm):
         source_sha256=config["source_sha256"],
         source_fingerprint=sha(canonical(config["source_sha256"])),
     )
+    for name in RUN_RECORDS:  # absent from the two arms sealed before these records existed
+        if (work / arm / name).exists():
+            seal[name.removesuffix(".json") + "_sha256"] = sha((work / arm / name).read_bytes())
     return rows, seal, config
 
 
@@ -547,23 +556,74 @@ def read_prompt(reader, image, question, digest):
         return deferral("invalid_report", exc, elapsed)
 
 
-def infer(reader, manifest, inputs, root, arm):
+@contextmanager
+def timeout_log(entries, where, saved=lambda: None):
+    """Pass-through around subprocess.run that records each TimeoutExpired and re-raises it unchanged.
+
+    The readers call subprocess.run for macOS Vision (20 s limit) and Tesseract (20 s; 5 s for the
+    language list) and continue with less text when a call expires. Nothing else is altered."""
+    real = subprocess.run
+
+    def run(*args, **kwargs):
+        try:
+            return real(*args, **kwargs)
+        except subprocess.TimeoutExpired as exc:
+            command = args[0] if args else kwargs.get("args")
+            program = command[0] if isinstance(command, (list, tuple)) and command else command
+            entries.append(dict(program=Path(str(program)).name, timeout_s=exc.timeout,
+                                at=datetime.now(timezone.utc).isoformat(timespec="seconds"), **where))
+            saved()
+            raise
+
+    with patch.object(subprocess, "run", run):
+        yield
+
+
+def load_average():
+    return [round(x, 2) for x in os.getloadavg()]
+
+
+def uptime():
+    return subprocess.run(["uptime"], capture_output=True, text=True).stdout.strip()
+
+
+def wait_for_load(limit=LOAD_LIMIT, wait=LOAD_WAIT, poll=30, load=load_average, sleep=time.sleep,
+                  clock=time.monotonic):
+    """Wait until the 1-minute load average is below limit, at most wait seconds; then go on regardless."""
+    started = clock()
+    while load()[0] >= limit and clock() - started < wait:
+        print(f"Load {load()[0]} >= {limit}; waiting ({clock() - started:.0f} of {wait} s)", flush=True)
+        sleep(poll)
+    return dict(limit=limit, max_wait_s=wait, waited_s=round(clock() - started), met=load()[0] < limit)
+
+
+def infer(reader, manifest, inputs, root, arm, timeouts=None):
     started_all = time.monotonic()
+    timeouts = [] if timeouts is None else timeouts
     drawings = defaultdict(list)
     for q in manifest["rows"]:
         drawings[q["path"]].append(q)
-    with offline(), patch.object(reader.nemotron, "run", side_effect=AssertionError(GUARDS[1])):
+    where = {}
+    log = lambda: save(root / "timeouts.json", timeouts)
+    with offline(), patch.object(reader.nemotron, "run", side_effect=AssertionError(GUARDS[1])), \
+            timeout_log(timeouts, where, log):
+        prompt = 0
         for index, (path, questions) in enumerate(drawings.items(), 1):
             image = inputs / Path(path).name
             digest = sha(image.read_bytes())
             for q in questions:
+                prompt += 1
                 check(q["image_sha256"] == digest, "Staged source image mismatch.")
                 output = root / "outputs" / (q["id"] + ".json")
                 if output.exists():
                     continue
+                where.update(prompt=prompt, id=q["id"], drawing=index)
                 result = read_prompt(reader, image, q["question"], digest)
                 save(output, dict(id=q["id"], question=q["question"], image_sha256=digest, **result))
-            print(f"{arm} drawing {index}/{len(drawings)}; {time.monotonic() - started_all:.1f}s", flush=True)
+            print(f"{arm} drawing {index}/{len(drawings)}; {time.monotonic() - started_all:.1f}s; "
+                  f"time-outs {len(timeouts)}", flush=True)
+    log()
+    return timeouts
 
 
 def run(args, manifest):
@@ -611,22 +671,38 @@ def run(args, manifest):
             network="disabled",
             hosted="forbidden; blank endpoint and no key",
         )
-        if args.arm not in BASELINE_ARMS:
-            # Fail before inference if the after arm could not be paired with the sealed baseline.
+        if args.arm not in BASELINE_SEALS:
+            # Fail before inference if the arm could not be paired with the sealed baseline.
             _, _, baseline = verify_arm(args.work, manifest, "before")
             check_pair((baseline, config))
         if (root / "config.json").exists():
             check(config == json.loads((root / "config.json").read_text()), "Arm configuration mismatch.")
         else:
             save(root / "config.json", config)
-        infer(reader, manifest, args.work / "inputs", root, args.arm)
+        conditions = json.loads((root / "conditions.json").read_text()) if (root / "conditions.json").exists() else []
+        timeouts = json.loads((root / "timeouts.json").read_text()) if (root / "timeouts.json").exists() else []
+        session = dict(load_wait=wait_for_load(args.max_load, args.load_wait),
+                       started=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                       uptime_start=uptime(), load_start=load_average(), harness=harness_identity(),
+                       prompts_already_sealed=len(list((root / "outputs").glob("*.json"))))
+        print("Run conditions:", json.dumps(session), flush=True)
+        save(root / "conditions.json", conditions + [session])  # an interrupted session stays on record
+        started = time.monotonic()
+        infer(reader, manifest, args.work / "inputs", root, args.arm, timeouts)
+        session.update(ended=datetime.now(timezone.utc).isoformat(timespec="seconds"), uptime_end=uptime(),
+                       load_end=load_average(), wall_seconds=round(time.monotonic() - started, 1),
+                       timeouts_total=len(timeouts))
+        save(root / "conditions.json", conditions + [session])
         check(not foreign_modules(package), "Reader modules loaded outside the snapshot.")
         _, seal, _ = seal_of(args.work, manifest, args.arm)
         save(root / "seal.json", seal)
-        for path in [root / "config.json", root / "seal.json", *sorted((root / "outputs").glob("*.json"))]:
+        for path in [root / "config.json", root / "seal.json", *(root / n for n in RUN_RECORDS),
+                     *sorted((root / "outputs").glob("*.json"))]:
             path.chmod(0o444)
         verify_arm(args.work, manifest, args.arm)
         print("Sealed", args.arm, sha(canonical(seal)), flush=True)
+        print(f"Time-outs logged in {args.arm}: {len(timeouts)}"
+              + (f"; run `settle --arm {args.arm}` (protocol addendum, rule R4)" if timeouts else ""), flush=True)
         return seal
 
 
@@ -640,9 +716,67 @@ def verify(args, manifest):
     print(
         f"{args.arm}: {len(rows)} records, schema valid, seal {sha(canonical(seal))}, "
         f"revision {config['revision']}, sources {seal['source_fingerprint']}, "
-        f"harness deferrals: " + ", ".join(f"{m} {failures[m]}" for m in HARNESS_DEFERRALS)
+        f"harness deferrals: " + ", ".join(f"{m} {failures[m]}" for m in HARNESS_DEFERRALS) + ", "
+        f"time-outs: {len(logged) if (logged := timeout_entries(args.work / args.arm)) is not None else 'not logged'}"
     )
     return seal
+
+
+def timeout_entries(root):
+    path = root / "timeouts.json"
+    return json.loads(path.read_text()) if path.exists() else None
+
+
+def settle(args, manifest):
+    """Apply the pre-registered time-out rule to a sealed arm without opening its answers.
+
+    A run that logged a time-out is set aside (renamed <arm>.set-aside, never scored) and the arm is run
+    again from scratch once. If the second run also logged time-outs, the run with fewer stands; on a
+    tie the first run stands. Returns the exit status: 0 settled, 2 run the arm again."""
+    arm, work = args.arm, args.work
+    check(arm in BASELINE_ARMS + AFTER_ARMS and arm not in BASELINE_SEALS, "settle applies to new arms only.")
+    record = work / f"settle-{arm}.json"
+    aside, second = work / (arm + ".set-aside"), work / (arm + ".second-run")
+    if record.exists() and json.loads(record.read_text()).get("standing"):
+        print(f"{arm}: already settled; {json.dumps(json.loads(record.read_text()))}")
+        return 0
+    _, seal, _ = verify_arm(work, manifest, arm)
+    check("timeouts_sha256" in seal, "This arm has no sealed time-out log.")
+    count = len(timeout_entries(work / arm))
+    if not aside.exists():
+        if not count:
+            save(record, dict(arm=arm, runs=1, first_run_timeouts=0, standing="first"))
+            print(f"{arm}: no time-outs; the run stands.")
+            return 0
+        (work / arm).rename(aside)
+        save(record, dict(arm=arm, runs=1, first_run_timeouts=count, first_run_seal=sha(canonical(seal))))
+        print(f"{arm}: {count} time-outs; set aside unseen as {aside.name}. Run --arm {arm} again from scratch once.")
+        return 2
+    first = timeout_entries(aside)
+    check(sha((aside / "timeouts.json").read_bytes()) == json.loads((aside / "seal.json").read_text())["timeouts_sha256"],
+          "The set-aside run's time-out log changed.")
+    standing = "second" if len(first) > count else "first"
+    if standing == "first":
+        (work / arm).rename(second)
+        aside.rename(work / arm)
+        verify_arm(work, manifest, arm)
+    kept = timeout_entries(work / arm)
+    result = dict(json.loads(record.read_text()), runs=2, second_run_timeouts=count, standing=standing,
+                  standing_timeouts=len(kept), affected_prompts=sorted({e["id"] for e in kept}))
+    save(record, result)
+    print(f"{arm}: first run {len(first)} time-outs, second run {count}; the {standing} run stands "
+          f"({len(kept)} time-outs on {len(result['affected_prompts'])} prompts).")
+    return 0
+
+
+def check_settled(work, arm):
+    """Before scoring: a new arm has a sealed time-out log, and any time-out went through settle."""
+    logged = timeout_entries(work / arm)
+    check(logged is not None, "No time-out log for " + arm)
+    record = work / f"settle-{arm}.json"
+    settled = json.loads(record.read_text()) if record.exists() else {}
+    check(not logged or settled.get("runs") == 2, f"{arm} logged time-outs; run settle and the second run first.")
+    return dict(timeouts=len(logged), prompts=sorted({e["id"] for e in logged}), settle=settled or None)
 
 
 def identity(args):
@@ -800,19 +934,43 @@ def score(args, manifest):
     for name, digest in aconfig["source_sha256"].items():
         check(sha(revision.source_bytes(aconfig["revision"], name)) == digest, "After-arm source differs from Git: " + name)
     check_pair((bconfig, aconfig))
+    # The control and repeat runs (protocol addendum) are sealed, paired and settled before scoring too.
+    control, cseal, cconfig = verify_arm(args.work, manifest, "before-control")
+    repeat, rseal, rconfig = verify_arm(args.work, manifest, "after-repeat")
+    check(cconfig["revision"] == BASE and (BASE_SOURCE_FINGERPRINT is None
+                                           or cseal["source_fingerprint"] == BASE_SOURCE_FINGERPRINT),
+          "before-control is not the pinned baseline reader.")
+    check(rconfig["revision"] == AFTER_REVISION, "after-repeat is not at AFTER_REVISION.")
+    check_pair((bconfig, cconfig))
+    check_pair((bconfig, rconfig))
+    timeouts = {arm: check_settled(args.work, arm) for arm in ("before-control", "after", "after-repeat")}
     scorings = json.loads((args.work / "scorings.json").read_text()) if (args.work / "scorings.json").exists() else []
     check(not scorings or args.rescore, "This cohort was scored on %s; a second scoring needs --rescore and is "
           "recorded in the summary." % scorings[-1]["scored"] if scorings else "")
+    seals = {"before": bseal, "before-control": cseal, "after": aseal, "after-repeat": rseal}
+    seal_sha256 = {k: sha(canonical(v)) for k, v in seals.items()}
     scorings.append(dict(
         scored=datetime.now(timezone.utc).isoformat(timespec="seconds"),
         harness=harness_identity(),
         arms=dict(before=args.before, after=args.after),
-        seal_sha256=dict(before=sha(canonical(bseal)), after=sha(canonical(aseal))),
+        seal_sha256=seal_sha256,
         rescore=bool(args.rescore),
     ))
     save(args.work / "scorings.json", scorings)  # written before the sponsor answers are opened
+    floors = {
+        "before vs before-repeat (sealed baseline repeat)": agreement(args.work, manifest, ["before", "before-repeat"]),
+        "before vs before-control (baseline under the after arm's conditions)":
+            agreement(args.work, manifest, ["before", "before-control"]),
+        "after vs after-repeat (candidate repeat)": agreement(args.work, manifest, ["after", "after-repeat"]),
+    }
     targets = revision.read_targets(args.archive, manifest)
     records = join(manifest, before, after, targets)
+    summary = summarize(records, QUOTAS, SEED)
+    against_control = paired(join(manifest, control, after, targets), SEED)
+    control_differs = floors["before vs before-control (baseline under the after arm's conditions)"]["answers_differing"] > 0
+    low, low_control = summary["overall"]["clustered_bootstrap_delta_pp_95"][0], against_control["clustered_bootstrap_delta_pp_95"][0]
+    seconds = {arm: round(sum(r["elapsed_ms"] for r in rows.values()) / 1000, 2)
+               for arm, rows in (("before-control", control), ("after", after), ("after-repeat", repeat))}
     out = dict(
         observed_date=datetime.now(timezone.utc).date().isoformat(),
         protocol="docs/scan-next-protocol.md",
@@ -821,21 +979,37 @@ def score(args, manifest):
         scope="Original PNG and original English count question; offline local readers only; a hosted hand-off is a deferral.",
         drawings=manifest["images"],
         questions=len(records),
-        seals=dict(before=bseal, after=aseal),
-        seal_sha256=dict(before=sha(canonical(bseal)), after=sha(canonical(aseal))),
-        configurations=dict(before=bconfig, after=aconfig),
+        seals=seals,
+        seal_sha256=seal_sha256,
+        configurations={"before": bconfig, "before-control": cconfig, "after": aconfig, "after-repeat": rconfig},
         scorings=scorings,
-        **summarize(records, QUOTAS, SEED),
-        inference_seconds={
-            label: round(sum(r[key]["elapsed_ms"] for r in records) / 1000, 2)
-            for label, key in (("before", "old"), ("after", "new"))
-        },
+        claim=dict(
+            rule="Improvement only if the primary interval's lower end is above zero against 'before' and, when "
+                 "before-control differs from before in any answer, also against before-control.",
+            lower_end_against_before=low,
+            before_control_differs_from_before=control_differs,
+            lower_end_against_before_control=low_control,
+            improvement_shown=low > 0 and (not control_differs or low_control > 0),
+        ),
+        primary_endpoint_against_before_control=against_control,
+        noise_floors=floors,
+        timeouts=dict(timeouts, **{arm: "not logged (sealed before the log existed)" for arm in BASELINE_SEALS}),
+        **summary,
+        timing=dict(
+            note="before-control and after ran back to back under recorded conditions; the sealed before arm is "
+                 "not a timing reference.",
+            inference_seconds=seconds,
+            after_over_before_control=round(seconds["after"] / seconds["before-control"], 3) if seconds["before-control"] else None,
+            run_conditions={arm: json.loads((args.work / arm / "conditions.json").read_text())
+                            for arm in ("before-control", "after", "after-repeat")},
+        ),
     )
     save(args.work / "paired-rows.json", records)
     save(args.work / "summary.json", out)
     if args.report:
         save(args.report, out)
-    print(json.dumps(dict(overall=out["overall"], equal_style=out["equal_style_weighted_exact_accuracy"]), indent=2))
+    print(json.dumps(dict(claim=out["claim"], overall=out["overall"],
+                          equal_style=out["equal_style_weighted_exact_accuracy"]), indent=2))
     return out
 
 
@@ -1174,7 +1348,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument(
         "action",
-        choices=["audit", "freeze", "prepare", "run", "verify", "identity", "noise", "leak-check",
+        choices=["audit", "freeze", "prepare", "run", "verify", "settle", "identity", "noise", "leak-check",
                  "score", "fetch-refs", "localize", "example", "validate"],
     )
     p.add_argument("--archive", type=Path, default=ARCHIVE)
@@ -1199,6 +1373,8 @@ def main():
     p.add_argument("--report", type=Path)
     p.add_argument("--rescore", action="store_true", help="Allow a second scoring; it is recorded in the summary")
     p.add_argument("--limit", type=int, default=3)
+    p.add_argument("--max-load", type=float, default=LOAD_LIMIT, help="run: start once the 1-minute load is below this")
+    p.add_argument("--load-wait", type=int, default=LOAD_WAIT, help="run: seconds to wait for that load, then go on")
     a = p.parse_args()
     a.work.mkdir(parents=True, exist_ok=True)
     if a.action == "audit":
@@ -1223,6 +1399,8 @@ def main():
     )
     if a.action == "prepare":
         print(revision.prepare(m, a.archive, a.work))
+    elif a.action == "settle":
+        sys.exit(settle(a, m))
     else:
         actions[a.action](a, m)
 
