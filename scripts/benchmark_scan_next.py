@@ -71,6 +71,11 @@ TRACKS = {
 }
 BASELINE_ARMS = ("before", "before-repeat")
 ARM_NAME = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
+COORDS = "xyxy_top_left_0_to_1000"
+# Deferrals the harness records when the reader raises or returns a report that fails validation.
+HARNESS_DEFERRALS = ("reader_error", "invalid_report")
+# Exceptions of the inference guards; these still abort the run.
+GUARDS = ("Network access is forbidden during inference.", "Hosted calls forbidden.")
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 # Pinned after the freeze and the first baseline snapshot (see docs/scan-next-protocol.md).
@@ -447,7 +452,7 @@ def data_assets(commit):
 @contextmanager
 def offline():
     def refuse(*args, **kwargs):
-        raise AssertionError("Network access is forbidden during inference.")
+        raise AssertionError(GUARDS[0])
 
     with patch.object(socket.socket, "connect", refuse), patch.object(
         socket.socket, "connect_ex", refuse
@@ -488,6 +493,57 @@ def verify_arm(work, manifest, arm):
     for name, digest in config["source_sha256"].items():
         check(sha((root / "src" / name).read_bytes()) == digest, "Snapshot file changed: " + name)
     return rows, seal, config
+
+
+def deferral(method, exc, elapsed):
+    return dict(status="abstained", answer=None, evidence=[], method=method,
+                reason=(type(exc).__name__ + ": " + str(exc))[:220], elapsed_ms=elapsed)
+
+
+def checked_report(reader, report, question, digest, elapsed):
+    """nemotron.parse_count as before, plus the product's two extra rules for answered reports."""
+    result = revision.normalize(reader, report, question, digest, elapsed)
+    if result["status"] == "answered":
+        check(report.get("coordinate_system") == COORDS, "Answered report without the 0-1000 top-left coordinates.")
+        coverage = report.get("coverage_evidence")
+        if coverage and result["answer"] == 0:
+            reader.nemotron.parse_count(json.dumps(dict(status="answered", answer=len(coverage), evidence=coverage)))
+    return result
+
+
+def read_prompt(reader, image, question, digest):
+    """One prompt. A reader exception or an invalid report becomes a recorded deferral, never an abort."""
+    started = time.monotonic()
+    try:
+        report = reader.run(image, question, "", reader.nemotron.MODEL, None)
+    except Exception as exc:
+        if isinstance(exc, AssertionError) and str(exc) in GUARDS:
+            raise  # a network or hosted call is a protocol breach, not a reader failure
+        return deferral("reader_error", exc, round(1000 * (time.monotonic() - started)))
+    elapsed = round(1000 * (time.monotonic() - started))
+    try:
+        return checked_report(reader, report, question, digest, elapsed)
+    except Exception as exc:
+        return deferral("invalid_report", exc, elapsed)
+
+
+def infer(reader, manifest, inputs, root, arm):
+    started_all = time.monotonic()
+    drawings = defaultdict(list)
+    for q in manifest["rows"]:
+        drawings[q["path"]].append(q)
+    with offline(), patch.object(reader.nemotron, "run", side_effect=AssertionError(GUARDS[1])):
+        for index, (path, questions) in enumerate(drawings.items(), 1):
+            image = inputs / Path(path).name
+            digest = sha(image.read_bytes())
+            for q in questions:
+                check(q["image_sha256"] == digest, "Staged source image mismatch.")
+                output = root / "outputs" / (q["id"] + ".json")
+                if output.exists():
+                    continue
+                result = read_prompt(reader, image, q["question"], digest)
+                save(output, dict(id=q["id"], question=q["question"], image_sha256=digest, **result))
+            print(f"{arm} drawing {index}/{len(drawings)}; {time.monotonic() - started_all:.1f}s", flush=True)
 
 
 def run(args, manifest):
@@ -541,26 +597,7 @@ def run(args, manifest):
             check(config == json.loads((root / "config.json").read_text()), "Arm configuration mismatch.")
         else:
             save(root / "config.json", config)
-        started_all = time.monotonic()
-        drawings = defaultdict(list)
-        for q in manifest["rows"]:
-            drawings[q["path"]].append(q)
-        with offline(), patch.object(reader.nemotron, "run", side_effect=AssertionError("Hosted calls forbidden.")):
-            for index, (path, questions) in enumerate(drawings.items(), 1):
-                image = args.work / "inputs" / Path(path).name
-                digest = sha(image.read_bytes())
-                for q in questions:
-                    check(q["image_sha256"] == digest, "Staged source image mismatch.")
-                    output = root / "outputs" / (q["id"] + ".json")
-                    if output.exists():
-                        continue
-                    started = time.monotonic()
-                    report = reader.run(image, q["question"], "", reader.nemotron.MODEL, None)
-                    result = revision.normalize(
-                        reader, report, q["question"], digest, round(1000 * (time.monotonic() - started))
-                    )
-                    save(output, dict(id=q["id"], question=q["question"], image_sha256=digest, **result))
-                print(f"{args.arm} drawing {index}/{len(drawings)}; {time.monotonic() - started_all:.1f}s", flush=True)
+        infer(reader, manifest, args.work / "inputs", root, args.arm)
         check(not foreign_modules(package), "Reader modules loaded outside the snapshot.")
         _, seal, _ = seal_of(args.work, manifest, args.arm)
         save(root / "seal.json", seal)
@@ -577,9 +614,11 @@ def verify(args, manifest):
     statuses = {r["status"] for r in rows.values()}
     check(statuses <= {"answered", "unknown", "abstained"}, "Unexpected status.")
     check(set(rows) == {q["id"] for q in manifest["rows"]}, "Arm does not cover the manifest.")
+    failures = Counter(r.get("method") for r in rows.values() if r.get("method") in HARNESS_DEFERRALS)
     print(
         f"{args.arm}: {len(rows)} records, schema valid, seal {sha(canonical(seal))}, "
-        f"revision {config['revision']}, sources {seal['source_fingerprint']}"
+        f"revision {config['revision']}, sources {seal['source_fingerprint']}, "
+        f"harness deferrals: " + ", ".join(f"{m} {failures[m]}" for m in HARNESS_DEFERRALS)
     )
     return seal
 
@@ -695,6 +734,12 @@ def summarize(records, styles, seed):
             if r["old"]["status"] != "answered" and r["new"]["status"] == "answered" and not r["new"]["correct"]
         ],
         gains=[brief(r) for r in records if r["new"]["correct"] and not r["old"]["correct"]],
+        harness_deferrals=[
+            dict(brief(r), **{arm: dict(method=r[key].get("method"), reason=r[key].get("reason"))
+                              for arm, key in (("before_record", "old"), ("after_record", "new"))})
+            for r in records
+            if r["old"].get("method") in HARNESS_DEFERRALS or r["new"].get("method") in HARNESS_DEFERRALS
+        ],
     )
 
 

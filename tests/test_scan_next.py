@@ -1,11 +1,13 @@
 """Check the scan-next freeze, seals, blinding order, leak check and reference builder offline."""
 
+import io
 import json
 import socket
 import struct
 import sys
 import unittest
 from collections import Counter
+from contextlib import redirect_stdout
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
@@ -26,12 +28,12 @@ def rows_for(paths, categories=("windows", "bedrooms")):
     return rows
 
 
-def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n"):
+def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n", revision=nxt.BASE, seal=True):
     root = work / arm
     (root / "outputs").mkdir(parents=True)
     (root / "src/scripts").mkdir(parents=True)
     (root / "src/scripts/scan_reader.py").write_bytes(source)
-    config = dict(source_sha256={"scripts/scan_reader.py": nxt.sha(source)}, revision=nxt.BASE,
+    config = dict(source_sha256={"scripts/scan_reader.py": nxt.sha(source)}, revision=revision,
                   manifest_sha256=nxt.fingerprint_of(manifest), weights_sha256="w", detector_source={},
                   detector_revision="r", environment={}, network="disabled")
     nxt.save(root / "config.json", config)
@@ -39,6 +41,8 @@ def make_arm(work, manifest, arm, records, source=b"VALUE = 1\n"):
         nxt.save(root / "outputs" / (q["id"] + ".json"),
                  dict(id=q["id"], question=q["question"], image_sha256=q["image_sha256"], status=status,
                       answer=answer, evidence=[], method="synthetic", elapsed_ms=1))
+    if not seal:
+        return root
     _, seal, _ = nxt.seal_of(work, manifest, arm)
     nxt.save(root / "seal.json", seal)
     return root
@@ -139,6 +143,76 @@ class ArmsAndSeals(unittest.TestCase):
                 socket.create_connection(("127.0.0.1", 9))
             with socket.socket() as s, self.assertRaises(AssertionError):
                 s.connect(("127.0.0.1", 9))
+
+
+def fake_reader(outcomes):
+    """A reader whose run() returns or raises the next outcome."""
+    outcomes = iter(outcomes)
+
+    def run(image, question, base, model, key):
+        outcome = next(outcomes)
+        if isinstance(outcome, BaseException):
+            raise outcome
+        return dict(outcome, question=question) if isinstance(outcome, dict) else outcome
+
+    nemotron = nxt.revision.nemotron
+    return SimpleNamespace(run=run, nemotron=SimpleNamespace(
+        MODEL="m", run=None, parse_count=nemotron.parse_count, InvalidEvidence=nemotron.InvalidEvidence))
+
+
+def answered(n, **extra):
+    return dict(status="answered", answer=n, evidence=[dict(label="x", box=[i, i, i + 5, i + 5]) for i in range(n)],
+                coordinate_system=nxt.COORDS, method="local", **extra)
+
+
+class InvalidReports(unittest.TestCase):
+    BAD = [
+        ("count 2 with one box", dict(answered(1), answer=2)),
+        ("box equal to the whole sheet", dict(answered(1), evidence=[dict(label="x", box=[0, 0, 1000, 1000])])),
+        ("coordinate 1000.5", dict(answered(1), evidence=[dict(label="x", box=[1, 1, 1000.5, 5])])),
+        ("status error", dict(status="error", answer=None, evidence=[])),
+        ("not a dict", None),
+        ("zero with invalid coverage evidence", answered(0, coverage_evidence=[dict(label="x", box=[0, 0, 1000, 1000])])),
+        ("answered without the coordinate system", dict(answered(1), coordinate_system="pixels")),
+    ]
+
+    def test_invalid_reports_and_reader_errors_become_recorded_deferrals(self):
+        for label, report in self.BAD:
+            result = nxt.read_prompt(fake_reader([report]), Path("x.png"), "q", "d")
+            self.assertEqual((result["status"], result["answer"], result["evidence"], result["method"]),
+                             ("abstained", None, [], "invalid_report"), label)
+            self.assertLessEqual(len(result["reason"]), 220)
+        result = nxt.read_prompt(fake_reader([IndexError("x" * 500)]), Path("x.png"), "q", "d")
+        self.assertEqual((result["status"], result["method"]), ("abstained", "reader_error"))
+        self.assertTrue(result["reason"].startswith("IndexError: x") and len(result["reason"]) == 220)
+        good = answered(0, coverage_evidence=[dict(label="Apartment", box=[1, 1, 9, 9])])
+        self.assertEqual(nxt.read_prompt(fake_reader([good]), Path("x.png"), "q", "d")["answer"], 0)
+        unavailable = dict(status="unavailable", answer=None, evidence=[], reason="r")
+        self.assertEqual(nxt.read_prompt(fake_reader([unavailable]), Path("x.png"), "q", "d")["method"],
+                         "offline_fallback")
+        for guard in nxt.GUARDS:
+            with self.assertRaises(AssertionError):
+                nxt.read_prompt(fake_reader([AssertionError(guard)]), Path("x.png"), "q", "d")
+
+    def test_one_bad_report_neither_aborts_nor_unseals_an_arm(self):
+        with TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            paths = ["data/cubicasa5k/high_quality-1.png", "data/cubicasa5k/high_quality_architectural-2.png"]
+            for p in paths:
+                (work / "inputs").mkdir(exist_ok=True)
+                (work / "inputs" / Path(p).name).write_bytes(p.encode())
+            manifest = dict(images=2, rows=rows_for(paths))
+            root = make_arm(work, manifest, "after", [], seal=False)
+            reader = fake_reader([answered(1), self.BAD[0][1], ValueError("cv2.error"), answered(2)])
+            nxt.infer(reader, manifest, work / "inputs", root, "after")
+            _, seal, _ = nxt.seal_of(work, manifest, "after")
+            nxt.save(root / "seal.json", seal)
+            rows, _, _ = nxt.verify_arm(work, manifest, "after")
+            methods = [rows[q["id"]]["method"] for q in manifest["rows"]]
+            self.assertEqual(methods, ["local", "invalid_report", "reader_error", "local"])
+            with patch.object(nxt, "FINGERPRINT", None), redirect_stdout(io.StringIO()) as out:
+                nxt.verify(SimpleNamespace(work=work, arm="after"), manifest)
+            self.assertIn("reader_error 1, invalid_report 1", out.getvalue())
 
 
 class Summary(unittest.TestCase):
