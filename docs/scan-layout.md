@@ -59,6 +59,8 @@ The reader needs the optional detector and the macOS Vision OCR. Without the det
 
 A utility kitchen or scullery that the network classes as storage is invisible to the kitchen rule. Both wrong kitchen counts on the 48-drawing cohort are sheets with such a second kitchen. Two buildings of similar size on one sheet, such as a cottage and its sauna building, are counted as two storeys when no caption says otherwise. Two floor panels drawn wall to wall merge in the room map and are caught only when all four ink views separate them.
 
+The ten wrong new answers on the confirmation drawings show the same weaknesses. Two storey counts included a separate storage building, one of them because a single level caption waived the size check. One sheet had a second kitchen. Four WC counts and two bathroom counts came from sheets where a wet room’s name was not read or two wet rooms shared one region. One balcony was not classed as outdoor space.
+
 The sponsor counts follow the annotators’ room names and symbols. A sauna that is drawn with a bench and stove but carries no label can count as zero there, and a room with a printed name that the annotators left undefined can count as zero bedrooms. The reader does not chase those cases.
 
 Bedroom questions that the label reader declines stay unanswered. A second look at the bedroom regions answered seven such prompts on 157 tuning drawings and six matched the sponsor, too few to ship. Shower questions stay unanswered because nothing on the drawing can be tied to the network’s classes or to a printed label.
