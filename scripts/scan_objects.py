@@ -14,6 +14,8 @@ import re
 import sys
 import threading
 
+from scripts import scan_openings
+
 
 MODEL = 'CubiCasa/CubiCasa5k'
 REVISION = 'c34440266665a11f4484eb06cd2e4b7d72ad76c1'
@@ -90,29 +92,42 @@ def _load(code, weights):
     return model.eval().to(device), device
 
 
-def _extract(probabilities):
+def _extract(probabilities, endpoints=None):
     import cv2
     import numpy as np
     mask = probabilities.argmax(axis=0)
     height, width = mask.shape
-    detected = {}
-    for cls, name in ICON_NAMES.items():
+    raw_boxes = {}
+    strong_windows = []
+    for cls in ICON_NAMES:
         _, components, stats, _ = cv2.connectedComponentsWithStats((mask == cls).astype(np.uint8), connectivity=8)
         boxes = []
         for component, (x, y, w, h, area) in enumerate(stats[1:], start=1):
-            # A few isolated pixels at a boundary are insufficient evidence for a symbol.
             if area < 12 or min(w, h) < 2 or max(w, h) < 4:
                 continue
-            if cls == 2:
-                # Door arcs can leave weak fragments around furniture. Require both
-                # a high-confidence core and consistent pixel votes across the leaf.
+            box = (int(x), int(y), int(x+w), int(y+h))
+            if cls in (1, 2):
                 crop = probabilities[cls, y:y+h, x:x+w][components[y:y+h, x:x+w] == component]
-                if area < 20 or crop.mean() < .60 or crop.max() < .80:
+                if cls == 2 and (area < 20 or crop.mean() < .60 or crop.max() < .80):
                     continue
-            box = [round(1000 * v / d) for v, d in zip((x, y, x+w, y+h), (width, height, width, height))]
-            if box[2] > box[0] and box[3] > box[1]:
-                boxes.append({'label': name, 'box': box})
-        detected[cls] = sorted(boxes, key=lambda e: (e['box'][1], e['box'][0]))
+                if cls == 1 and crop.mean() >= .72 and crop.max() >= .90:
+                    strong_windows.append(box)
+            boxes.append(box)
+        raw_boxes[cls] = boxes
+
+    if endpoints is not None:
+        semantic = (probabilities[1:3]*255).round().astype(np.uint8)
+        heatmaps = (endpoints*255).round().astype(np.uint8)
+        raw_boxes.update(scan_openings.decode(semantic, heatmaps, strong_windows, raw_boxes[2]))
+
+    detected = {}
+    for cls, boxes in raw_boxes.items():
+        evidence = []
+        for box in boxes:
+            mark = [round(1000*v/d) for v, d in zip(box, (width, height, width, height))]
+            if mark[2] > mark[0] and mark[3] > mark[1]:
+                evidence.append({'label': ICON_NAMES[cls], 'box': mark})
+        detected[cls] = sorted(evidence, key=lambda e: (e['box'][1], e['box'][0]))
     return detected
 
 
@@ -138,11 +153,14 @@ def _infer(data, model, device):
     logits = None
     with torch.inference_mode():
         for rotation in range(4):
-            pred = model(torch.rot90(x, rotation, (-2, -1)))[:, 33:44]
+            raw = model(torch.rot90(x, rotation, (-2, -1)))
+            oriented = [13+i for i in scan_openings.ENDPOINT_ORDER[rotation]]
+            pred = torch.cat((raw[:, oriented], raw[:, 33:44]), dim=1)
             pred = torch.rot90(pred, -rotation, (-2, -1))
             pred = torch.nn.functional.interpolate(pred, size=x.shape[-2:], mode='bilinear', align_corners=True)
             logits = pred if logits is None else logits + pred
-        result = _extract((logits / 4).softmax(dim=1)[0].cpu().numpy())
+        averaged = logits[0] / 4
+        result = _extract(averaged[4:].softmax(dim=0).cpu().numpy(), averaged[:4].cpu().numpy())
     return result
 
 
@@ -183,7 +201,8 @@ def predict(image_bytes, question, inventory=None):
             'image_sha256':record['image_sha256'], 'coordinate_system':'xyxy_top_left_0_to_1000',
             'model':MODEL, 'served_model':MODEL + '@' + REVISION, 'provider_host':None,
             'method':'cubicasa_icon_segmentation',
-            'reason':'Count of distinct connected symbols in the pixel segmentation of the supplied scan.'}
+            'reason':('Count from model-predicted opening endpoints and the pixel segmentation of the supplied scan.'
+                      if cls in (1, 2) else 'Count of distinct fixture symbols in the pixel segmentation of the supplied scan.')}
 
 
 def inventory(image_bytes):

@@ -69,6 +69,51 @@ class ScanRoomTests(unittest.TestCase):
         self.assertIsNone(decide(words+[row("ALAKERTA",500),row("YLÄKERTA",600)],"wc"))
         self.assertIsNone(decide(words+[row("WG",500)],"wc"))
 
+    def test_studio_requires_one_designation_and_one_identified_living_room(self):
+        title = row("1H+KK",150)
+        living = row("OH/KK",240)
+        result = decide([title,living,row("ET",340)],"bedroom")
+        self.assertEqual((result["answer"],result["evidence"]),(0,[]))
+        self.assertEqual([e["box"] for e in result["coverage_evidence"]],[title["box"],living["box"]])
+        for words in ([title], [title,row("KK",240)], [row("2H+KK",150),living],
+                      [title,living,row("YLÄKERTA",360)], [title,living,row("OH",440)]):
+            self.assertIsNone(decide(words,"bedroom"))
+
+    def test_numbered_bedrooms_with_missing_label_abstain(self):
+        self.assertIsNone(decide([row("MH2",75),row("MH3",200),row("ET",500)],"bedroom"))
+        self.assertEqual(decide([row("MH1",75),row("MH2",200),row("ET",500)],"bedroom")["answer"],2)
+
+    def test_dining_and_kitchen_print_is_one_space(self):
+        for caption in ("K+R","RUOKAILU JA KEITTIÖ","KÖK OCH MATSAL"):
+            r = decide([row(caption,80),row("ET",500),row("MH",300)],"kitchen")
+            self.assertEqual(r["answer"],1)
+            self.assertEqual(r["evidence"][0]["label"],caption)
+        self.assertIsNone(decide([row("RUOKAILU",80),row("ET",500),row("MH",300)],"kitchen"))
+
+    def test_adjacent_bedroom_is_excluded_only_at_an_actual_sheet_cut(self):
+        try:
+            import io
+            from PIL import Image,ImageDraw
+        except ImportError:
+            self.skipTest("Optional Pillow raster decoder")
+        from scripts.scan_room_labels import enclosed_bedrooms
+        image = Image.new("L",(1000,600),255)
+        pen = ImageDraw.Draw(image)
+        for y in (128,236):
+            pen.line((0,y,340,y),fill=0,width=2)
+        for x in (83,88,338):
+            pen.line((x,128,x,236),fill=0,width=2)
+        labels = [row("MH",50,350),row("MH",92,350)]
+        labels[0]["box"] = [51,350,70,369]
+        labels[1]["box"] = [95,350,113,369]
+        def render():
+            buf = io.BytesIO()
+            image.save(buf,"PNG")
+            return buf.getvalue()
+        self.assertEqual(enclosed_bedrooms(render(),labels),labels[1:])
+        pen.line((5,128,5,236),fill=0,width=2)
+        self.assertEqual(enclosed_bedrooms(render(),labels),labels)
+
     def test_other_targets_and_scoped_questions_do_not_trigger_ocr(self):
         with patch.object(reader,"inventory",side_effect=AssertionError("unexpected OCR")):
             for q in ("How many toilet bowls (WC seats) are drawn on this floor plan?",

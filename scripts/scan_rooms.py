@@ -15,6 +15,12 @@ import sys
 import tempfile
 import unicodedata
 
+if __package__:
+    from . import scan_room_labels, scan_storeys
+else:
+    import scan_room_labels
+    import scan_storeys
+
 
 # Apple's framework supplies OCR and EXIF orientation handling without Python packages.
 # The image file is private to the invocation. Orientation transforms are inverted below.
@@ -56,7 +62,7 @@ ROOMS = {
     "wc": {"WC", "W.C", "ERILLISWC", "VESSA", "TOALETT", "TOILET"},
     "sauna": {"S", "SA", "SAUNA", "BASTU"},
     "balcony": {"PARV", "PARVEKE", "PARVEK", "PARV.", "BALKONG", "BALK", "BALCONY"},
-    "other": {"OH", "OLOHUONE", "ET", "ETEINEN", "VH", "VAATEHUONE", "KHH", "KODINHOITOHUONE",
+    "other": {"RUOKAILU","RUOKAILUTILA","MATSAL","DINING ROOM","OH", "OLOHUONE", "ET", "ETEINEN", "VH", "VAATEHUONE", "KHH", "KODINHOITOHUONE",
               "RT", "RUOK", "AULA", "TK", "TH", "AH", "ALKOVI", "ALK", "TERASSI", "KUISTI", "VAR",
               "VARASTO", "VARDAGSRUM", "HALL", "KLK", "KLÄDKAMMARE", "TVÄTTSTUGA", "ENTRÉ"},
 }
@@ -94,7 +100,9 @@ def _label(text):
     cleaned = re.sub(r"^(MH|WC|SOVRUM)\s*[- ]?\d{1,2}$", r"\1", cleaned)
     cleaned = re.sub(r"^(?:LASITETTU|LAS\.?|INGLASAD|GLAZED)\s+","",cleaned)
     # Compound room labels combine functions in one space; a WC in the bathroom is not separate.
-    parts = re.split(r"\s*[+/&]\s*",cleaned)
+    parts = re.split(r"\s*[+/&]\s*|\s+(?:JA|OCH|AND)\s+",cleaned)
+    if parts in (["K","R"],["R","K"]):
+        return {"kitchen","other"}  # keittiö + ruokailu: cooking and dining in one room
     known = {name for name, words in ROOMS.items() if any(p in words for p in parts)}
     if len(parts) > 1 and any(not any(p in words for words in ROOMS.values()) for p in parts):
         return set()
@@ -198,7 +206,7 @@ def inventory(image_bytes):
                     alternate = _vision(image.name, best+1, "sv")
                     passes = passes + alternate
                 if best != 0:
-                    return _summarize(passes)
+                    return _summarize(passes, image_bytes)
             except (OSError, subprocess.SubprocessError, ValueError):
                 pass
     if shutil.which("tesseract"):
@@ -206,7 +214,7 @@ def inventory(image_bytes):
             passes = passes + _tesseract(image_bytes,w,h)
         except (OSError,subprocess.SubprocessError,ValueError):
             pass
-    return _summarize(passes)
+    return _summarize(passes, image_bytes)
 
 
 def _same(a,b):
@@ -217,7 +225,7 @@ def _same(a,b):
     return smaller > 0 and inter/smaller >= .48
 
 
-def _summarize(rows):
+def _summarize(rows, image_bytes=None):
     labels = {n:[] for n in ROOMS}
     titles = []
     floor_markers = set()
@@ -251,8 +259,10 @@ def _summarize(rows):
             evidence = labels[name]
             if not any(_same(box,r["box"]) for r in evidence):
                 evidence.append({"label":text,"box":box})
+    if image_bytes is not None:
+        labels["bedroom"] = scan_room_labels.enclosed_bedrooms(image_bytes, labels["bedroom"])
     return {"labels":labels,"titles":titles,"floor_markers":sorted(floor_markers),"possible_wc":possible_wc,
-            "explicit_no_sauna":explicit_no_sauna}
+            "explicit_no_sauna":explicit_no_sauna,"storeys":scan_storeys.captions(rows)}
 
 
 def from_inventory(inv, name):
@@ -261,6 +271,22 @@ def from_inventory(inv, name):
     labels, titles = inv["labels"], inv["titles"]
     evidence = labels[name]
     recognized = sum(map(len,labels.values()))
+    if name == "bedroom" and evidence:
+        numbers = [re.fullmatch(r"(?:MH|SOVRUM)\s*[- ]?(\d{1,2})",letters(r["label"])) for r in evidence]
+        numbers = {int(m[1]) for m in numbers if m}
+        if numbers and max(numbers) > len(evidence):
+            return None  # a visible MH3 and only two labels leave a numbered bedroom unaccounted for
+    if (name == "bedroom" and not evidence and len(titles) == 1
+            and not inv.get("floor_markers") and not inv.get("storeys")):
+        title = titles[0]
+        if re.fullmatch(r"1\s*H\s*\+\s*(?:K|KK|KT|TPK)",letters(title["label"])):
+            living = [r for r in labels["other"] if any(
+                part in {"OH","OLOHUONE","VARDAGSRUM"} for part in re.split(r"\s*[+/&]\s*",letters(r["label"])))]
+            if len(living) == 1:
+                return {"status":"answered","answer":0,"evidence":[],"method":"local_room_labels",
+                        "coordinate_system":"xyxy_top_left_0_to_1000",
+                        "reason":"The apartment has one habitable room, explicitly labelled as its living room.",
+                        "coverage_evidence":[{"label":"Apartment designation "+title["label"],"box":title["box"]},living[0]]}
     if name == "wc" and evidence:
         if len(evidence) == 1 and (inv.get("floor_markers") or recognized < 5):
             return None

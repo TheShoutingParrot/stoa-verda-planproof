@@ -6,9 +6,9 @@ import sys
 import time
 from urllib.parse import urlsplit
 
-from . import nemotron, scan_objects, scan_rooms
+from . import nemotron, scan_objects, scan_rooms, scan_storeys
 
-VERSION = 'scan-reader-2'
+VERSION = 'scan-reader-3'
 
 DIRECT_INSTRUCTIONS = """Inspect the entire supplied floor plan and answer the user's counting question.
 Scope: count objects in the depicted plan, across all separate floor panels. Ignore the legend, neighboring building silhouettes and advertising thumbnails. Follow any narrower scope in the question. Use Finnish or Swedish room abbreviations when present. A WC room and a toilet bowl are different objects. For sinks, count a double-bowl unit once. Distinguish showers or tubs from saunas, sinks and floor drains. A doorway needs a door leaf; ignore furniture arcs. Windows are glazed openings in walls. Count storeys from distinct drawn floors, not staircases or sheet layout.
@@ -33,6 +33,7 @@ def run(image, question, base, model, api_key, timeout=90, *, baseline_report=No
     digest = hashlib.sha256(data).hexdigest()
     for predictor, origin, local_model in (
         (scan_rooms.predict, 'Local room labels', 'Room label OCR'),
+        (scan_storeys.predict, 'Local floor panels', 'Floor plan and caption reader'),
         (scan_objects.predict, 'Local object detector', 'CubiCasa5K')
     ):
         result = predictor(data, question)
