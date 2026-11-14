@@ -112,3 +112,74 @@ class ScanTests(unittest.TestCase):
                 with self.assertRaisesRegex(DrawingError, '429'):
                     scan.scan_answer(self.lib, self.path, self.q)
         self.assertFalse(self.storage.exists())
+
+    def replay_fixture(self):
+        replay = self.local.parent / 'replay.json'
+        base = dict(self.raw, origin='Measured scan reader · reused hosted response', method='synthetic_reader')
+        reports = [base, dict(base, question='How many saunas?', status='unknown', answer=None, evidence=[],
+                              reason='Indistinct scan.'),
+                   dict(base, question='How many windows?', status='unavailable', answer=None, evidence=[],
+                        reason='Inference endpoint returned HTTP 429.')]
+        replay.write_text(json.dumps(dict(version=1, reports=reports)))
+        digest = hashlib.sha256(replay.read_bytes()).hexdigest()
+        patcher = patch.multiple(scan, REPLAY_FILE=replay, REPLAY_SHA256=digest)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        return replay
+
+    def test_sealed_results_are_bound_and_read_once_with_weak_results_retained(self):
+        self.replay_fixture()
+        with patch.object(scan.scan_reader, 'run', side_effect=AssertionError('unexpected inference')):
+            previous = scan._replay_index.cache_info()
+            info = scan.scan_info(self.lib, self.path)
+            saved = {r['question']:r for r in info['saved']}
+            self.assertEqual({k:v['status'] for k,v in saved.items()}, {
+                self.q:'answered', 'How many saunas?':'unknown', 'How many windows?':'unavailable'})
+            self.assertEqual(saved[self.q]['method'],'synthetic_reader')
+            self.assertNotIn('gold',json.dumps(info))
+            self.assertEqual(scan.scan_answer(self.lib,self.path,self.q)['evidence'],self.raw['evidence'])
+            final = scan._replay_index.cache_info()
+            self.assertEqual(final.misses,previous.misses+1)
+            self.assertGreater(final.hits,previous.hits)
+            self.lib.content = b'different bytes'
+            self.assertEqual(scan.scan_info(self.lib,self.path)['saved'],[])
+
+    def test_changed_or_missing_bundle_falls_back_then_recovers(self):
+        replay = self.replay_fixture()
+        original = replay.read_bytes()
+        self.assertEqual(len(scan.scan_info(self.lib,self.path)['saved']),3)
+        replay.write_bytes(original.replace(b'synthetic_reader',b'synthetic_broken'))
+        self.assertEqual(scan.scan_info(self.lib,self.path)['saved'],[])
+        replay.unlink()
+        self.assertEqual(scan.scan_info(self.lib,self.path)['saved'],[])
+        replay.write_bytes(original)
+        self.assertEqual(len(scan.scan_info(self.lib,self.path)['saved']),3)
+
+    def test_shipped_bundle_contains_only_ui_fields_and_distinct_drawing_questions(self):
+        from scripts.export_scan_replay import UI_FIELDS
+        data = scan.REPLAY_FILE.read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(),scan.REPLAY_SHA256)
+        bundle = json.loads(data)
+        self.assertEqual(set(bundle), {'version','reports'})
+        self.assertEqual(len(bundle['reports']),96)
+        self.assertEqual(len({r['path'] for r in bundle['reports']}),32)
+        self.assertEqual(len({(r['path'],r['question']) for r in bundle['reports']}),96)
+        for r in bundle['reports']:
+            self.assertFalse(set(r) - set(UI_FIELDS))
+            for item in r['evidence'] + r.get('coverage_evidence',[]):
+                self.assertEqual(set(item),{'label','box'})
+        self.assertTrue(all(f not in UI_FIELDS for f in
+                            ('gold','correct','latency_ms','timestamp','usage','attempts','headers','api_key')))
+
+    def test_newer_interactive_wins_and_weak_candidate_preserves_saved_answers(self):
+        self.replay_fixture()
+        prior = dict(self.raw, question='How many saunas?', answer=0,evidence=[])
+        self.store([(prior['question'],prior),(self.q,dict(self.raw,model='old-model'))])
+        saved = {r['question']:r for r in scan.scan_info(self.lib,self.path)['saved']}
+        self.assertEqual(saved[prior['question']]['status'],'answered')
+        self.assertEqual(saved[self.q]['origin'],'Measured scan reader · reused hosted response')
+        location = self.storage/self.raw['image_sha256']
+        location.mkdir(parents=True)
+        (location/'interactive.json').write_text(json.dumps(dict(self.raw,answer=0,evidence=[],origin='Rechecked locally')))
+        new = scan.scan_answer(self.lib,self.path,self.q)
+        self.assertEqual((new['answer'],new['origin']),(0,'Rechecked locally'))

@@ -1,5 +1,6 @@
 """Replay verified image-bound count reports and run individual scan questions."""
 from contextlib import closing
+from functools import lru_cache
 import hashlib
 import json
 import os
@@ -23,15 +24,22 @@ def _interactive_dir(digest):
     return Path(os.getenv('PLANPROOF_SCAN_RESULTS', ROOT / '.local/scan-results')) / digest
 
 
-def _safe_report(raw, path, digest, question, origin):
+def _safe_report(raw, path, digest, question, origin, *, sealed=False):
     if (not isinstance(raw, dict) or raw.get('path') != path or raw.get('image_sha256') != digest
             or raw.get('question') != question or raw.get('image') != Path(path).name
             or raw.get('coordinate_system') != COORDS or not isinstance(question, str) or not question.strip()):
         return None
-    try:
-        report = nemotron.parse_count(json.dumps(raw, allow_nan=False))
-    except (ValueError, TypeError):
-        return None
+    if sealed and raw.get('status') == 'unavailable':
+        if raw.get('answer') is not None or raw.get('evidence') != []:
+            return None
+        reason = raw.get('reason')
+        report = dict(status='unavailable', answer=None, evidence=[],
+                      reason=reason[:220] if isinstance(reason, str) else 'The inference service was unavailable.')
+    else:
+        try:
+            report = nemotron.parse_count(json.dumps(raw, allow_nan=False))
+        except (ValueError, TypeError):
+            return None
     if raw.get('coverage_evidence') and report['status'] == 'answered' and report['answer'] == 0:
         try:
             coverage = raw['coverage_evidence']
@@ -55,6 +63,38 @@ def _json_file(path):
         return json.loads(path.read_text())
     except (FileNotFoundError, ValueError, UnicodeError):
         return None
+
+
+# Produced by python3 -m scripts.export_scan_replay; one artifact ships with a clone.
+REPLAY_FILE = ROOT / 'public/data/finnish/scan-holdout-replay.json'
+REPLAY_SHA256 = 'fb19a477bdd6c87cead3af371e2afeb3b7fe2480f6836b3c4539fb6f51e88cc9'
+
+
+@lru_cache(maxsize=1)
+def _replay_index(file, file_stat, expected_digest):
+    data = file.read_bytes()
+    if hashlib.sha256(data).hexdigest() != expected_digest:
+        return {}
+    bundle = json.loads(data)
+    if bundle['version'] != 1:
+        return {}
+    by_drawing = {}
+    for raw in bundle['reports']:
+        path, digest, question = raw['path'], raw['image_sha256'], raw['question']
+        report = _safe_report(dict(raw, image=Path(path).name), path, digest, question, raw['origin'], sealed=True)
+        if report is None:
+            return {}
+        by_drawing.setdefault((path,digest),{})[question] = report
+    return by_drawing
+
+
+def _measured(path, digest):
+    try:
+        st = REPLAY_FILE.stat()
+        fingerprint = (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)
+        return _replay_index(REPLAY_FILE, fingerprint, REPLAY_SHA256).get((path,digest),{})
+    except (OSError, ValueError, TypeError, KeyError):
+        return {}
 
 
 def _saved(path, digest):
@@ -95,6 +135,11 @@ def _saved(path, digest):
                 except (ValueError, TypeError):
                     continue
                 remember(raw, question, 'Saved hosted inference')
+    priority = {'unavailable': 0, 'unknown': 1, 'answered': 2}
+    for question, measured in _measured(path, digest).items():
+        previous = reports.get(question)
+        if previous is None or priority[measured['status']] >= priority[previous['status']]:
+            reports[question] = measured
     for item in _interactive_dir(digest).glob('*.json'):
         raw = _json_file(item)
         if isinstance(raw, dict):
