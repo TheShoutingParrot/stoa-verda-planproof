@@ -86,6 +86,7 @@ GUARDS = ("Network access is forbidden during inference.", "Hosted calls forbidd
 LOAD_LIMIT = 12.0
 LOAD_WAIT = 1800
 RUN_RECORDS = ("timeouts.json", "conditions.json")
+EXTRAS = "extras"  # per answered prompt: coverage_evidence and reason for the viewer, never scored
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 # Pinned after the freeze and the first baseline snapshot (see docs/scan-next-protocol.md).
@@ -506,7 +507,13 @@ def seal_of(work, manifest, arm):
     for name in RUN_RECORDS:  # absent from the two arms sealed before these records existed
         if (work / arm / name).exists():
             seal[name.removesuffix(".json") + "_sha256"] = sha((work / arm / name).read_bytes())
+    if (work / arm / EXTRAS).is_dir():  # viewer extras of answered reports; never read by score
+        seal["extras_sha256"] = sha(canonical(extras_files(work / arm)))
     return rows, seal, config
+
+
+def extras_files(root):
+    return {p.name: sha(p.read_bytes()) for p in sorted((root / EXTRAS).iterdir()) if p.is_file()}
 
 
 def pinned(work, manifest):
@@ -544,8 +551,25 @@ def checked_report(reader, report, question, digest, elapsed):
     return result
 
 
-def read_prompt(reader, image, question, digest):
-    """One prompt. A reader exception or an invalid report becomes a recorded deferral, never an abort."""
+def report_extras(reader, report):
+    """What the viewer needs beside the sealed record of an answered report: its coverage_evidence, when
+    present and valid, and its reason string. Kept in a side file; score never reads it."""
+    extras = {}
+    coverage = report.get("coverage_evidence")
+    if coverage:
+        try:
+            extras["coverage_evidence"] = reader.nemotron.parse_count(
+                json.dumps(dict(status="answered", answer=len(coverage), evidence=coverage), allow_nan=False))["evidence"]
+        except Exception:
+            pass  # invalid coverage of a non-zero answer: the viewer would drop it too
+    if isinstance(report.get("reason"), str):
+        extras["reason"] = report["reason"][:220]
+    return extras
+
+
+def read_prompt(reader, image, question, digest, extras=None):
+    """One prompt. A reader exception or an invalid report becomes a recorded deferral, never an abort.
+    For an answered report, the dict passed as extras receives report_extras()."""
     started = time.monotonic()
     try:
         report = reader.run(image, question, "", reader.nemotron.MODEL, None)
@@ -555,9 +579,12 @@ def read_prompt(reader, image, question, digest):
         return deferral("reader_error", exc, round(1000 * (time.monotonic() - started)))
     elapsed = round(1000 * (time.monotonic() - started))
     try:
-        return checked_report(reader, report, question, digest, elapsed)
+        result = checked_report(reader, report, question, digest, elapsed)
     except Exception as exc:
         return deferral("invalid_report", exc, elapsed)
+    if extras is not None and result["status"] == "answered":
+        extras.update(report_extras(reader, report))
+    return result
 
 
 @contextmanager
@@ -617,6 +644,7 @@ def infer(reader, manifest, inputs, root, arm, timeouts=None):
     for q in manifest["rows"]:
         drawings[q["path"]].append(q)
     where = {}
+    (root / EXTRAS).mkdir(parents=True, exist_ok=True)  # present in every new arm, so its seal covers it
     log = lambda: save(root / "timeouts.json", timeouts)
     with offline(), patch.object(reader.nemotron, "run", side_effect=AssertionError(GUARDS[1])), \
             timeout_log(timeouts, where, log):
@@ -631,7 +659,10 @@ def infer(reader, manifest, inputs, root, arm, timeouts=None):
                 if output.exists():
                     continue
                 where.update(prompt=prompt, id=q["id"], drawing=index)
-                result = read_prompt(reader, image, q["question"], digest)
+                extras = {}
+                result = read_prompt(reader, image, q["question"], digest, extras)
+                if result["status"] == "answered":  # before the record, so a resumed run never lacks it
+                    save(root / EXTRAS / (q["id"] + ".json"), dict(id=q["id"], **extras))
                 save(output, dict(id=q["id"], question=q["question"], image_sha256=digest, **result))
             print(f"{arm} drawing {index}/{len(drawings)}; {time.monotonic() - started_all:.1f}s; "
                   f"time-outs {len(timeouts)}", flush=True)
@@ -712,7 +743,7 @@ def run(args, manifest):
         _, seal, _ = seal_of(args.work, manifest, args.arm)
         save(root / "seal.json", seal)
         for path in [root / "config.json", root / "seal.json", *(root / n for n in RUN_RECORDS),
-                     *sorted((root / "outputs").glob("*.json"))]:
+                     *sorted((root / "outputs").glob("*.json")), *sorted((root / EXTRAS).glob("*.json"))]:
             path.chmod(0o444)
         verify_arm(args.work, manifest, args.arm)
         history(args.work, arm=args.arm, event="sealed", seal=sha(canonical(seal)), timeouts=len(timeouts))
@@ -1313,12 +1344,17 @@ def example(args, manifest):
     from scripts import export_scan_replay, scan_library
 
     reports = []
+    side = args.work / args.after / EXTRAS  # sealed with the arm (verified above); absent for older arms
     for r in rows:
         item = r["new"]
         if item["status"] != "answered":
             continue
         source, model = export_scan_replay.LOCAL_METHODS.get(item.get("method"), ("local reader", item.get("method") or "local"))
-        enriched = dict(item, path=r["path"], image=Path(r["path"]).name, model=model, coordinate_system=scan_library.COORDS)
+        extra = json.loads((side / (r["id"] + ".json")).read_text()) if (side / (r["id"] + ".json")).is_file() else {}
+        check(extra.get("id", r["id"]) == r["id"], "Extras file of another prompt.")
+        extra = {k: extra[k] for k in ("coverage_evidence", "reason") if k in extra}
+        enriched = dict(item, **extra, path=r["path"], image=Path(r["path"]).name, model=model,
+                        coordinate_system=scan_library.COORDS)
         report = scan_library._safe_report(
             enriched, r["path"], r["image_sha256"], r["question"], "Measured scan-next after arm · " + source, sealed=True
         )

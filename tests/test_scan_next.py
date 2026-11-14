@@ -349,6 +349,66 @@ class InvalidReports(unittest.TestCase):
                 nxt.verify(SimpleNamespace(work=work, arm="after"), manifest)
             self.assertIn("reader_error 1, invalid_report 1", out.getvalue())
 
+    def test_answered_reports_keep_coverage_and_reason_in_sealed_extras_that_example_merges(self):
+        with TemporaryDirectory() as tmp:
+            work = Path(tmp)
+            paths = ["data/cubicasa5k/high_quality-1.png", "data/cubicasa5k/high_quality_architectural-2.png"]
+            (work / "inputs").mkdir()
+            for p in paths:
+                (work / "inputs" / Path(p).name).write_bytes(p.encode())
+            manifest = dict(images=2, rows=rows_for(paths))
+            ids = [q["id"] for q in manifest["rows"]]
+            make_arm(work, manifest, "before", [("abstained", None)] * 4)
+            root = make_arm(work, manifest, "after", [], seal=False)
+            cover = [dict(label="Apartment", box=[1, 1, 9, 9])]
+            reader = fake_reader([
+                answered(0, coverage_evidence=cover, reason="No window in the examined rooms."),
+                answered(1, reason="One window.", coverage_evidence=[dict(label="x", box=[0, 0, 1000, 1000])]),
+                dict(status="unknown", answer=None, evidence=[], reason="Too faint."),
+                ValueError("cv2.error"),
+            ])
+            with redirect_stdout(io.StringIO()):
+                nxt.infer(reader, manifest, work / "inputs", root, "after")
+            _, seal, _ = nxt.seal_of(work, manifest, "after")
+            nxt.save(root / "seal.json", seal)
+            rows, seal, _ = nxt.verify_arm(work, manifest, "after")
+            # The sealed records are unchanged in shape; the extras sit beside them, one per answered prompt.
+            self.assertEqual(set(rows[ids[0]]), {"id", "question", "image_sha256", "status", "answer", "evidence",
+                                                 "method", "elapsed_ms"})
+            self.assertEqual(sorted(p.stem for p in (root / "extras").iterdir()), sorted(ids[:2]))
+            self.assertEqual(json.loads((root / "extras" / (ids[0] + ".json")).read_text()),
+                             dict(id=ids[0], coverage_evidence=cover, reason="No window in the examined rooms."))
+            self.assertEqual(json.loads((root / "extras" / (ids[1] + ".json")).read_text()),
+                             dict(id=ids[1], reason="One window."))  # invalid coverage is not kept
+            self.assertIn("extras_sha256", seal)
+            # example merges them, so the zero in the bundle carries its examined region and reason.
+            paired = [dict(**q, gold=0, old=dict(status="abstained", answer=None, evidence=[], correct=False),
+                           new=dict(rows[q["id"]], correct=rows[q["id"]]["status"] == "answered"
+                                    and rows[q["id"]]["answer"] == 0)) for q in manifest["rows"]]
+            nxt.save(work / "paired-rows.json", paired)
+            args = SimpleNamespace(work=work, before="before", after="after", limit=3)
+            with redirect_stdout(io.StringIO()) as out:
+                nxt.example(args, manifest)
+            reports = {r["question"] + r["path"]: r for r in json.loads((work / "scan-next-replay.json").read_text())["reports"]}
+            self.assertEqual(len(reports), 2)
+            zero = reports[manifest["rows"][0]["question"] + manifest["rows"][0]["path"]]
+            self.assertEqual((zero["answer"], zero["coverage_evidence"], zero["reason"]),
+                             (0, cover, "No window in the examined rooms."))
+            self.assertIn("(2 answered reports)", out.getvalue())
+            # The extras are sealed like the run records: a changed, added or removed file breaks the seal.
+            extra = root / "extras" / (ids[1] + ".json")
+            nxt.save(extra, dict(id=ids[1], reason="Two windows."))
+            with self.assertRaisesRegex(ValueError, "Broken arm seal"):
+                nxt.verify_arm(work, manifest, "after")
+            nxt.save(extra, dict(id=ids[1], reason="One window."))
+            nxt.verify_arm(work, manifest, "after")
+            nxt.save(root / "extras" / (ids[2] + ".json"), dict(id=ids[2]))
+            with self.assertRaisesRegex(ValueError, "Broken arm seal"):
+                nxt.verify_arm(work, manifest, "after")
+            shutil.rmtree(root / "extras")
+            with self.assertRaisesRegex(ValueError, "Broken arm seal"):
+                nxt.verify_arm(work, manifest, "after")
+
 
 class RunConditions(unittest.TestCase):
     def setUp(self):
