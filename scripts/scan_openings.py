@@ -73,7 +73,8 @@ def _candidate(start, end, axis, probabilities, unit=1.):
     x, y, left_confidence = start
     end_x, end_y, right_confidence = end
     length = end_x - x
-    if (length < 7*unit or abs(end_y-y) > max(4*unit, min(12*unit, length*.13))
+    # At least one pixel must lie between the two ends, or the class vote below is empty.
+    if (length < max(2, 7*unit) or abs(end_y-y) > max(4*unit, min(12*unit, length*.13))
             or max(left_confidence, right_confidence) < .32):
         return None
     # Follow the opening along the wall. A class vote over its centerline can

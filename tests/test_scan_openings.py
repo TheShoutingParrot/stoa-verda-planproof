@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import math
 import os
 from pathlib import Path
 import unittest
@@ -140,6 +141,21 @@ class DecoderScaleTests(unittest.TestCase):
         self.assertEqual(len(doubled), 2)
         for small, large in zip(base, doubled):
             self.assertTrue(all(abs(2*a - b) <= 2 for a, b in zip(small, large)), (small, large))
+
+    @unittest.skipUnless(RUNTIME, 'optional scan object runtime')
+    def test_adjoining_endpoints_make_no_opening_on_a_reduced_sheet(self):
+        import warnings
+        import numpy as np
+        prob = np.zeros((2, 40, 60), dtype=np.uint8)
+        prob[0, 18:23, 5:50] = 230
+        # Ends one pixel apart leave no pixel to vote on. They once gave an opening with a NaN score.
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            for unit in (.05, .1, .14, 1.):
+                self.assertIsNone(scan_openings._candidate((20, 20, .9), (21, 20, .9), 0, prob, unit))
+            found = scan_openings._candidate((20, 20, .9), (22, 20, .9), 0, prob, .14)
+        self.assertEqual((found.box[0], found.box[2], found.category), (20, 22, 1))
+        self.assertFalse(math.isnan(found.score))
 
 
     @unittest.skipUnless(RUNTIME, 'optional scan object runtime')
