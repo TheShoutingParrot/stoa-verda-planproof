@@ -343,8 +343,7 @@ def storeys(plan):
     if len(panels) == 1:
         if plan['storeys'] or plan['floor_markers']:
             return None  # a level caption on a one-panel sheet points at a floor that is not separated
-        ink = plan['ink']
-        if len(ink) == 4 and len(set(ink)) == 1 and ink[0] >= 2:
+        if len(plan['ink']) == 4 and min(plan['ink']) >= 2:
             return None  # two panels drawn wall to wall merge in the room map but not in the ink
         return _report(1, [_mark('Floor plan drawn as one connected body of rooms', panels[0]['box'])])
     captions = len(plan['storeys'])

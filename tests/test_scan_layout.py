@@ -57,7 +57,9 @@ class LayoutRuleTests(unittest.TestCase):
         self.assertIsNone(scan_layout.answer(plan(storeys=[caption]), 'storeys'))
         self.assertIsNone(scan_layout.answer(plan(floor_markers=['YLÄKERTA']), 'storeys'))
         self.assertIsNone(scan_layout.answer(plan(ink=[2, 2, 2, 2]), 'storeys'))
+        self.assertIsNone(scan_layout.answer(plan(ink=[3, 3, 3, 2]), 'storeys'))
         self.assertEqual(scan_layout.answer(plan(ink=[2, 1, 3, 1]), 'storeys')['answer'], 1)
+        self.assertEqual(scan_layout.answer(plan(ink=[0, 0, 0, 0]), 'storeys')['answer'], 1)
         self.assertIsNone(scan_layout.answer(plan(panels=[]), 'storeys'))
 
     def test_separate_bodies_count_storeys_and_an_ambiguous_body_declines(self):
