@@ -74,6 +74,10 @@ class LayoutRuleTests(unittest.TestCase):
         captions = [{'level': str(n), 'label': '%d. krs' % n, 'box': [100*n, 20, 100*n+60, 40]} for n in (1, 2, 3)]
         self.assertIsNone(scan_layout.answer(plan(panels=[left, right], storeys=captions), 'storeys'))
         self.assertEqual(scan_layout.answer(plan(panels=[left, right], storeys=captions[:2]), 'storeys')['answer'], 2)
+        # A much smaller second body counts as a storey only when a level caption is printed.
+        annex = dict(right, share=.6)
+        self.assertIsNone(scan_layout.answer(plan(panels=[left, annex]), 'storeys'))
+        self.assertEqual(scan_layout.answer(plan(panels=[left, annex], storeys=captions[1:2]), 'storeys')['answer'], 2)
 
     def test_single_kitchen_region_and_signs_of_a_second_kitchen(self):
         kitchen = region(scan_layout.KITCHEN, .12, [100, 100, 300, 300])
@@ -303,6 +307,7 @@ class LayoutGeometryTests(unittest.TestCase):
         self.paint(rooms, scan_layout.WALL, (204, 44, 207, 84))
         self.paint(rooms, scan_layout.BATH, (207, 44, 247, 84))
         self.paint(rooms, scan_layout.OUTDOOR, (140, 60, 160, 100))
+        self.paint(rooms, scan_layout.WALL, (140, 150, 160, 151))  # a dimension hairline read as wall
         self.paint(icons, scan_layout.TOILET, (168, 48, 178, 62))
         self.paint(icons, scan_layout.BENCH, (212, 48, 244, 60))
         return rooms, icons

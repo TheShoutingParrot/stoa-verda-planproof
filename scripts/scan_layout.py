@@ -30,6 +30,7 @@ SYMBOLS = {'toilet': TOILET, 'sink': SINK, 'bench': BENCH, 'tub': BATHTUB}
 COORDS = 'xyxy_top_left_0_to_1000'
 METHOD = 'local_room_layout'
 BATHROOM_SHARE = .03  # a wet room this large, as a share of all interior area, can hold a shower
+STOREY_SHARE = .75    # uncaptioned storeys of one building have at least this share of the largest panel's rooms
 BENCH_SHARE = .004    # smallest sauna bench symbol, as a share of all interior area
 FAINT_BENCH = .0002   # weak bench probability over more interior area than this forbids a zero
 CACHE = OrderedDict()
@@ -89,6 +90,7 @@ def describe(rooms, icons):
     Pixel boxes are XYXY on the model grid. 'region_map' holds the index+1 of the
     room region at each pixel and 'panel_map' the index+1 of its floor panel.
     """
+    import cv2
     import numpy as np
     classes = rooms.argmax(axis=0).astype(np.uint8)
     symbols = icons.argmax(axis=0).astype(np.uint8)
@@ -97,8 +99,10 @@ def describe(rooms, icons):
     inside = int(interior.sum())
 
     # A floor panel is one connected body of walls and rooms. Background and
-    # outdoor space separate the storeys drawn side by side on one sheet.
-    labels, bodies = _components(interior | (classes == WALL), 1)
+    # outdoor space separate the storeys drawn side by side on one sheet. A
+    # dimension line read as wall must not bridge two panels, so hairlines are opened away.
+    body = cv2.morphologyEx((interior | (classes == WALL)).astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    labels, bodies = _components(body, 1)
     panel_map = np.zeros(classes.shape, np.uint8)
     panels = []
     sized = sorted(((int(interior[labels == index].sum()), index, box) for index, _, box in bodies), reverse=True)
@@ -347,8 +351,8 @@ def floor_panels(plan, share=.25):
 def storeys(plan):
     """Count the separate bodies of walls and rooms; decline when captions or raw ink disagree."""
     panels = floor_panels(plan)
-    if not panels:
-        return None
+    if not panels or len(floor_panels(plan, .10)) != len(panels):
+        return None  # a mid-sized extra body may be an outbuilding or a small upper floor
     if len(panels) == 1:
         if plan['storeys'] or plan['floor_markers']:
             return None  # a level caption on a one-panel sheet points at a floor that is not separated
@@ -358,8 +362,8 @@ def storeys(plan):
     captions = len(plan['storeys'])
     if captions >= 2 and captions != len(panels):
         return None
-    if len(floor_panels(plan, .10)) != len(panels):
-        return None  # a mid-sized extra body may be an outbuilding or a partial floor
+    if not captions and min(panel['share'] for panel in panels) < STOREY_SHARE:
+        return None  # without a level caption a much smaller body may be a garage or sauna building
     marks = [_mark('Floor panel %d' % number, panel['box']) for number, panel in enumerate(panels, 1)]
     if len(_distinct(marks)) != len(marks):
         return None
