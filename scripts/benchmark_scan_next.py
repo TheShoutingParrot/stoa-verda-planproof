@@ -74,7 +74,7 @@ ARM_NAME = re.compile(r"^[a-z][a-z0-9-]{0,31}$")
 FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 # Pinned after the freeze and the first baseline snapshot (see docs/scan-next-protocol.md).
-FINGERPRINT = None
+FINGERPRINT = "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0"
 BASE_SOURCE_FINGERPRINT = None
 
 # Exposure audit: roots searched for test-split drawing names and image hashes.
