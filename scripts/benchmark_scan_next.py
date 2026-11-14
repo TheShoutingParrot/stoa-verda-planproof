@@ -533,6 +533,10 @@ def run(args, manifest):
             network="disabled",
             hosted="forbidden; blank endpoint and no key",
         )
+        if args.arm not in BASELINE_ARMS:
+            # Fail before inference if the after arm could not be paired with the sealed baseline.
+            _, _, baseline = verify_arm(args.work, manifest, "before")
+            check_pair((baseline, config))
         if (root / "config.json").exists():
             check(config == json.loads((root / "config.json").read_text()), "Arm configuration mismatch.")
         else:
@@ -966,6 +970,7 @@ def leak_check(args, manifest):
     report = dict(
         revision=commit,
         scratch=[str(p) for p in scratch],
+        scratch_missing=[str(p) for p in scratch if not p.exists()],
         findings=findings,
         checked=datetime.now(timezone.utc).isoformat(timespec="seconds"),
     )
@@ -974,7 +979,8 @@ def leak_check(args, manifest):
         for f in findings:
             print("LEAK", f["where"], ", ".join(f["paths"])[:200], f"({len(f['hits'])} fresh identifiers)")
         sys.exit(1)
-    print(f"No fresh drawing names or image hashes in {commit} or {len(scratch)} scratch directories.")
+    missing = f" ({len(report['scratch_missing'])} missing)" if report["scratch_missing"] else ""
+    print(f"No fresh drawing names or image hashes in {commit} or {len(scratch)} scratch directories{missing}.")
 
 
 def example(args, manifest):
