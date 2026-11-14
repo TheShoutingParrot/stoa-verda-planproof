@@ -75,7 +75,8 @@ FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 # Pinned after the freeze and the first baseline snapshot (see docs/scan-next-protocol.md).
 FINGERPRINT = "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0"
-BASE_SOURCE_FINGERPRINT = None
+# Equals the reader that produced 167 of 398 (.local/evaluation/scan-revision/new/config.json).
+BASE_SOURCE_FINGERPRINT = "9e5bc7772a72c25e7435f31d779913e73335a63a0c3b6f5239f47ccfb94de54d"
 
 # Exposure audit: roots searched for test-split drawing names and image hashes.
 AUDIT_ROOTS = (
@@ -137,7 +138,11 @@ REFERENCE_MEMBERS = (("model.svg", ".svg"), ("F1_scaled.png", "-scaled.png"), ("
 PUBLISHED = {
     "old": dict(exact=156, wrong=78, abstained=164, answered=234),
     "new": dict(exact=167, wrong=73, abstained=158, answered=240),
-    "paired": dict(gained_exact=15, lost_exact=4),
+    "paired": dict(gained_exact=15, lost_exact=4, newly_answered=6, newly_answered_exact=6),
+    "accuracy_when_answered": dict(old=0.6667, new=0.6958),
+    "mae_both_answered": dict(old=0.966, new=0.795),
+    "mae_objects": dict(old=1.254, new=1.028),
+    "delta_pp": 2.76,
     "interval": [0.75, 4.87],
     "localization": {
         "windows": {"old": (330, 401, 458, 16), "new": (346, 373, 458, 20)},
@@ -1035,6 +1040,14 @@ def validate(args):
             compare(f"{arm} {key}", value, overall[label][key])
     for key, value in PUBLISHED["paired"].items():
         compare(key, value, overall["paired"][key])
+    for arm, label in (("old", "before"), ("new", "after")):
+        compare(f"{arm} accuracy when answered", PUBLISHED["accuracy_when_answered"][arm],
+                overall[label]["accuracy_when_answered"])
+        compare(f"{arm} mean absolute error, both answered", PUBLISHED["mae_both_answered"][arm],
+                overall["mean_absolute_error_on_both_answered"][label])
+        compare(f"{arm} mean absolute error, object counts", PUBLISHED["mae_objects"][arm],
+                summary["by_group"]["objects"]["mean_absolute_error_on_both_answered"][label])
+    compare("paired difference pp", PUBLISHED["delta_pp"], overall["delta_exact_pp"])
     compare("bootstrap interval pp", PUBLISHED["interval"], overall["clustered_bootstrap_delta_pp_95"])
     if args.references:
         _, table = localization(records, args.references)
