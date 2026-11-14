@@ -191,6 +191,7 @@ def inventory(image_bytes):
         return {}
     passes = []
     orientation = 1
+    complete = False
     if sys.platform == "darwin" and shutil.which("osascript"):
         with tempfile.NamedTemporaryFile(suffix=".png") as image:
             image.write(image_bytes)
@@ -207,8 +208,9 @@ def inventory(image_bytes):
                 if _legibility(passes) < 12:
                     alternate = _vision(image.name, best+1, "sv")
                     passes = passes + alternate
+                complete = True
                 if best != 0:
-                    return dict(_summarize(passes, image_bytes), orientation=orientation)
+                    return dict(_summarize(passes, image_bytes), orientation=orientation, vision=True)
             except (OSError, subprocess.SubprocessError, ValueError):
                 pass
     if shutil.which("tesseract"):
@@ -216,8 +218,9 @@ def inventory(image_bytes):
             passes = passes + _tesseract(image_bytes,w,h)
         except (OSError,subprocess.SubprocessError,ValueError):
             pass
-    # The reading direction that won is reused when a room is read again at a larger scale.
-    return dict(_summarize(passes, image_bytes), orientation=orientation)
+    # The winning reading direction is reused when a room is read again at a larger scale.
+    # A reader that reasons from the absence of a label must know the sheet pass completed.
+    return dict(_summarize(passes, image_bytes), orientation=orientation, vision=complete)
 
 
 def _same(a,b):

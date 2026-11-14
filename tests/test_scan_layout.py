@@ -33,7 +33,7 @@ def plan(regions=(), labels=(), panels=None, benches=(), toilets=0, **extra):
               'symbols': {'bench': list(benches), 'tub': [], 'sink': [],
                           'toilet': [{'share': .002, 'box': [0, 0, 5, 5], 'region': 0, 'score': .9}] * toilets},
               'faint_bench': 0, 'titles': [], 'storeys': [], 'floor_markers': [], 'unclear_wc': 0,
-              'explicit_no_sauna': 0, 'ink': [1, 1, 1, 1]}
+              'explicit_no_sauna': 0, 'ink': [1, 1, 1, 1], 'sheet_read': True, 'looked': True}
     record.update(extra)
     return record
 
@@ -208,7 +208,7 @@ class LayoutRuleTests(unittest.TestCase):
                 patch.object(scan_layout.scan_objects, '_load', return_value=('model', 'cpu')), \
                 patch.object(scan_layout, '_infer', return_value=('rooms', 'icons')) as infer, \
                 patch.object(scan_layout, 'describe', return_value=layout), \
-                patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 3}), \
+                patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 3, 'vision': True}), \
                 patch.object(scan_layout.scan_storeys, 'panel_views', return_value=[]), \
                 patch.object(scan_layout, 'zoom_rows', side_effect=look):
             for name in ('storeys', 'kitchen', 'balcony', 'sauna', 'wc', 'washroom', 'bedroom', 'sauna', 'storeys'):
@@ -217,6 +217,24 @@ class LayoutRuleTests(unittest.TestCase):
             self.assertIsNot(scan_layout.plan(png, 'wc'), scan_layout.plan(png, 'storeys'))
         self.assertEqual(infer.call_count, 1)
         self.assertEqual(looks, [(3, (scan_layout.BATH,)), (3, (scan_layout.BEDROOM,))])
+
+    def test_incomplete_readings_never_support_a_count_from_absence(self):
+        bath = region(scan_layout.BATH, .07, [400, 400, 520, 560], toilets=1, sinks=1)
+        names = [label('bedroom', 'MH', [100, 100, 130, 120]), label('bedroom', 'MH', [200, 100, 230, 120]),
+                 label('other', 'OH', [300, 100, 330, 120])]
+        kitchen = region(scan_layout.KITCHEN, .12, [100, 100, 300, 300])
+        complete = plan([bath, kitchen], names, toilets=1)
+        self.assertEqual([scan_layout.answer(complete, name)['answer'] for name in ('storeys', 'kitchen', 'sauna', 'wc', 'washroom', 'balcony')],
+                         [1, 1, 0, 0, 1, 0])
+        # Without the sheet OCR a caption or a second label could not have vetoed any of these counts.
+        unread = dict(complete, sheet_read=False)
+        self.assertTrue(all(scan_layout.answer(unread, name) is None for name in scan_layout.RULES))
+        # Without the second look the wet room may hold an unread sauna, WC or bathroom name.
+        unlooked = dict(complete, looked=False)
+        self.assertEqual([scan_layout.answer(unlooked, name) for name in ('sauna', 'wc', 'washroom')], [None, None, None])
+        self.assertEqual(scan_layout.answer(unlooked, 'storeys')['answer'], 1)
+        bench = {'share': .02, 'box': [530, 400, 600, 440], 'region': 1, 'score': .9}
+        self.assertEqual(scan_layout.answer(dict(unlooked, symbols=dict(unlooked['symbols'], bench=[bench])), 'sauna')['answer'], 1)
 
     def test_evidence_boxes_are_valid_and_never_the_whole_sheet(self):
         whole = scan_layout.answer(plan(panels=[{'share': 1., 'box': [0, 0, 1000, 1000]}]), 'storeys')
@@ -305,7 +323,8 @@ class LayoutGeometryTests(unittest.TestCase):
         layout = scan_layout.describe(*self.two_panels())
         inv = {'labels': {'kitchen': [{'label': 'K', 'box': [100, 300, 180, 380]}], 'bedroom': [], 'washroom': [],
                           'wc': [], 'sauna': [], 'balcony': [], 'other': [{'label': 'OH', 'box': [200, 500, 260, 560]}]},
-               'titles': [], 'storeys': [], 'floor_markers': [], 'possible_wc': [], 'explicit_no_sauna': []}
+               'titles': [], 'storeys': [], 'floor_markers': [], 'possible_wc': [], 'explicit_no_sauna': [],
+               'vision': True}
         zoomed = [{'text': 'WC', 'confidence': .9, 'box': [570, 250, 630, 300], 'engine': 'vision'},
                   {'text': 'WC', 'confidence': .8, 'box': [572, 252, 632, 302], 'engine': 'vision'},
                   {'text': 'WC', 'confidence': .2, 'box': [700, 250, 760, 300], 'engine': 'vision'}]
@@ -323,6 +342,10 @@ class LayoutGeometryTests(unittest.TestCase):
         self.assertEqual(scan_layout.answer(record, 'sauna')['evidence'], [{'label': 'Sauna bench', 'box': [707, 240, 813, 300]}])
         self.assertEqual(scan_layout.answer(record, 'wc')['answer'], 1)
         self.assertIsNone(scan_layout.answer(record, 'balcony'))
+        self.assertEqual((record['sheet_read'], record['looked']), (True, True))
+        failed = scan_layout.build_plan(dict(inv, vision=False), layout, None, [])
+        self.assertEqual((failed['sheet_read'], failed['looked'], failed['ink']), (False, False, []))
+        self.assertIsNone(scan_layout.answer(failed, 'storeys'))
 
     def test_enlarged_wet_rooms_map_back_to_the_source_image(self):
         from PIL import Image

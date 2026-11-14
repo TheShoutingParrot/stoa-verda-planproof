@@ -141,11 +141,18 @@ class ScanRoomTests(unittest.TestCase):
                 patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
                 patch.object(reader,"_tesseract",side_effect=AssertionError("a mirrored sheet skips Tesseract")):
             inv = reader.inventory.__wrapped__(png)
-        self.assertEqual((inv["orientation"], len(inv["labels"]["bedroom"])), (2, 1))
+        self.assertEqual((inv["orientation"], inv["vision"], len(inv["labels"]["bedroom"])), (2, True, 1))
         with patch.object(reader,"_vision",return_value=list(mirrored)), patch.object(reader.sys,"platform","darwin"), \
                 patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
                 patch.object(reader,"_tesseract",return_value=[]):
-            self.assertEqual(reader.inventory.__wrapped__(png)["orientation"], 1)
+            upright = reader.inventory.__wrapped__(png)
+        self.assertEqual((upright["orientation"], upright["vision"]), (1, True))
+        # A failed Vision pass leaves Tesseract words only; absence of a label then proves nothing.
+        with patch.object(reader,"_vision",side_effect=OSError("no OCR service")), patch.object(reader.sys,"platform","darwin"), \
+                patch.object(reader.shutil,"which",return_value="/usr/bin/tool"), \
+                patch.object(reader,"_tesseract",return_value=[row("MAKUUHUONE",100,engine="tesseract")]):
+            partial = reader.inventory.__wrapped__(png)
+        self.assertEqual((partial["orientation"], partial["vision"], len(partial["labels"]["bedroom"])), (1, False, 1))
 
     @unittest.skipUnless(sys.platform == "darwin" and shutil.which("osascript") and ARCHIVE.is_file(),
                          "needs macOS Vision and the sponsor archive")

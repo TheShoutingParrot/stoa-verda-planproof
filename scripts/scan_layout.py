@@ -216,9 +216,12 @@ def zoom_restore(rows, sheet_size, tiles, source_size):
 
 
 def zoom_rows(image_bytes, layout, orientation=1, kinds=(BATH,)):
-    """Read the wet rooms again at a larger scale with the sheet's reading direction and its reverse."""
+    """Read room regions again at a larger scale with the sheet's reading direction and its reverse.
+
+    Returns OCR rows in source coordinates, or None when the second look could not be completed.
+    """
     if sys.platform != 'darwin' or not shutil.which('osascript'):
-        return []
+        return None
     try:
         from PIL import Image
         with Image.open(io.BytesIO(image_bytes)) as source:
@@ -233,12 +236,17 @@ def zoom_rows(image_bytes, layout, orientation=1, kinds=(BATH,)):
                 rows.extend(scan_rooms._vision(file.name, direction))
         return zoom_restore(rows, sheet.size, tiles, image.size)
     except (ImportError, OSError, subprocess.SubprocessError, ValueError):
-        return []
+        return None
 
 
 def build_plan(inv, layout, zoomed=(), ink_views=()):
-    """Join the OCR inventory with the room map. The result holds plain values in 0-1000 coordinates."""
+    """Join the OCR inventory with the room map. The result holds plain values in 0-1000 coordinates.
+
+    'zoomed' holds the second-look rows, or None when that reading failed.
+    """
     width, height = layout['size']
+    looked = zoomed is not None
+    zoomed = zoomed or ()
 
     def unit(box):
         scaled = [round(1000*box[0]/width), round(1000*box[1]/height),
@@ -282,7 +290,8 @@ def build_plan(inv, layout, zoomed=(), ink_views=()):
             'titles': inv.get('titles', []), 'storeys': inv.get('storeys', []),
             'floor_markers': inv.get('floor_markers', []), 'unclear_wc': unclear_wc,
             'explicit_no_sauna': len(inv.get('explicit_no_sauna', ())),
-            'ink': [len(view) for view in ink_views]}
+            'ink': [len(view) for view in ink_views],
+            'sheet_read': bool(inv.get('vision')), 'looked': looked}
 
 
 def _report(answer, evidence, reason=None, coverage=None):
@@ -396,6 +405,8 @@ def saunas(plan):
         return _report(1, [_mark('Sauna label ' + inside[0]['label'], inside[0]['box'])])
     if labels or plan['faint_bench'] > FAINT_BENCH or any(t.get('sauna') for t in plan['titles']) or not wet:
         return None
+    if not plan['looked']:
+        return None  # a zero needs the completed second look at the wet rooms
     coverage = []
     for region in wet:
         named = _region_labels(plan, region, 'washroom', 'wc')
@@ -424,7 +435,7 @@ def separate_wcs(plan):
                     and region['share'] < BATHROOM_SHARE and not _region_labels(plan, region, 'washroom', 'sauna'):
                 return None  # a small unnamed toilet room may be a second WC
         return _report(len(rooms), [_mark('WC label ' + item['label'], item['box']) for item in rooms.values()])
-    if len(wet) != 1 or wet[0]['share'] < .03 or len(plan['symbols']['toilet']) > 1:
+    if len(wet) != 1 or wet[0]['share'] < BATHROOM_SHARE or len(plan['symbols']['toilet']) > 1 or not plan['looked']:
         return None
     named = _region_labels(plan, wet[0], 'washroom')
     what = named[0]['label'] if named else 'the only wet room'
@@ -454,7 +465,7 @@ def bathrooms(plan):
         return _report(len(rooms), [_mark('Bathroom label ' + item['label'], item['box']) for item in rooms.values()])
     sized = [region for _, region in wet if region['share'] >= BATHROOM_SHARE and not region['bench']
              and not _region_labels(plan, region, 'wc', 'sauna')]
-    if len(sized) != 1 or not (sized[0]['toilets'] or sized[0]['sinks']) or not _printed(plan):
+    if len(sized) != 1 or not (sized[0]['toilets'] or sized[0]['sinks']) or not _printed(plan) or not plan['looked']:
         return None
     return _report(1, [_mark('Bathroom area with a toilet or basin', sized[0]['box'])])
 
@@ -511,7 +522,8 @@ SECOND_LOOK = {'sauna': BATH, 'wc': BATH, 'washroom': BATH, 'bedroom': BEDROOM}
 def answer(plan, name):
     """Apply the rule for one question family; every counted instance must have its own box."""
     rule = RULES.get(name)
-    report = rule(plan) if rule and plan else None
+    # Every rule lets a caption or a second label veto its count, so the sheet OCR must have completed.
+    report = rule(plan) if rule and plan and plan.get('sheet_read') else None
     if report and len(_distinct(report['evidence'])) != report['answer']:
         return None
     return report
