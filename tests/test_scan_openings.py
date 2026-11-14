@@ -97,6 +97,28 @@ class ScaleTests(unittest.TestCase):
         self.assertEqual(set(calls), {(256, 256)})
         self.assertLessEqual(len(calls), scan_objects.MAX_TILES)
 
+    @unittest.skipUnless(TORCH and importlib.util.find_spec('PIL'), 'optional scan object runtime')
+    def test_failed_second_reading_keeps_the_first_reading(self):
+        import io
+        import numpy as np
+        import torch
+        from PIL import Image
+
+        def model(x):
+            out = torch.zeros((x.shape[0], 44) + tuple(x.shape[-2:]))
+            out[:, 33] = 9.
+            return out
+
+        sheet = io.BytesIO()
+        Image.fromarray(np.full((300, 400, 3), 255, dtype=np.uint8)).save(sheet, format='PNG')
+        # Whatever the second reading raises, the first reading and its fixtures are returned.
+        for error in (RuntimeError('out of memory'), ValueError('value'), IndexError('index'), MemoryError()):
+            with self.subTest(error=type(error).__name__), patch.object(scan_objects, '_openings', side_effect=error), \
+                    self.assertLogs(scan_objects.__name__, level='WARNING') as logged:
+                self.assertEqual(scan_objects._infer(sheet.getvalue(), model, 'cpu'), {1: [], 2: [], 5: [], 6: []})
+            # The fallback is reported, so a second reading that always fails cannot go unnoticed.
+            self.assertIn(type(error).__name__, logged.output[0])
+
 
 class DecoderScaleTests(unittest.TestCase):
     @unittest.skipUnless(RUNTIME, 'optional scan object runtime')

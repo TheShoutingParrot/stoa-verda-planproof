@@ -8,6 +8,7 @@ from functools import lru_cache
 import hashlib
 import importlib.util
 import io
+import logging
 import os
 from pathlib import Path
 import re
@@ -296,10 +297,14 @@ def _first(data, model, device):
 def _second(model, device, original, lengths):
     """Windows and doors from the second reading, or None to keep the first."""
     import torch
+    # The first reading is complete when this runs. No failure of the second reading
+    # may lose it, the fixtures with it, or escape to the caller.
     with torch.inference_mode():
         try:
             return _openings(model, device, original, lengths)
-        except RuntimeError:
+        except Exception as error:
+            logging.getLogger(__name__).warning(
+                'The second reading of windows and doors failed; the first reading is kept: %r', error)
             return None
 
 
