@@ -75,6 +75,29 @@ class ScaleTests(unittest.TestCase):
             self.assertLess(float((small - x[0, :1, :40, :50]).abs().max()), 1e-5)
 
 
+    @unittest.skipUnless(TORCH, 'optional scan object runtime')
+    def test_drawing_without_doors_keeps_its_first_reading(self):
+        import numpy as np
+        import torch
+        calls = []
+
+        def model(x):
+            # Every pixel is the empty icon class, so neither view shows a door.
+            calls.append(tuple(x.shape[-2:]))
+            out = torch.zeros((x.shape[0], 44) + tuple(x.shape[-2:]))
+            out[:, 33] = 9.
+            return out
+
+        sheet = np.full((300, 400, 3), 255, dtype=np.uint8)
+        with patch.object(scan_objects, 'TILE', 256), patch.object(scan_objects, 'OVERLAP', 32):
+            with torch.inference_mode():
+                self.assertIsNone(scan_objects._openings(model, 'cpu', sheet, []))
+        # One orientation of the enlarged sheet was looked at, in tiles, and no second reading followed.
+        self.assertTrue(calls)
+        self.assertEqual(set(calls), {(256, 256)})
+        self.assertLessEqual(len(calls), scan_objects.MAX_TILES)
+
+
 class DecoderScaleTests(unittest.TestCase):
     @unittest.skipUnless(RUNTIME, 'optional scan object runtime')
     def test_unit_rescales_the_pixel_constants(self):

@@ -232,7 +232,7 @@ def _door_lengths(doors, grid):
 
 
 def _openings(model, device, original, lengths):
-    """Read windows and doors again at the scale the detector was trained on, or None to keep the first reading."""
+    """Read windows and doors again at a scale set by the drawing's doors, or None to keep the first reading."""
     width = original.shape[1]
     length = scan_openings.door_length(lengths)
     if length is None:
