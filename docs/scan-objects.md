@@ -53,10 +53,18 @@ The design was chosen on the 48-drawing cohort and on 19 drawings of the officia
 | | | this reader | 20/38 | 311/333 (93.4%) | 311/335 (92.8%) | 19 | 0.79 |
 | | Doors, all drawings | `b948d67` | 22/57 | 438/464 (94.4%) | 438/596 (73.5%) | 19 | 2.60 |
 | | | this reader | 22/57 | 498/534 (93.3%) | 498/596 (83.6%) | 21 | 1.68 |
+| Scored after the design was fixed: 28 architectural validation drawings | Windows, all drawings | `b948d67` | 8/28 | 217/240 (90.4%) | 217/271 (80.1%) | 7 | 2.04 |
+| | | this reader | 8/28 | 230/271 (84.9%) | 230/271 (84.9%) | 8 | 2.21 |
+| | Doors, 22 released questions | `b948d67` | 10/22 | 194/211 (91.9%) | 194/229 (84.7%) | 7 | 1.27 |
+| | | this reader | 12/22 | 204/223 (91.5%) | 204/229 (89.1%) | 6 | 0.82 |
+| | Doors, all drawings | `b948d67` | 10/28 | 248/270 (91.9%) | 248/315 (78.7%) | 7 | 1.96 |
+| | | this reader | 13/28 | 271/294 (92.2%) | 271/315 (86.0%) | 7 | 1.18 |
 
 On the 176 confirmation drawings the reader located 1,166 of 1,359 annotated windows, up from 1,048, and 1,433 of 1,622 annotated doors, up from 1,296. Exact window totals rose from 76 to 86. The share of marks that match an annotation stayed at 92% for windows and fell from 94.8% to 93.8% for doors. Exact door totals on the released questions did not improve. They went from 72 to 71 of 122, although the mean count error fell from 1.00 to 0.62. The gain of four exact door totals on the 48-drawing cohort did not carry over. On the confirmation drawings 11 window totals and 12 door totals that were exact before are now wrong, and 21 window totals and 17 door totals became exact. Among the 37 architectural test drawings, exact window totals rose from 12 to 15 and located windows from 250 to 293 of 337.
 
-On the 48-drawing cohort the reader again marks all nine windows of drawing 6058 and gives 23 for drawing 1966. Drawing 1767 keeps its two matching marks. Drawing 8285 has 15 marks, all matching, for 17 windows, and drawing 5018 has 21 marks for 17 windows. Toilet bowl and sink marks were identical on all 224 drawings read for these tables.
+The last block of the table holds 28 architectural validation drawings that were set aside for tuning but first read after the design was fixed. The reader located 230 of their 271 windows instead of 217. It also placed 271 marks instead of 240, and the mean window count error rose from 2.04 to 2.21. Long windows on faint sheets were marked in pieces there. Door counts improved on these drawings.
+
+On the 48-drawing cohort the reader again marks all nine windows of drawing 6058 and gives 23 for drawing 1966. Drawing 1767 keeps its two matching marks. Drawing 8285 has 15 marks, all matching, for 17 windows, and drawing 5018 has 21 marks for 17 windows. Toilet bowl and sink marks were identical on all 252 drawings read for these tables.
 
 Each reader read 24 drawings of the 48-drawing cohort once, cold, in its own process on the Apple M5 while unrelated jobs kept the machine busy. The previous reader took 3.8 s per drawing on average and 6.8 s at worst. This reader took 8.4 s on average and 18.3 s at worst, on a drawing that keeps its own pixels and needs four tiles. One tile at four orientations took 1.5 s in an isolated measurement. Peak MPS driver memory rose from 2.1 GB to 3.1 GB.
 
@@ -79,7 +87,7 @@ The numbers come from cached detector outputs of the tuning drawings.
 - A window divided by a mullion is annotated as one window on some drawings and as two on others. The reader splits where the network sees facing endpoints. It over-counts drawings such as 1282 (11 marks for 7 windows) and 5018 (21 for 17).
 - Some marks fall on openings that the annotation leaves out, for example at the cropped edge of drawing 8573 or on the left wall of drawing 9443. Some annotations are shifted against the image, as on drawing 2204, so a correct mark can fail the overlap test.
 - An opening without a door leaf can be marked as a door. The sponsor's door question excludes such openings. The second reading places more such marks on clean drawings, which is why exact door totals did not improve on the confirmation drawings.
-- On a faint drawing the second reading can do worse than the first. Validation drawing 1425 has 17 window marks for 9 windows, where the first pass gave 10.
+- On a faint drawing the second reading can do worse than the first. Validation drawing 1425 has 17 window marks for 9 windows, where the first pass gave 10. Validation drawing 7820 has 24 marks for 18 windows because long windows were marked in pieces. The first pass gave 17.
 - A drawing with fewer than two detectable doors keeps its first reading, as does a drawing whose doors do not show again at the measured size.
 - A sheet that needs more than four tiles is reduced to fit. Its doors are then shorter than 39 px in the second reading.
 - The second reading about doubles the time for the first object question on a drawing. During the confirmation run on a busier machine one drawing took 25 s.
