@@ -247,15 +247,22 @@ class LayoutRuleTests(unittest.TestCase):
         self.assertIsNone(scan_layout.answer(plan(panels=[twin, dict(twin)]), 'storeys'))
 
     def test_unsupported_questions_and_inputs_never_load_the_model(self):
-        with patch.object(scan_layout, 'plan', side_effect=AssertionError('unexpected inference')):
+        with patch.object(scan_layout, 'plan') as planned:
             for question in ('How many windows are shown on this floor plan?', 'How many kitchens on the third floor?',
                              'How many showers and bathtubs are drawn on this floor plan in total?',
                              'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?', None):
                 self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', question))
-        with patch.object(scan_layout.scan_objects, '_load', side_effect=AssertionError('unexpected model load')):
+        planned.assert_not_called()
+        with patch.object(scan_layout.scan_objects, '_load') as loaded, \
+                patch.object(scan_layout.scan_rooms, 'inventory') as read:
             self.assertIsNone(scan_layout.predict(b'not a png', STOREYS))
             with patch.object(scan_layout.scan_objects, 'available', return_value=False):
                 self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', STOREYS))
+        loaded.assert_not_called()
+        read.assert_not_called()
+        # An unexpected failure inside the reader defers the question instead of failing the request.
+        with patch.object(scan_layout, 'plan', side_effect=KeyError('broken plan')):
+            self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', STOREYS))
 
     def test_reader_asks_the_room_map_only_after_the_label_and_panel_readers_decline(self):
         from pathlib import Path

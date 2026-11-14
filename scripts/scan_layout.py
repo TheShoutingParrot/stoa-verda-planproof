@@ -566,4 +566,7 @@ def predict(image_bytes, question):
     name = category(question)
     if name is None:
         return None
-    return answer(plan(image_bytes, name), name)
+    try:
+        return answer(plan(image_bytes, name), name)
+    except Exception:  # this reader is a last local resort; an unexpected failure defers the question
+        return None
