@@ -378,5 +378,60 @@ class LayoutGeometryTests(unittest.TestCase):
         self.assertEqual(scan_layout.zoom_tiles(image, dict(layout, regions=[])), (None, []))
 
 
+class SharedPassTests(unittest.TestCase):
+    @unittest.skipUnless(RUNTIME and importlib.util.find_spec('torch'), 'optional scan object runtime')
+    def test_room_map_reads_its_planes_through_the_object_reader_without_deadlock(self):
+        import io
+        import threading
+        import numpy as np
+        import torch
+        from PIL import Image
+        scan_objects = scan_layout.scan_objects
+        calls = []
+
+        def model(x):
+            # Stand-in network: dark ink is kitchen, the rest background, and no icon anywhere.
+            calls.append(tuple(x.shape[-2:]))
+            dark = (x[:, 0] < 0).float()
+            out = torch.zeros((x.shape[0], 44) + tuple(x.shape[-2:]))
+            out[:, 21] = 9. * (1 - dark)
+            out[:, 21 + scan_layout.KITCHEN] = 9. * dark
+            out[:, 33] = 9.
+            return out
+
+        sheet = np.full((300, 400, 3), 255, dtype=np.uint8)
+        sheet[100:200, 100:300] = 0
+        buffer = io.BytesIO()
+        Image.fromarray(sheet).save(buffer, format='PNG')
+        data = buffer.getvalue()
+        result = {}
+
+        def ask():
+            result['kitchens'] = scan_layout.predict(data, QUESTIONS['kitchen'])
+            result['marks'] = scan_objects.inventory(data)
+
+        with patch.object(scan_objects, 'available', return_value=True), \
+                patch.object(scan_objects, '_load', return_value=(model, 'cpu')), \
+                patch.object(scan_objects, 'CACHE', scan_objects.OrderedDict()), \
+                patch.object(scan_objects, 'FIRST', scan_objects.OrderedDict()), \
+                patch.object(scan_objects, 'TILE', 256), patch.object(scan_objects, 'OVERLAP', 32), \
+                patch.object(scan_layout, 'CACHE', scan_layout.OrderedDict()), \
+                patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 1, 'vision': True}), \
+                patch.object(scan_layout.scan_storeys, 'panel_views', return_value=[]):
+            # The real locks are taken: the plan lock by the room-map reader, the model lock inside the object reader.
+            worker = threading.Thread(target=ask, daemon=True)
+            worker.start()
+            worker.join(60)
+            self.assertFalse(worker.is_alive(), 'the room-map reader and the object reader deadlocked')
+        report = result['kitchens']
+        self.assertEqual(report['answer'], 1)
+        box = report['evidence'][0]['box']
+        self.assertTrue(all(abs(a - b) <= 4 for a, b in zip(box, [250, 333, 750, 667])), box)
+        checked(report, QUESTIONS['kitchen'])
+        self.assertEqual(result['marks']['classes'], {1: [], 2: [], 5: [], 6: []})
+        # One pass at the first scale served both readers; the remaining calls are the door probe's tiles.
+        self.assertEqual(sorted(shape for shape in calls if shape != (256, 256)), sorted([(300, 400), (400, 300)] * 2))
+
+
 if __name__ == '__main__':
     unittest.main()
