@@ -408,6 +408,27 @@ class RunConditions(unittest.TestCase):
         self.assertIn("time-outs 2", out.getvalue())
         self.assertTrue(all(json.loads(p.read_text())["status"] == "answered" for p in (root / "outputs").iterdir()))
 
+    def test_run_history_lives_outside_the_arm_and_reaches_the_summary(self):
+        nxt.history(self.work, arm="after", event="start", session=1)
+        nxt.history(self.work, arm="after", event="sealed", timeouts=0)
+        lines = [json.loads(x) for x in (self.work / "run-history.jsonl").read_text().splitlines()]
+        self.assertEqual([(x["arm"], x["event"]) for x in lines], [("after", "start"), ("after", "sealed")])
+
+    def test_timeout_log_is_safe_from_worker_threads(self):
+        entries, saves = [], []
+        from concurrent.futures import ThreadPoolExecutor
+
+        def call(_):
+            try:
+                nxt.subprocess.run(["sleep", "5"], timeout=0.1)
+            except nxt.subprocess.TimeoutExpired:
+                return True
+
+        with nxt.timeout_log(entries, dict(prompt=1), lambda: saves.append(len(entries))):
+            with ThreadPoolExecutor(max_workers=3) as pool:
+                self.assertEqual(list(pool.map(call, range(3))), [True] * 3)
+        self.assertEqual((len(entries), sorted(saves)), (3, [1, 2, 3]))
+
     def test_load_wait_proceeds_when_low_or_after_the_limit(self):
         now = [0.0]
         clock, sleep = (lambda: now[0]), (lambda s: now.__setitem__(0, now[0] + s))

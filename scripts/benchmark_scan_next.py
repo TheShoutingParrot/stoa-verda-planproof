@@ -17,6 +17,7 @@ import socket
 import struct
 import subprocess
 import sys
+import threading
 import time
 import urllib.request
 import zlib
@@ -566,6 +567,7 @@ def timeout_log(entries, where, saved=lambda: None):
     The readers call subprocess.run for macOS Vision (20 s limit) and Tesseract (20 s; 5 s for the
     language list) and continue with less text when a call expires. Nothing else is altered."""
     real = subprocess.run
+    lock = threading.Lock()  # the sheet reader calls Vision from worker threads
 
     def run(*args, **kwargs):
         try:
@@ -573,9 +575,10 @@ def timeout_log(entries, where, saved=lambda: None):
         except subprocess.TimeoutExpired as exc:
             command = args[0] if args else kwargs.get("args")
             program = command[0] if isinstance(command, (list, tuple)) and command else command
-            entries.append(dict(program=Path(str(program)).name, timeout_s=exc.timeout,
-                                at=datetime.now(timezone.utc).isoformat(timespec="seconds"), **where))
-            saved()
+            with lock:
+                entries.append(dict(program=Path(str(program)).name, timeout_s=exc.timeout,
+                                    at=datetime.now(timezone.utc).isoformat(timespec="seconds"), **where))
+                saved()
             raise
 
     with patch.object(subprocess, "run", run):
@@ -598,6 +601,13 @@ def wait_for_load(limit=LOAD_LIMIT, wait=LOAD_WAIT, poll=30, load=load_average, 
         print(f"Load {load()[0]} >= {limit}; waiting ({clock() - started:.0f} of {wait} s)", flush=True)
         sleep(poll)
     return dict(limit=limit, max_wait_s=wait, waited_s=round(clock() - started), met=load()[0] < limit)
+
+
+def history(work, **event):
+    """Append one line per run session to <work>/run-history.jsonl, outside every arm directory, so that a
+    deleted and repeated arm stays visible to score."""
+    with (work / "run-history.jsonl").open("a") as f:
+        f.write(json.dumps(dict(at=datetime.now(timezone.utc).isoformat(timespec="seconds"), **event)) + "\n")
 
 
 def infer(reader, manifest, inputs, root, arm, timeouts=None):
@@ -690,6 +700,8 @@ def run(args, manifest):
                        prompts_already_sealed=len(list((root / "outputs").glob("*.json"))))
         print("Run conditions:", json.dumps(session), flush=True)
         save(root / "conditions.json", conditions + [session])  # an interrupted session stays on record
+        history(args.work, arm=args.arm, event="start", revision=commit, session=len(conditions) + 1,
+                prompts_already_sealed=session["prompts_already_sealed"], harness=session["harness"]["sha256"])
         started = time.monotonic()
         infer(reader, manifest, args.work / "inputs", root, args.arm, timeouts)
         session.update(ended=datetime.now(timezone.utc).isoformat(timespec="seconds"), uptime_end=uptime(),
@@ -703,6 +715,7 @@ def run(args, manifest):
                      *sorted((root / "outputs").glob("*.json"))]:
             path.chmod(0o444)
         verify_arm(args.work, manifest, args.arm)
+        history(args.work, arm=args.arm, event="sealed", seal=sha(canonical(seal)), timeouts=len(timeouts))
         print("Sealed", args.arm, sha(canonical(seal)), flush=True)
         print(f"Time-outs logged in {args.arm}: {len(timeouts)}"
               + (f"; run `settle --arm {args.arm}` (protocol addendum, rule R4)" if timeouts else ""), flush=True)
@@ -752,6 +765,7 @@ def settle(args, manifest):
             print(f"{arm}: no time-outs; the run stands.")
             return 0
         (work / arm).rename(aside)
+        history(work, arm=arm, event="set aside", timeouts=count, seal=sha(canonical(seal)))
         save(record, dict(arm=arm, runs=1, first_run_timeouts=count, first_run_seal=sha(canonical(seal))))
         print(f"{arm}: {count} time-outs; set aside unseen as {aside.name}. Run --arm {arm} again from scratch once.")
         return 2
@@ -1040,6 +1054,8 @@ def score(args, manifest):
             run_conditions={arm: json.loads((args.work / arm / "conditions.json").read_text())
                             for arm in ("before-control", "after", "after-repeat")},
         ),
+        run_history=[json.loads(line) for line in (args.work / "run-history.jsonl").read_text().splitlines()]
+        if (args.work / "run-history.jsonl").exists() else [],
     )
     save(args.work / "paired-rows.json", records)
     save(args.work / "summary.json", out)
