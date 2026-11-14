@@ -37,41 +37,6 @@ CACHE = OrderedDict()
 PLAN_LOCK = threading.Lock()
 
 
-def _infer(data, model, device):
-    """Return (rooms, icons): uint8 class probabilities on the model grid, or None.
-
-    Preprocessing and the four-orientation average match scan_objects._infer, so
-    the icon planes are the ones the object reader sees.
-    """
-    import cv2
-    import numpy as np
-    import torch
-    from PIL import Image
-    with Image.open(io.BytesIO(data)) as image:
-        if image.format != 'PNG' or image.width * image.height > 36_000_000:
-            return None
-        width, height = image.size
-        scale = min(1.0, 896 / max(width, height))
-        target = (round(width * scale), round(height * scale))
-        if min(target) < 128:
-            return None
-        rgb = np.array(image.convert('RGB'))
-    if target != (width, height):
-        rgb = cv2.resize(rgb, target, interpolation=cv2.INTER_AREA)
-    x = torch.from_numpy(rgb).permute(2, 0, 1)[None].float().to(device) / 127.5 - 1.
-    logits = None
-    with torch.inference_mode():
-        for rotation in range(4):
-            raw = model(torch.rot90(x, rotation, (-2, -1)))
-            pred = torch.rot90(raw[:, 21:44], -rotation, (-2, -1))
-            pred = torch.nn.functional.interpolate(pred, size=x.shape[-2:], mode='bilinear', align_corners=True)
-            logits = pred if logits is None else logits + pred
-        averaged = logits[0] / 4
-        rooms = (averaged[:12].softmax(dim=0) * 255).round().to(torch.uint8).cpu().numpy()
-        icons = (averaged[12:].softmax(dim=0) * 255).round().to(torch.uint8).cpu().numpy()
-    return rooms, icons
-
-
 def _components(mask, minimum):
     import cv2
     import numpy as np
@@ -542,8 +507,8 @@ def plan(image_bytes, name):
         if entry is None:
             inv = scan_rooms.inventory(image_bytes)
             try:
-                with scan_objects.LOCK:
-                    planes = _infer(image_bytes, *scan_objects._load(code, weights))
+                # The object reader's first pass over the drawing also yields the room map.
+                planes = scan_objects.room_planes(image_bytes)
                 if planes is None:
                     return None
                 entry = {'inv': inv, 'layout': describe(*planes), 'views': scan_storeys.panel_views(image_bytes),

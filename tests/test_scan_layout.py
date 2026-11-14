@@ -203,8 +203,7 @@ class LayoutRuleTests(unittest.TestCase):
             return []
         with patch.object(scan_layout, 'CACHE', scan_layout.OrderedDict()), \
                 patch.object(scan_layout.scan_objects, 'available', return_value=True), \
-                patch.object(scan_layout.scan_objects, '_load', return_value=('model', 'cpu')), \
-                patch.object(scan_layout, '_infer', return_value=('rooms', 'icons')) as infer, \
+                patch.object(scan_layout.scan_objects, 'room_planes', return_value=('rooms', 'icons')) as infer, \
                 patch.object(scan_layout, 'describe', return_value=layout), \
                 patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 3, 'vision': True}), \
                 patch.object(scan_layout.scan_storeys, 'panel_views', return_value=[]), \
@@ -253,7 +252,7 @@ class LayoutRuleTests(unittest.TestCase):
                              'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?', None):
                 self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', question))
         planned.assert_not_called()
-        with patch.object(scan_layout.scan_objects, '_load') as loaded, \
+        with patch.object(scan_layout.scan_objects, 'room_planes') as loaded, \
                 patch.object(scan_layout.scan_rooms, 'inventory') as read:
             self.assertIsNone(scan_layout.predict(b'not a png', STOREYS))
             with patch.object(scan_layout.scan_objects, 'available', return_value=False):

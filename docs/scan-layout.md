@@ -4,7 +4,7 @@ The label reader answers a room question only when OCR finds the room’s printe
 
 ## What the reader sees
 
-The network’s room head assigns every pixel to background, outdoor space, wall, kitchen, living room, bedroom, bath, entry, railing, storage, garage or other room. The upstream training labels map saunas and WC rooms to the bath class and balconies, terraces and yards to outdoor space. The icon head marks toilet bowls, sinks, bathtubs and sauna benches. It has no class for showers. The reader averages the network’s output over four orientations exactly as the object reader does.
+The network’s room head assigns every pixel to background, outdoor space, wall, kitchen, living room, bedroom, bath, entry, railing, storage, garage or other room. The upstream training labels map saunas and WC rooms to the bath class and balconies, terraces and yards to outdoor space. The icon head marks toilet bowls, sinks, bathtubs and sauna benches. It has no class for showers. These planes come from the object reader’s first pass over the drawing, averaged over four orientations. A drawing passes through the network once at that scale, whichever question is asked first.
 
 From these planes it derives three things. A floor panel is one connected body of walls and rooms. A room region is a connected area of one room class that covers at least 0.4% of the interior. A symbol belongs to the region under it. Each printed label from the sheet OCR is assigned to the region under its box.
 
@@ -49,9 +49,11 @@ On the 48-drawing comparison, which was tuning data here, 108 of the 158 deferre
 
 ## Time per drawing
 
-The room map is computed once per drawing and kept for the eight most recent drawings. The first deferred room or storey question pays for one detector pass at four orientations. The first sauna, WC or bathroom question also pays for two Vision calls on the enlarged wet rooms. Later questions about the same drawing reuse both. Questions that the label, panel or object readers answer cost nothing extra.
+The room map is computed once per drawing and kept for the eight most recent drawings. Its planes come from the first detector pass, which the object reader needs as well. Whichever reader asks first pays for that pass and the other reuses it. The first sauna, WC or bathroom question also pays for two Vision calls on the enlarged wet rooms. Later questions about the same drawing reuse both. Questions that the label or panel readers answer cost nothing extra.
 
-Both readers answered every released English prompt of 24 tuning drawings, about nine prompts per drawing, alternating drawing by drawing on a machine shared with other jobs. The baseline took 6.60 s per drawing on average and 9.64 s at worst. This branch took 10.47 s on average and 16.37 s at worst, 3.87 s more per drawing on average. Measured separately on 12 drawings, the extra detector pass took 3.04 s, the second look 1.05 s and the remaining steps 0.12 s. The object reader already runs the same four network passes, so sharing them would remove most of the added time. On these 24 drawings this branch newly answered 56 prompts and changed none of the baseline’s answers.
+The timings below were taken while the room-map reader still ran a detector pass of its own. Both readers answered every released English prompt of 24 tuning drawings, about nine prompts per drawing, alternating drawing by drawing on a machine shared with other jobs. The baseline took 6.60 s per drawing on average and 9.64 s at worst. The room-map branch took 10.47 s on average and 16.37 s at worst, 3.87 s more per drawing on average. Measured separately on 12 drawings, the separate detector pass took 3.04 s, the second look 1.05 s and the remaining steps 0.12 s. On these 24 drawings the branch newly answered 56 prompts and changed none of the baseline’s answers.
+
+The two readers now share the first pass, so a drawing with an object question no longer pays for the separate one. On 18 development drawings the shared pass gave byte-identical room and icon planes and identical window, door, toilet bowl and sink marks, whichever reader asked first.
 
 ## Limits
 
@@ -64,5 +66,3 @@ The ten wrong new answers on the confirmation drawings show the same weaknesses.
 The sponsor counts follow the annotators’ room names and symbols. A sauna that is drawn with a bench and stove but carries no label can count as zero there, and a room with a printed name that the annotators left undefined can count as zero bedrooms. The reader does not chase those cases.
 
 Bedroom questions that the label reader declines stay unanswered. A second look at the bedroom regions answered seven such prompts on 157 tuning drawings and six matched the sponsor, too few to ship. Shower questions stay unanswered because nothing on the drawing can be tied to the network’s classes or to a printed label.
-
-The room-map reader runs its own detector pass. A drawing that gets both an object question and a deferred room or storey question is passed through the network twice until the two passes are merged.

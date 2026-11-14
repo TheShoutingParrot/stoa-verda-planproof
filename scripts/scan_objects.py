@@ -42,6 +42,8 @@ MAX_TILES = 4
 PROBE_SIDE = 1536
 LOCK = threading.Lock()
 CACHE = OrderedDict()
+# First readings wait here until the second reading and the room-map reader have both used them.
+FIRST = OrderedDict()
 
 
 def category(question):
@@ -154,8 +156,11 @@ def _extract(probabilities, endpoints=None):
     return _marks(_boxes(mask, probabilities, endpoints), width, height)
 
 
-def _average(model, x, rotations=(0, 1, 2, 3)):
-    """Endpoint heatmaps (4) and icon logits (11) on the input grid, averaged over quarter turns."""
+def _average(model, x, rotations=(0, 1, 2, 3), rooms=False):
+    """Endpoint heatmaps (4) and icon logits (11) on the input grid, averaged over quarter turns.
+
+    With `rooms` the 12 room logits follow the icons.
+    """
     import torch
     # The native model uses 21 keypoint channels, 12 room channels, then
     # 11 semantic icons. Inverse-rotate each prediction before combining it.
@@ -163,7 +168,7 @@ def _average(model, x, rotations=(0, 1, 2, 3)):
     for rotation in rotations:
         raw = model(torch.rot90(x, rotation, (-2, -1)))
         oriented = [13+i for i in scan_openings.ENDPOINT_ORDER[rotation]]
-        pred = torch.cat((raw[:, oriented], raw[:, 33:44]), dim=1)
+        pred = torch.cat((raw[:, oriented], raw[:, 33:44]) + ((raw[:, 21:33],) if rooms else ()), dim=1)
         pred = torch.rot90(pred, -rotation, (-2, -1))
         pred = torch.nn.functional.interpolate(pred, size=x.shape[-2:], mode='bilinear', align_corners=True)
         logits = pred if logits is None else logits + pred
@@ -253,7 +258,12 @@ def _openings(model, device, original, lengths):
     return _marks(_boxes(mask, probabilities, endpoints, (1, 2), unit), *target)
 
 
-def _infer(data, model, device):
+def _first(data, model, device):
+    """First reading, on a grid of at most 896 pixels a side.
+
+    Returns the marks of every class, the door lengths that size the drawing and the
+    room map planes, together with the decoded sheet; None for unsupported input.
+    """
     import cv2
     import numpy as np
     import torch
@@ -270,23 +280,59 @@ def _infer(data, model, device):
     rgb = cv2.resize(original, target, interpolation=cv2.INTER_AREA) if target != (width, height) else original
     x = torch.from_numpy(rgb).permute(2, 0, 1)[None].float().to(device) / 127.5 - 1.
     with torch.inference_mode():
-        averaged = _average(model, x)
-        probabilities = averaged[4:].softmax(dim=0).cpu().numpy()
+        averaged = _average(model, x, rooms=True)
+        icons = averaged[4:15].softmax(dim=0)
+        probabilities = icons.cpu().numpy()
         mask = probabilities.argmax(axis=0)
-        result = _marks(_boxes(mask, probabilities, averaged[:4].cpu().numpy()), *target)
+        marks = _marks(_boxes(mask, probabilities, averaged[:4].cpu().numpy()), *target)
         # Door components of the segmentation size the drawing; they do not depend on the endpoint decoder.
         lengths = _door_lengths(_components(mask, probabilities, (2,))[0][2], scale)
+        # The room-map reader measures on class probabilities quantised to bytes.
+        planes = tuple((plane * 255).round().to(torch.uint8).cpu().numpy()
+                       for plane in (averaged[15:].softmax(dim=0), icons))
+    return {'marks': marks, 'lengths': lengths, 'planes': planes}, original
+
+
+def _second(model, device, original, lengths):
+    """Windows and doors from the second reading, or None to keep the first."""
+    import torch
+    with torch.inference_mode():
         try:
-            openings = _openings(model, device, original, lengths)
+            return _openings(model, device, original, lengths)
         except RuntimeError:
-            openings = None
+            return None
+
+
+def _infer(data, model, device):
+    """Marks per class: the first reading, with windows and doors from the second reading when it holds."""
+    read = _first(data, model, device)
+    if read is None:
+        return None
+    first, original = read
+    result = dict(first['marks'])
+    openings = _second(model, device, original, first['lengths'])
     if openings is not None:
         result.update(openings)
     return result
 
 
+def _first_cached(key, image_bytes, model, device):
+    """First reading of a drawing, and its decoded sheet when it was read just now. The caller holds LOCK."""
+    first = FIRST.get(key)
+    if first is not None:
+        FIRST.move_to_end(key)
+        return first, None
+    read = _first(image_bytes, model, device)
+    if read is None:
+        return None, None
+    FIRST[key] = read[0]
+    if len(FIRST) > 2:
+        FIRST.popitem(last=False)
+    return read
+
+
 def _cached_inventory(image_bytes):
-    """Return all four classes in one pass (cached by exact input bytes) or None."""
+    """Return all four classes (cached by exact input bytes) or None."""
     if not available():
         return None
     code, weights = _locations()
@@ -297,16 +343,45 @@ def _cached_inventory(image_bytes):
             CACHE.move_to_end(key)
             return CACHE[key]
         try:
-            result = _infer(image_bytes, *_load(code, weights))
+            model, device = _load(code, weights)
+            first, original = _first_cached(key, image_bytes, model, device)
+            if first is None:
+                return None
+            if original is None:
+                # The room-map reader asked for this drawing first; only the second reading is left.
+                import numpy as np
+                from PIL import Image
+                with Image.open(io.BytesIO(image_bytes)) as image:
+                    original = np.array(image.convert('RGB'))
+            result = dict(first['marks'])
+            openings = _second(model, device, original, first['lengths'])
+            if openings is not None:
+                result.update(openings)
         except (ImportError, OSError, RuntimeError, ValueError):
-            return None
-        if result is None:
             return None
         record = {'image_sha256':digest, 'classes':result}
         CACHE[key] = record
         if len(CACHE) > 16:
             CACHE.popitem(last=False)
         return record
+
+
+def room_planes(image_bytes):
+    """Room (12) and icon (11) class probabilities of the first reading as uint8 planes on its grid, or None.
+
+    The room-map reader takes them from here, so a drawing passes through the network
+    once for both readers whichever question comes first.
+    """
+    if not available():
+        return None
+    code, weights = _locations()
+    key = (code, weights, hashlib.sha256(image_bytes).hexdigest())
+    with LOCK:
+        try:
+            first, _ = _first_cached(key, image_bytes, *_load(code, weights))
+        except (ImportError, OSError, RuntimeError, ValueError):
+            return None
+    return first['planes'] if first else None
 
 
 def predict(image_bytes, question, inventory=None):
