@@ -133,6 +133,9 @@ INVENTORIES = {
     ),
 }
 GATE_DIR = ".local/evaluation/full-english/finnish/gates"
+# Frozen drawings with a per-drawing file of the 13 November bedroom gate, derived from file NAMES under
+# GATE_DIR only (no file there and no row of the gate table is opened): 40 of 72, digest of the sorted paths.
+GATE_MEMBERS = dict(count=40, sha256="4079fae7fb74d174851092c2ab536b44bdc0b79c505c559ebd7c99bd711d874b")
 GATE_REASON = (
     "automated release-wide bedroom gate, one file per drawing, written 2026-11-13 before both "
     "earlier manifests; the earlier freezes kept these drawings and excluded only the 35 model runs"
@@ -914,6 +917,23 @@ def summarize(records, styles, seed):
     )
 
 
+def gate_members(manifest):
+    """Frozen drawings with a 13 November gate file, from the file names alone."""
+    gates = ROOT / GATE_DIR
+    names = {p.name for p in gates.iterdir()} if gates.is_dir() else set()
+    return sorted({r["path"] for r in manifest["rows"] if Path(r["path"]).stem + ".json" in names})
+
+
+def gate_sensitivity(records, members, seed):
+    """Descriptive: the primary endpoint and exact/wrong/deferred counts with and without a gate record."""
+    members = set(members)
+    out = {}
+    for label, inside in (("with_13_november_gate_record", True), ("without_13_november_gate_record", False)):
+        subset = [r for r in records if (r["path"] in members) == inside]
+        out[label] = dict(drawings=len({r["path"] for r in subset}), **(paired(subset, seed) or {}))
+    return out
+
+
 def harness_identity():
     """Which harness ran a command: file digest, checkout commit and whether the file is committed as is."""
     here = Path(__file__).resolve()
@@ -974,6 +994,9 @@ def score(args, manifest):
             agreement(args.work, manifest, ["before", "before-control"]),
         "after vs after-repeat (candidate repeat)": agreement(args.work, manifest, ["after", "after-repeat"]),
     }
+    members = gate_members(manifest)
+    if fingerprint == FROZEN_FINGERPRINT:
+        check(dict(count=len(members), sha256=sha(canonical(members))) == GATE_MEMBERS, "Gate-file membership changed.")
     targets = revision.read_targets(args.archive, manifest)
     records = join(manifest, before, after, targets)
     summary = summarize(records, QUOTAS, SEED)
@@ -1006,6 +1029,7 @@ def score(args, manifest):
         noise_floors=floors,
         timeouts=dict(timeouts, **{arm: "not logged (sealed before the log existed)" for arm in BASELINE_SEALS}),
         **summary,
+        gate_sensitivity=gate_sensitivity(records, members, SEED),
         timing=dict(
             note="before-control and after ran back to back under recorded conditions; the sealed before arm is "
                  "not a timing reference.",

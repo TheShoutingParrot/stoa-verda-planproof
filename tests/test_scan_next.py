@@ -502,6 +502,29 @@ class Summary(unittest.TestCase):
         pooled = summary["equal_style_weighted_exact_accuracy"]
         self.assertEqual((pooled["before"], pooled["after"]), (round((0.5 + 1 / 3) / 2, 4), round((1 + 1 / 3) / 2, 4)))
 
+    def test_gate_subset_comes_from_file_names_and_is_descriptive(self):
+        hq, arch = "data/cubicasa5k/high_quality-1.png", "data/cubicasa5k/high_quality_architectural-2.png"
+        with TemporaryDirectory() as tmp:
+            gates = Path(tmp) / nxt.GATE_DIR
+            gates.mkdir(parents=True)
+            (gates / "high_quality-1.json").write_text("not read")
+            (gates / "high_quality-10.json").write_text("not read")
+            manifest = dict(rows=rows_for([hq, arch]))
+            with patch.object(nxt, "ROOT", Path(tmp)), patch.object(Path, "read_text", side_effect=AssertionError):
+                members = nxt.gate_members(manifest)
+        self.assertEqual(members, [hq])
+        records = [self.record(hq, "windows", 3, None, 3), self.record(arch, "doors", 2, 2, 1)]
+        split = nxt.gate_sensitivity(records, members, "seed")
+        inside, outside = split["with_13_november_gate_record"], split["without_13_november_gate_record"]
+        self.assertEqual((inside["drawings"], inside["after"]["exact"], inside["paired"]["gained_exact"]), (1, 1, 1))
+        self.assertEqual((outside["before"]["exact"], outside["after"]["wrong"]), (1, 1))
+
+    def test_real_gate_membership_equals_the_pinned_count(self):
+        if not (nxt.ROOT / nxt.GATE_DIR).is_dir():
+            self.skipTest("Gate files are a local asset")
+        members = nxt.gate_members(json.loads(nxt.FROZEN.read_text()))
+        self.assertEqual(dict(count=len(members), sha256=nxt.sha(nxt.canonical(members))), nxt.GATE_MEMBERS)
+
 
 class LeakCheck(unittest.TestCase):
     def test_names_hashes_and_copies_are_found(self):
