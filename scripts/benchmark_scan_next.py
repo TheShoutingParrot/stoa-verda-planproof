@@ -989,11 +989,13 @@ def score(args, manifest):
     ))
     save(args.work / "scorings.json", scorings)  # written before the sponsor answers are opened
     floors = {
-        "before vs before-repeat (sealed baseline repeat)": agreement(args.work, manifest, ["before", "before-repeat"]),
         "before vs before-control (baseline under the after arm's conditions)":
             agreement(args.work, manifest, ["before", "before-control"]),
         "after vs after-repeat (candidate repeat)": agreement(args.work, manifest, ["after", "after-repeat"]),
     }
+    if (args.work / "before-repeat/seal.json").exists():  # descriptive; already in noise-before-before-repeat.json
+        floors["before vs before-repeat (sealed baseline repeat)"] = agreement(args.work, manifest,
+                                                                              ["before", "before-repeat"])
     members = gate_members(manifest)
     if fingerprint == FROZEN_FINGERPRINT:
         check(dict(count=len(members), sha256=sha(canonical(members))) == GATE_MEMBERS, "Gate-file membership changed.")
