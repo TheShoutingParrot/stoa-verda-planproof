@@ -1,0 +1,362 @@
+{
+ "prompts": 608,
+ "drawings": 72,
+ "hosted_missing": 0,
+ "hosted_calls_needed": {
+  "nemotron_alone": 608,
+  "hybrid_before": 274,
+  "hybrid_after": 143
+ },
+ "arms": {
+  "nemotron_alone": {
+   "exact": 247,
+   "wrong": 231,
+   "deferred": 130,
+   "exact_share": 0.4062,
+   "accuracy_among_answered": 0.5167
+  },
+  "local_before": {
+   "exact": 189,
+   "wrong": 145,
+   "deferred": 274,
+   "exact_share": 0.3109,
+   "accuracy_among_answered": 0.5659
+  },
+  "local_after": {
+   "exact": 325,
+   "wrong": 140,
+   "deferred": 143,
+   "exact_share": 0.5345,
+   "accuracy_among_answered": 0.6989
+  },
+  "hybrid_before": {
+   "exact": 336,
+   "wrong": 208,
+   "deferred": 64,
+   "exact_share": 0.5526,
+   "accuracy_among_answered": 0.6176
+  },
+  "hybrid_after": {
+   "exact": 392,
+   "wrong": 186,
+   "deferred": 30,
+   "exact_share": 0.6447,
+   "accuracy_among_answered": 0.6782
+  }
+ },
+ "by_family": {
+  "balconies": {
+   "nemotron_alone": {
+    "exact": 9,
+    "deferred": 6,
+    "wrong": 3
+   },
+   "local_before": {
+    "exact": 6,
+    "deferred": 12
+   },
+   "local_after": {
+    "exact": 9,
+    "deferred": 8,
+    "wrong": 1
+   },
+   "hybrid_before": {
+    "exact": 10,
+    "deferred": 5,
+    "wrong": 3
+   },
+   "hybrid_after": {
+    "exact": 11,
+    "deferred": 5,
+    "wrong": 2
+   },
+   "prompts": 18
+  },
+  "bathrooms": {
+   "nemotron_alone": {
+    "deferred": 15,
+    "exact": 8,
+    "wrong": 3
+   },
+   "local_before": {
+    "exact": 8,
+    "deferred": 17,
+    "wrong": 1
+   },
+   "local_after": {
+    "exact": 13,
+    "deferred": 12,
+    "wrong": 1
+   },
+   "hybrid_before": {
+    "exact": 13,
+    "deferred": 10,
+    "wrong": 3
+   },
+   "hybrid_after": {
+    "exact": 15,
+    "deferred": 8,
+    "wrong": 3
+   },
+   "prompts": 26
+  },
+  "bedrooms": {
+   "nemotron_alone": {
+    "wrong": 11,
+    "exact": 26,
+    "deferred": 3
+   },
+   "local_before": {
+    "exact": 14,
+    "deferred": 20,
+    "wrong": 6
+   },
+   "local_after": {
+    "exact": 14,
+    "deferred": 20,
+    "wrong": 6
+   },
+   "hybrid_before": {
+    "exact": 26,
+    "wrong": 12,
+    "deferred": 2
+   },
+   "hybrid_after": {
+    "exact": 26,
+    "wrong": 12,
+    "deferred": 2
+   },
+   "prompts": 40
+  },
+  "doors": {
+   "nemotron_alone": {
+    "wrong": 38,
+    "exact": 4,
+    "deferred": 9
+   },
+   "local_before": {
+    "wrong": 30,
+    "exact": 21
+   },
+   "local_after": {
+    "exact": 29,
+    "wrong": 22
+   },
+   "hybrid_before": {
+    "wrong": 30,
+    "exact": 21
+   },
+   "hybrid_after": {
+    "exact": 29,
+    "wrong": 22
+   },
+   "prompts": 51
+  },
+  "floors": {
+   "nemotron_alone": {
+    "exact": 51,
+    "deferred": 18,
+    "wrong": 3
+   },
+   "local_before": {
+    "exact": 13,
+    "deferred": 59
+   },
+   "local_after": {
+    "exact": 61,
+    "wrong": 1,
+    "deferred": 10
+   },
+   "hybrid_before": {
+    "exact": 53,
+    "deferred": 16,
+    "wrong": 3
+   },
+   "hybrid_after": {
+    "exact": 67,
+    "wrong": 1,
+    "deferred": 4
+   },
+   "prompts": 72
+  },
+  "kitchens": {
+   "nemotron_alone": {
+    "exact": 26,
+    "deferred": 18,
+    "wrong": 3
+   },
+   "local_before": {
+    "deferred": 36,
+    "exact": 9,
+    "wrong": 2
+   },
+   "local_after": {
+    "exact": 37,
+    "wrong": 4,
+    "deferred": 6
+   },
+   "hybrid_before": {
+    "exact": 29,
+    "deferred": 13,
+    "wrong": 5
+   },
+   "hybrid_after": {
+    "exact": 42,
+    "wrong": 4,
+    "deferred": 1
+   },
+   "prompts": 47
+  },
+  "saunas": {
+   "nemotron_alone": {
+    "exact": 28,
+    "wrong": 7,
+    "deferred": 7
+   },
+   "local_before": {
+    "deferred": 38,
+    "exact": 3,
+    "wrong": 1
+   },
+   "local_after": {
+    "exact": 34,
+    "deferred": 7,
+    "wrong": 1
+   },
+   "hybrid_before": {
+    "exact": 29,
+    "wrong": 8,
+    "deferred": 5
+   },
+   "hybrid_after": {
+    "exact": 40,
+    "deferred": 1,
+    "wrong": 1
+   },
+   "prompts": 42
+  },
+  "separate WC rooms": {
+   "nemotron_alone": {
+    "wrong": 6,
+    "exact": 14,
+    "deferred": 10
+   },
+   "local_before": {
+    "deferred": 26,
+    "wrong": 4
+   },
+   "local_after": {
+    "exact": 12,
+    "deferred": 14,
+    "wrong": 4
+   },
+   "hybrid_before": {
+    "wrong": 8,
+    "exact": 12,
+    "deferred": 10
+   },
+   "hybrid_after": {
+    "exact": 18,
+    "deferred": 6,
+    "wrong": 6
+   },
+   "prompts": 30
+  },
+  "showers": {
+   "nemotron_alone": {
+    "exact": 28,
+    "wrong": 35,
+    "deferred": 3
+   },
+   "local_before": {
+    "deferred": 66
+   },
+   "local_after": {
+    "deferred": 66
+   },
+   "hybrid_before": {
+    "exact": 28,
+    "wrong": 35,
+    "deferred": 3
+   },
+   "hybrid_after": {
+    "exact": 28,
+    "wrong": 35,
+    "deferred": 3
+   },
+   "prompts": 66
+  },
+  "sinks": {
+   "nemotron_alone": {
+    "wrong": 50,
+    "exact": 17,
+    "deferred": 5
+   },
+   "local_before": {
+    "exact": 38,
+    "wrong": 34
+   },
+   "local_after": {
+    "exact": 38,
+    "wrong": 34
+   },
+   "hybrid_before": {
+    "exact": 38,
+    "wrong": 34
+   },
+   "hybrid_after": {
+    "exact": 38,
+    "wrong": 34
+   },
+   "prompts": 72
+  },
+  "toilet bowls": {
+   "nemotron_alone": {
+    "exact": 32,
+    "deferred": 24,
+    "wrong": 16
+   },
+   "local_before": {
+    "wrong": 24,
+    "exact": 48
+   },
+   "local_after": {
+    "wrong": 24,
+    "exact": 48
+   },
+   "hybrid_before": {
+    "wrong": 24,
+    "exact": 48
+   },
+   "hybrid_after": {
+    "wrong": 24,
+    "exact": 48
+   },
+   "prompts": 72
+  },
+  "windows": {
+   "nemotron_alone": {
+    "wrong": 56,
+    "deferred": 12,
+    "exact": 4
+   },
+   "local_before": {
+    "wrong": 43,
+    "exact": 29
+   },
+   "local_after": {
+    "exact": 30,
+    "wrong": 42
+   },
+   "hybrid_before": {
+    "wrong": 43,
+    "exact": 29
+   },
+   "hybrid_after": {
+    "exact": 30,
+    "wrong": 42
+   },
+   "prompts": 72
+  }
+ }
+}

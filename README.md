@@ -51,7 +51,9 @@ python3 -m unittest discover -s tests -v
 node --test tests/*.cjs
 ```
 
-The current local scan reader got **167/398** questions right on 48 fresh floor plans, up from **156/398** for the previous local version. It gave six more answers and made five fewer wrong counts. Window marks matching the original vector annotations rose from **82.3% to 92.8%**. [Paired benchmark](docs/scan-revision-evaluation.md) · [Inspect window counts and marks](docs/scan-revision-marks.md).
+On 72 held-out floor plans the current local scan reader answered **325 of 608** questions exactly, up from **189** for the previous version, with five fewer wrong answers. The baseline was sealed before tuning, and one independent evaluator ran and scored both versions once (+22.4 points, 95% interval 18.7 to 26.1). Window marks that match the original annotation located 76% of windows, up from 69%, and door marks 95%, up from 86%. With NVIDIA's Nemotron 3.5 Super VL answering what the local readers cannot verify, the product reaches **392 of 608**, against 247 for Nemotron alone, with 143 calls to NVIDIA instead of 608. [Paired benchmark](docs/scan-next-evaluation.md) · [Demo links](demo/links.md)
+
+The previous round raised exact answers from **156/398** to **167/398** on 48 earlier held-out plans. [48-drawing comparison](docs/scan-revision-evaluation.md) · [Window counts and marks](docs/scan-revision-marks.md)
 
 On 32 held-out floor plans, the previous release raised exact scan counts from 36/77 to 48/77 on questions both versions could evaluate. Across 24 comparable questions about doors, windows, toilets and sinks, the new marks matched 91 of 111 annotated objects, up from eight. [Inspect all 96 attempted questions and the original drawing links](docs/scan-review.md).
 
