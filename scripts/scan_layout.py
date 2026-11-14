@@ -30,6 +30,8 @@ SYMBOLS = {'toilet': TOILET, 'sink': SINK, 'bench': BENCH, 'tub': BATHTUB}
 COORDS = 'xyxy_top_left_0_to_1000'
 METHOD = 'local_room_layout'
 BATHROOM_SHARE = .03  # a wet room this large, as a share of all interior area, can hold a shower
+BENCH_SHARE = .004    # smallest sauna bench symbol, as a share of all interior area
+FAINT_BENCH = .0002   # weak bench probability over more interior area than this forbids a zero
 CACHE = OrderedDict()
 PLAN_LOCK = threading.Lock()
 
@@ -159,7 +161,7 @@ def _locate(layout, box):
 ZOOM_MARGIN = 24
 
 
-def zoom_tiles(image, layout, limit=6):
+def zoom_tiles(image, layout, kinds=(BATH,), limit=6):
     """Cut the wet rooms out of the source image and enlarge them onto one white sheet.
 
     Returns (sheet, tiles); each tile maps a sheet rectangle back to source pixels.
@@ -167,7 +169,7 @@ def zoom_tiles(image, layout, limit=6):
     from PIL import Image
     grid_w, grid_h = layout['size']
     sx, sy = image.width / grid_w, image.height / grid_h
-    wet = sorted((r for r in layout['regions'] if r['kind'] == BATH), key=lambda r: -r['area'])[:limit]
+    wet = sorted((r for r in layout['regions'] if r['kind'] in kinds), key=lambda r: -r['area'])[:limit]
     tiles = []
     top = ZOOM_MARGIN
     for region in wet:
@@ -213,7 +215,7 @@ def zoom_restore(rows, sheet_size, tiles, source_size):
     return restored
 
 
-def zoom_rows(image_bytes, layout, orientation=1):
+def zoom_rows(image_bytes, layout, orientation=1, kinds=(BATH,)):
     """Read the wet rooms again at a larger scale with the sheet's reading direction and its reverse."""
     if sys.platform != 'darwin' or not shutil.which('osascript'):
         return []
@@ -221,7 +223,7 @@ def zoom_rows(image_bytes, layout, orientation=1):
         from PIL import Image
         with Image.open(io.BytesIO(image_bytes)) as source:
             image = source.convert('RGB')
-        sheet, tiles = zoom_tiles(image, layout)
+        sheet, tiles = zoom_tiles(image, layout, kinds)
         if sheet is None:
             return []
         rows = []
@@ -276,7 +278,7 @@ def build_plan(inv, layout, zoomed=(), ink_views=()):
     largest = max((p['interior'] for p in layout['panels']), default=1)
     panels = [{'share': round(p['interior']/largest, 4), 'box': unit(p['box'])} for p in layout['panels']]
     return {'size': [width, height], 'panels': panels, 'regions': regions, 'symbols': symbols,
-            'faint_bench': layout['faint_bench'], 'labels': labels,
+            'faint_bench': round(layout['faint_bench']/inside, 5), 'labels': labels,
             'titles': inv.get('titles', []), 'storeys': inv.get('storeys', []),
             'floor_markers': inv.get('floor_markers', []), 'unclear_wc': unclear_wc,
             'explicit_no_sauna': len(inv.get('explicit_no_sauna', ())),
@@ -372,16 +374,20 @@ def _wet_rooms(plan):
     return [r for r in plan['regions'] if r['kind'] == BATH]
 
 
+def _gap(a, b):
+    """Distance between two boxes along the axes, zero when they touch or overlap."""
+    return max(0, max(a[0], b[0]) - min(a[2], b[2])) + max(0, max(a[1], b[1]) - min(a[3], b[3]))
+
+
 def saunas(plan):
     """A sauna bench symbol or a sauna label inside a wet room; zero only when every wet room is identified."""
     benches = plan['symbols']['bench']
     area = sum(m['share'] for m in benches)
     labels = _named(plan, 'sauna')
-    if area >= .004:
-        rooms = {m['region'] for m in benches if m['share'] >= .002}
-        if len(rooms) > 1:
-            return None
+    if area >= BENCH_SHARE:
         largest = max(benches, key=lambda m: m['share'])
+        if any(m['share'] >= BENCH_SHARE/2 and _gap(m['box'], largest['box']) > 80 for m in benches):
+            return None  # bench symbols far apart may belong to two saunas
         return _report(1, [_mark('Sauna bench', largest['box'])])
     wet = _wet_rooms(plan)
     inside = [item for item in labels if _kind_at(plan, item) == BATH]
@@ -389,7 +395,7 @@ def saunas(plan):
         if len(labels) != len(inside) or len({item['region'] for item in inside}) != 1:
             return None
         return _report(1, [_mark('Sauna label ' + inside[0]['label'], inside[0]['box'])])
-    if labels or plan['faint_bench'] or any(t.get('sauna') for t in plan['titles']) or not wet:
+    if labels or plan['faint_bench'] > FAINT_BENCH or any(t.get('sauna') for t in plan['titles']) or not wet:
         return None
     coverage = []
     for region in wet:
@@ -416,8 +422,8 @@ def separate_wcs(plan):
             rooms.setdefault(item['region'], item)
         for index, region in enumerate(plan['regions'], 1):
             if region['kind'] == BATH and index not in rooms and region['toilets'] and not region['bench'] \
-                    and not _region_labels(plan, region, 'washroom', 'sauna'):
-                return None  # an unnamed toilet room may be a second WC
+                    and region['share'] < BATHROOM_SHARE and not _region_labels(plan, region, 'washroom', 'sauna'):
+                return None  # a small unnamed toilet room may be a second WC
         return _report(len(rooms), [_mark('WC label ' + item['label'], item['box']) for item in rooms.values()])
     if len(wet) != 1 or wet[0]['share'] < .03 or len(plan['symbols']['toilet']) > 1:
         return None
@@ -481,8 +487,26 @@ def balconies(plan):
     return _report(0, [], 'Every outdoor area on the plan is labelled as a terrace or porch.', _distinct(coverage))
 
 
+def bedrooms(plan):
+    """Bedroom labels that each sit in a bedroom region, with no bedroom region left unnamed."""
+    labels = _named(plan, 'bedroom')
+    if not labels or any(_kind_at(plan, item) != BEDROOM for item in labels):
+        return None
+    numbers = [scan_rooms.re.fullmatch(r'(?:MH|SOVRUM)\s*[- ]?(\d{1,2})', scan_rooms.letters(item['label']))
+               for item in labels]
+    if any(found and int(found[1]) > len(labels) for found in numbers):
+        return None
+    named = {item['region'] for item in labels}
+    for index, region in enumerate(plan['regions'], 1):
+        if region['kind'] == BEDROOM and region['share'] >= .04 and index not in named:
+            return None
+    return _report(len(labels), [_mark('Bedroom label ' + item['label'], item['box']) for item in labels])
+
+
 RULES = {'storeys': storeys, 'kitchen': kitchens, 'sauna': saunas, 'wc': separate_wcs,
-         'washroom': bathrooms, 'balcony': balconies}
+         'washroom': bathrooms, 'balcony': balconies, 'bedroom': bedrooms}
+# Room regions that are read again at a larger scale before the family's rule runs.
+SECOND_LOOK = {'sauna': BATH, 'wc': BATH, 'washroom': BATH, 'bedroom': BEDROOM}
 
 
 def answer(plan, name):
@@ -504,31 +528,38 @@ def category(question):
     return name if name in RULES else None
 
 
-def plan(image_bytes):
-    """Build the joined plan once per drawing (cached by exact input bytes), or None."""
+def plan(image_bytes, name):
+    """Build the joined plan for one question family (cached by exact input bytes), or None.
+
+    The room map is computed once per drawing. Rooms are read a second time only for
+    the families in SECOND_LOOK, so the answer never depends on which question came first.
+    """
     if not image_bytes.startswith(b'\x89PNG\r\n\x1a\n') or not scan_objects.available():
         return None
     code, weights = scan_objects._locations()
     key = (code, weights, hashlib.sha256(image_bytes).hexdigest())
     with PLAN_LOCK:
-        if key in CACHE:
-            CACHE.move_to_end(key)
-            return CACHE[key]
-        inv = scan_rooms.inventory(image_bytes)
-        try:
-            with scan_objects.LOCK:
-                planes = _infer(image_bytes, *scan_objects._load(code, weights))
-            if planes is None:
+        entry = CACHE.get(key)
+        if entry is None:
+            inv = scan_rooms.inventory(image_bytes)
+            try:
+                with scan_objects.LOCK:
+                    planes = _infer(image_bytes, *scan_objects._load(code, weights))
+                if planes is None:
+                    return None
+                entry = {'inv': inv, 'layout': describe(*planes), 'views': scan_storeys.panel_views(image_bytes),
+                         'plans': {}}
+            except (ImportError, OSError, RuntimeError, ValueError):
                 return None
-            layout = describe(*planes)
-            views = scan_storeys.panel_views(image_bytes)
-        except (ImportError, OSError, RuntimeError, ValueError):
-            return None
-        record = build_plan(inv, layout, zoom_rows(image_bytes, layout, inv.get('orientation', 1)), views)
-        CACHE[key] = record
-        if len(CACHE) > 16:
-            CACHE.popitem(last=False)
-        return record
+            CACHE[key] = entry
+            if len(CACHE) > 8:
+                CACHE.popitem(last=False)
+        CACHE.move_to_end(key)
+        kind = SECOND_LOOK.get(name)
+        if kind not in entry['plans']:
+            rows = zoom_rows(image_bytes, entry['layout'], entry['inv'].get('orientation', 1), (kind,)) if kind else []
+            entry['plans'][kind] = build_plan(entry['inv'], entry['layout'], rows, entry['views'])
+        return entry['plans'][kind]
 
 
 def predict(image_bytes, question):
@@ -536,4 +567,4 @@ def predict(image_bytes, question):
     name = category(question)
     if name is None:
         return None
-    return answer(plan(image_bytes), name)
+    return answer(plan(image_bytes, name), name)

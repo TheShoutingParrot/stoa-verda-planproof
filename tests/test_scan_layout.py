@@ -91,10 +91,16 @@ class LayoutRuleTests(unittest.TestCase):
     def test_sauna_needs_a_bench_or_label_and_zero_needs_every_wet_room_identified(self):
         bath = region(scan_layout.BATH, .06, [400, 400, 520, 560], toilets=1, sinks=1)
         bench = {'share': .02, 'box': [530, 400, 600, 440], 'region': 2, 'score': .9}
-        positive = scan_layout.answer(plan([bath, region(scan_layout.BATH, .03, [525, 400, 610, 560], bench=.02)],
-                                           benches=[bench], faint_bench=900), 'sauna')
+        steam = region(scan_layout.BATH, .03, [525, 400, 610, 560], bench=.02)
+        positive = scan_layout.answer(plan([bath, steam], benches=[bench], faint_bench=.03), 'sauna')
         self.assertEqual((positive['answer'], positive['evidence']), (1, [{'label': 'Sauna bench', 'box': [530, 400, 600, 440]}]))
         checked(positive, QUESTIONS['sauna'])
+        # Bench pieces in one room count once; a second bench far away may be another sauna; specks are ignored.
+        near, far = dict(bench, share=.006, box=[530, 450, 560, 520]), dict(bench, share=.006, box=[100, 100, 160, 130])
+        self.assertEqual(scan_layout.answer(plan([bath, steam], benches=[bench, near]), 'sauna')['answer'], 1)
+        self.assertIsNone(scan_layout.answer(plan([bath, steam], benches=[bench, far]), 'sauna'))
+        self.assertEqual(scan_layout.answer(plan([bath, steam], benches=[bench, dict(far, share=.001)]), 'sauna')['answer'], 1)
+        self.assertIsNone(scan_layout.answer(plan([bath, steam], benches=[dict(bench, share=.003)], faint_bench=.01), 'sauna'))
         zero = scan_layout.answer(plan([bath]), 'sauna')
         self.assertEqual((zero['answer'], zero['evidence']), (0, []))
         self.assertEqual([e['box'] for e in zero['coverage_evidence']], [[400, 400, 520, 560]])
@@ -102,7 +108,8 @@ class LayoutRuleTests(unittest.TestCase):
         # A wet room with no fixture and no name could be the sauna; faint bench traces or a title also forbid zero.
         unknown = region(scan_layout.BATH, .03, [525, 400, 610, 560])
         self.assertIsNone(scan_layout.answer(plan([bath, unknown]), 'sauna'))
-        self.assertIsNone(scan_layout.answer(plan([bath], faint_bench=40), 'sauna'))
+        self.assertIsNone(scan_layout.answer(plan([bath], faint_bench=.001), 'sauna'))
+        self.assertEqual(scan_layout.answer(plan([bath], faint_bench=.0001), 'sauna')['answer'], 0)
         self.assertIsNone(scan_layout.answer(plan([bath], titles=[{'label': '2H+K+S', 'box': [1, 1, 9, 9], 'sauna': 1}]), 'sauna'))
         self.assertIsNone(scan_layout.answer(plan([]), 'sauna'))
         # A sauna label read inside a wet room is a positive; one read elsewhere is not enough.
@@ -120,8 +127,11 @@ class LayoutRuleTests(unittest.TestCase):
                                       [wc, label('washroom', 'KPH', [420, 420, 460, 440], 1, scan_layout.BATH)], toilets=2), 'wc')
         self.assertEqual((one['answer'], one['evidence'][0]['box']), (1, [110, 410, 140, 430]))
         checked(one, QUESTIONS['wc'])
-        # An unnamed second toilet room, an unclear reading or a label outside the wet rooms declines.
-        self.assertIsNone(scan_layout.answer(plan([bath, small], [wc], toilets=2), 'wc'))
+        # A bathroom-sized wet room without a name is the bathroom, not a second WC.
+        self.assertEqual(scan_layout.answer(plan([bath, small], [wc], toilets=2), 'wc')['answer'], 1)
+        # A small unnamed second toilet room, an unclear reading or a label outside the wet rooms declines.
+        tiny = region(scan_layout.BATH, .012, [700, 400, 750, 460], toilets=1)
+        self.assertIsNone(scan_layout.answer(plan([bath, small, tiny], [wc], toilets=3), 'wc'))
         self.assertIsNone(scan_layout.answer(plan([dict(bath, labels=[1]), small], [wc], unclear_wc=1), 'wc'))
         self.assertIsNone(scan_layout.answer(plan([bath], [label('wc', 'WC', [10, 10, 40, 30], 0, 0)]), 'wc'))
         zero = scan_layout.answer(plan([bath], toilets=1), 'wc')
@@ -168,6 +178,44 @@ class LayoutRuleTests(unittest.TestCase):
         checked(one, QUESTIONS['balcony'])
         self.assertIsNone(scan_layout.answer(plan([outdoor], [dict(parveke, region=0, cls=0)]), 'balcony'))
 
+    def test_bedrooms_need_a_label_in_every_bedroom_region(self):
+        rooms = [region(scan_layout.BEDROOM, .15, [100, 100, 300, 300], labels=[0]),
+                 region(scan_layout.BEDROOM, .12, [320, 100, 500, 300], labels=[1])]
+        names = [label('bedroom', 'MH', [180, 180, 210, 200], 1, scan_layout.BEDROOM, 'zoom'),
+                 label('bedroom', 'MH 2', [400, 180, 440, 200], 2, scan_layout.BEDROOM)]
+        both = scan_layout.answer(plan(rooms, names), 'bedroom')
+        self.assertEqual((both['answer'], [e['box'] for e in both['evidence']]), (2, [names[0]['box'], names[1]['box']]))
+        checked(both, 'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?')
+        self.assertIsNone(scan_layout.answer(plan(rooms, names[:1]), 'bedroom'))
+        self.assertIsNone(scan_layout.answer(plan(rooms, []), 'bedroom'))
+        self.assertIsNone(scan_layout.answer(plan(rooms, [names[0], dict(names[1], region=0, cls=0)]), 'bedroom'))
+        self.assertIsNone(scan_layout.answer(plan(rooms, [names[0], dict(names[1], label='MH 3')]), 'bedroom'))
+        nook = region(scan_layout.BEDROOM, .02, [520, 100, 560, 160])
+        self.assertEqual(scan_layout.answer(plan(rooms + [nook], names), 'bedroom')['answer'], 2)
+
+    def test_second_look_is_read_once_per_room_kind_and_never_for_other_families(self):
+        png = b'\x89PNG\r\n\x1a\n' + b'synthetic'
+        layout = {'size': (300, 200), 'interior': 1000, 'panels': [], 'regions': [], 'symbols': {name: [] for name in scan_layout.SYMBOLS},
+                  'faint_bench': 0}
+        looks = []
+        def look(data, described, orientation=1, kinds=()):
+            looks.append((orientation, kinds))
+            return []
+        with patch.object(scan_layout, 'CACHE', scan_layout.OrderedDict()), \
+                patch.object(scan_layout.scan_objects, 'available', return_value=True), \
+                patch.object(scan_layout.scan_objects, '_load', return_value=('model', 'cpu')), \
+                patch.object(scan_layout, '_infer', return_value=('rooms', 'icons')) as infer, \
+                patch.object(scan_layout, 'describe', return_value=layout), \
+                patch.object(scan_layout.scan_rooms, 'inventory', return_value={'labels': {}, 'orientation': 3}), \
+                patch.object(scan_layout.scan_storeys, 'panel_views', return_value=[]), \
+                patch.object(scan_layout, 'zoom_rows', side_effect=look):
+            for name in ('storeys', 'kitchen', 'balcony', 'sauna', 'wc', 'washroom', 'bedroom', 'sauna', 'storeys'):
+                self.assertEqual(scan_layout.plan(png, name)['regions'], [])
+            self.assertIs(scan_layout.plan(png, 'wc'), scan_layout.plan(png, 'sauna'))
+            self.assertIsNot(scan_layout.plan(png, 'wc'), scan_layout.plan(png, 'storeys'))
+        self.assertEqual(infer.call_count, 1)
+        self.assertEqual(looks, [(3, (scan_layout.BATH,)), (3, (scan_layout.BEDROOM,))])
+
     def test_evidence_boxes_are_valid_and_never_the_whole_sheet(self):
         whole = scan_layout.answer(plan(panels=[{'share': 1., 'box': [0, 0, 1000, 1000]}]), 'storeys')
         self.assertEqual(whole['evidence'][0]['box'], [1, 1, 999, 999])
@@ -181,7 +229,7 @@ class LayoutRuleTests(unittest.TestCase):
         with patch.object(scan_layout, 'plan', side_effect=AssertionError('unexpected inference')):
             for question in ('How many windows are shown on this floor plan?', 'How many kitchens on the third floor?',
                              'How many showers and bathtubs are drawn on this floor plan in total?',
-                             'How many bedrooms (makuuhuone, usually marked MH) are on this floor plan?', None):
+                             'How many bedrooms are in the largest apartment?', None):
                 self.assertIsNone(scan_layout.predict(b'\x89PNG\r\n\x1a\n', question))
         with patch.object(scan_layout.scan_objects, '_load', side_effect=AssertionError('unexpected model load')):
             self.assertIsNone(scan_layout.predict(b'not a png', STOREYS))
