@@ -82,6 +82,13 @@ FULL_SHA = re.compile(r"^[0-9a-f]{40}$")
 FINGERPRINT = "3c5be563d29d5e3b246e18b9e5e6f1edc3bb7a9c03b139042c911a753b45f1b0"
 # Equals the reader that produced 167 of 398 (.local/evaluation/scan-revision/new/config.json).
 BASE_SOURCE_FINGERPRINT = "9e5bc7772a72c25e7435f31d779913e73335a63a0c3b6f5239f47ccfb94de54d"
+FROZEN_FINGERPRINT = FINGERPRINT
+# Canonical seal digests of the two baseline runs sealed on 2026-11-14 (docs/scan-next-protocol.md).
+# Checked whenever the work directory is the default one or the manifest is the frozen one.
+BASELINE_SEALS = {
+    "before": "412ddb3f9ea6297ce8d81a26ff45a320167a7b2ed4662a28b73395f9f8767a3a",
+    "before-repeat": "6310e14408bbdc47163919f5df241dabf7b79982d3647b7ef08fedef97bab2ca",
+}
 
 # Exposure audit: roots searched for test-split drawing names and image hashes.
 AUDIT_ROOTS = (
@@ -483,12 +490,19 @@ def seal_of(work, manifest, arm):
     return rows, seal, config
 
 
+def pinned(work, manifest):
+    """True for the real evaluation: the default work directory or the frozen manifest."""
+    return Path(work).resolve() == WORK.resolve() or fingerprint_of(manifest) == FROZEN_FINGERPRINT
+
+
 def verify_arm(work, manifest, arm):
     """Recompute an arm seal from its files; refuse unless it equals the saved seal."""
     root = work / arm
     check((root / "seal.json").is_file(), "Missing sealed arm: " + arm)
     rows, seal, config = seal_of(work, manifest, arm)
     check(seal == json.loads((root / "seal.json").read_text()), "Broken arm seal: " + arm)
+    if arm in BASELINE_SEALS and pinned(work, manifest):
+        check(sha(canonical(seal)) == BASELINE_SEALS[arm], "Not the baseline sealed on 2026-11-14: " + arm)
     check(config["manifest_sha256"] == fingerprint_of(manifest), "Arm ran on a different manifest: " + arm)
     for name, digest in config["source_sha256"].items():
         check(sha((root / "src" / name).read_bytes()) == digest, "Snapshot file changed: " + name)
@@ -557,6 +571,8 @@ def run(args, manifest):
         _, seal, _ = verify_arm(args.work, manifest, args.arm)
         print("Arm already sealed; nothing to run.", sha(canonical(seal)), flush=True)
         return seal
+    check(args.arm not in BASELINE_SEALS or not pinned(args.work, manifest),
+          "The sealed baseline arm " + args.arm + " is missing; restore it, never run it again.")
     (root / "outputs").mkdir(parents=True, exist_ok=True)
     with (root / "run.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -640,23 +656,27 @@ def identity(args):
     return result
 
 
-def noise(args, manifest):
+def agreement(work, manifest, arms):
     """Agreement between two sealed runs of one reader; counts only."""
-    first, _, c1 = verify_arm(args.work, manifest, args.arms[0])
-    second, _, c2 = verify_arm(args.work, manifest, args.arms[1])
-    same_config = {k: v for k, v in c1.items()} == {k: v for k, v in c2.items()}
-    answers = sum((first[i]["status"], first[i]["answer"]) != (second[i]["status"], second[i]["answer"]) for i in first)
-    evidences = sum(first[i]["evidence"] != second[i]["evidence"] for i in first)
-    methods = sum(first[i].get("method") != second[i].get("method") for i in first)
-    result = dict(
-        arms=list(args.arms),
+    check(arms and len(arms) == 2 and arms[0] != arms[1], "Name two different arms with --arms.")
+    first, _, c1 = verify_arm(work, manifest, arms[0])
+    second, _, c2 = verify_arm(work, manifest, arms[1])
+    check(c1["revision"] == c2["revision"], "noise compares two runs of one revision only.")
+    pairs = [(first[i], second[i]) for i in first]
+    return dict(
+        arms=list(arms),
         questions=len(first),
-        identical_configuration=same_config,
-        answers_differing=answers,
-        evidence_lists_differing=evidences,
-        methods_differing=methods,
+        identical_configuration=c1 == c2,
+        answers_differing=sum((a["status"], a["answer"]) != (b["status"], b["answer"]) for a, b in pairs),
+        statuses_differing=sum(a["status"] != b["status"] for a, b in pairs),
+        evidence_lists_differing=sum(a["evidence"] != b["evidence"] for a, b in pairs),
+        methods_differing=sum(a.get("method") != b.get("method") for a, b in pairs),
     )
-    save(args.work / "noise.json", result)
+
+
+def noise(args, manifest):
+    result = agreement(args.work, manifest, args.arms)
+    save(args.work / ("noise-%s-%s.json" % tuple(args.arms)), result)
     print(json.dumps(result))
     return result
 
@@ -1139,7 +1159,7 @@ def main():
     p.add_argument("--revision-work", type=Path, default=revision.WORK)
     p.add_argument("--assets", type=Path, default=ASSETS)
     p.add_argument("--arm")
-    p.add_argument("--arms", nargs=2, default=list(BASELINE_ARMS))
+    p.add_argument("--arms", nargs=2, help="The two runs of one revision that noise compares")
     p.add_argument("--before", default="before")
     p.add_argument("--after", default="after")
     p.add_argument("--revision", help="Committed revision for a non-baseline arm or the leak check")

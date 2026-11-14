@@ -131,11 +131,51 @@ class ArmsAndSeals(unittest.TestCase):
             targets.assert_not_called()
             archive.assert_not_called()
 
-    def test_noise_counts_answer_and_evidence_differences_only(self):
+    def test_noise_counts_differences_and_names_its_file_after_both_arms(self):
         make_arm(self.work, self.manifest, "before", [("answered", 0), ("abstained", None), ("answered", 0), ("unknown", None)])
         make_arm(self.work, self.manifest, "before-repeat", [("answered", 0), ("answered", 0), ("answered", 0), ("unknown", None)])
-        result = nxt.noise(SimpleNamespace(work=self.work, arms=["before", "before-repeat"]), self.manifest)
-        self.assertEqual((result["answers_differing"], result["evidence_lists_differing"]), (1, 0))
+        make_arm(self.work, self.manifest, "before-control", [("answered", 0), ("abstained", None), ("answered", 0), ("unknown", None)])
+        make_arm(self.work, self.manifest, "after", [("answered", 0)] * 4, revision="1" * 40)
+        with redirect_stdout(io.StringIO()):
+            result = nxt.noise(SimpleNamespace(work=self.work, arms=["before", "before-repeat"]), self.manifest)
+            self.assertEqual((result["answers_differing"], result["statuses_differing"],
+                              result["evidence_lists_differing"]), (1, 1, 0))
+            control = nxt.noise(SimpleNamespace(work=self.work, arms=["before", "before-control"]), self.manifest)
+        self.assertEqual(control["answers_differing"], 0)
+        self.assertEqual(json.loads((self.work / "noise-before-before-repeat.json").read_text()), result)
+        self.assertEqual(json.loads((self.work / "noise-before-before-control.json").read_text()), control)
+        for arms in (None, ["before", "before"], ["before", "after"]):
+            with self.assertRaises(ValueError):
+                nxt.noise(SimpleNamespace(work=self.work, arms=arms), self.manifest)
+
+    def test_baseline_seals_are_pinned_for_the_real_evaluation(self):
+        root = make_arm(self.work, self.manifest, "before", [("answered", 0)] * 4)
+        make_arm(self.work, self.manifest, "before-control", [("answered", 0)] * 4)
+        digest = nxt.sha(nxt.canonical(json.loads((root / "seal.json").read_text())))
+        nxt.verify_arm(self.work, self.manifest, "before")  # another work directory: not pinned
+        with patch.object(nxt, "WORK", self.work):
+            with self.assertRaisesRegex(ValueError, "Not the baseline sealed on 2026-11-14"):
+                nxt.verify_arm(self.work, self.manifest, "before")
+            nxt.verify_arm(self.work, self.manifest, "before-control")
+            with patch.dict(nxt.BASELINE_SEALS, before=digest):
+                nxt.verify_arm(self.work, self.manifest, "before")
+                # outputs changed and seal.json recomputed with the harness's own function
+                output = root / "outputs" / (self.manifest["rows"][0]["id"] + ".json")
+                nxt.save(output, dict(json.loads(output.read_text()), status="abstained", answer=None))
+                nxt.save(root / "seal.json", nxt.seal_of(self.work, self.manifest, "before")[1])
+                with self.assertRaisesRegex(ValueError, "Not the baseline sealed"):
+                    nxt.verify_arm(self.work, self.manifest, "before")
+            args = SimpleNamespace(work=self.work, arm="before-repeat", revision=None)
+            with patch.object(nxt, "FINGERPRINT", None), self.assertRaisesRegex(ValueError, "never run it again"):
+                nxt.run(args, self.manifest)
+
+    def test_the_real_baseline_seals_equal_the_pinned_digests(self):
+        if not (nxt.WORK / "before/seal.json").exists():
+            self.skipTest("Sealed arms are a local asset")
+        manifest = nxt.load_manifest(nxt.FROZEN)
+        for arm, digest in nxt.BASELINE_SEALS.items():
+            _, seal, _ = nxt.verify_arm(nxt.WORK, manifest, arm)
+            self.assertEqual(nxt.sha(nxt.canonical(seal)), digest)
 
     def test_offline_guard_blocks_sockets(self):
         with nxt.offline():
