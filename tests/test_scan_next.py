@@ -487,6 +487,21 @@ class Summary(unittest.TestCase):
         self.assertEqual((weighted["before"], weighted["after"]), (0.5, 0.5))
         self.assertEqual(summary["overall"]["delta_exact_pp"], 0.0)
 
+    def test_comparable_equal_style_figure_leaves_out_showers(self):
+        hq, arch = "data/cubicasa5k/high_quality-1.png", "data/cubicasa5k/high_quality_architectural-2.png"
+        records = [
+            self.record(hq, "windows", 3, None, 3),
+            self.record(hq, "floors", 1, 1, 1),
+            self.record(arch, "sinks", 1, None, None),
+            self.record(arch, "showers", 2, None, None),
+            self.record(arch, "doors", 2, 2, 2),
+        ]
+        summary = nxt.summarize(records, {"high_quality": 1, "high_quality_architectural": 1}, "seed")
+        comparable = summary["comparable_equal_style_weighted_exact_accuracy"]
+        self.assertEqual((comparable["before"], comparable["after"], comparable["delta_pp"]), (0.5, 0.75, 25.0))
+        pooled = summary["equal_style_weighted_exact_accuracy"]
+        self.assertEqual((pooled["before"], pooled["after"]), (round((0.5 + 1 / 3) / 2, 4), round((1 + 1 / 3) / 2, 4)))
+
 
 class LeakCheck(unittest.TestCase):
     def test_names_hashes_and_copies_are_found(self):

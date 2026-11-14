@@ -871,18 +871,29 @@ def brief(record):
     )
 
 
+def style_weighted(records, styles):
+    """Mean over styles of exact/questions per arm, with the paired difference in points."""
+    present = [s for s in styles if any(r["style"] == s for r in records)]
+    weighted = {}
+    for arm, key in (("before", "old"), ("after", "new")):
+        shares = []
+        for s in present:
+            rows = [r for r in records if r["style"] == s]
+            shares.append(sum(r[key]["correct"] for r in rows) / len(rows))
+        weighted[arm] = round(sum(shares) / len(shares), 4) if shares else None
+    delta = round(100 * (weighted["after"] - weighted["before"]), 2) if present else None
+    return dict(weighted, delta_pp=delta, styles=present)
+
+
 def summarize(records, styles, seed):
     by_style = {s: paired([r for r in records if r["style"] == s], seed) for s in styles}
-    weighted = {
-        arm: round(sum(by_style[s][arm]["exact"] / by_style[s][arm]["questions"] for s in styles) / len(styles), 4)
-        for arm in ("before", "after")
-    }
+    comparable = [r for r in records if r["category"] in COMPARABLE]
     return dict(
         overall=paired(records, seed),
-        comparable_eleven_families=paired([r for r in records if r["category"] in COMPARABLE], seed),
-        equal_style_weighted_exact_accuracy=dict(
-            weighted, delta_pp=round(100 * (weighted["after"] - weighted["before"]), 2)
-        ),
+        comparable_eleven_families=paired(comparable, seed),
+        equal_style_weighted_exact_accuracy=style_weighted(records, styles),
+        # The figure set beside the 24 + 24 cohort: eleven families, both styles weighted equally.
+        comparable_equal_style_weighted_exact_accuracy=style_weighted(comparable, styles),
         by_style=by_style,
         by_group={g: paired([r for r in records if r["category"] in c], seed) for g, c in GROUPS.items()},
         by_track={t: paired([r for r in records if r["category"] in c], seed) for t, c in TRACKS.items()},
