@@ -101,7 +101,11 @@ class ArmsAndSeals(unittest.TestCase):
         self.tmp.cleanup()
 
     def test_baseline_arms_are_pinned_and_after_arms_need_the_pinned_candidate(self):
-        self.assertIsNone(nxt.AFTER_REVISION)  # phase B pins it in one commit before running
+        # Unset until phase B pins the frozen candidate in one commit; then a full SHA of an existing commit.
+        if nxt.AFTER_REVISION is not None:
+            self.assertRegex(nxt.AFTER_REVISION, nxt.FULL_SHA)
+            self.assertNotEqual(nxt.AFTER_REVISION, nxt.BASE)
+            self.assertEqual(nxt.resolve(nxt.AFTER_REVISION), nxt.AFTER_REVISION)
         self.assertEqual(nxt.arm_revision("before", None), nxt.BASE)
         self.assertEqual(nxt.arm_revision("before-repeat", nxt.BASE), nxt.BASE)
         head = nxt.resolve("HEAD")
