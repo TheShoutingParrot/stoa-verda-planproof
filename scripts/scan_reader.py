@@ -8,7 +8,7 @@ from urllib.parse import urlsplit
 
 from . import nemotron, scan_layout, scan_objects, scan_rooms, scan_storeys
 
-VERSION = 'scan-reader-3'
+VERSION = 'scan-reader-4'
 
 DIRECT_INSTRUCTIONS = """Inspect the entire supplied floor plan and answer the user's counting question.
 Scope: count objects in the depicted plan, across all separate floor panels. Ignore the legend, neighboring building silhouettes and advertising thumbnails. Follow any narrower scope in the question. Use Finnish or Swedish room abbreviations when present. A WC room and a toilet bowl are different objects. For sinks, count a double-bowl unit once. Distinguish showers or tubs from saunas, sinks and floor drains. A doorway needs a door leaf; ignore furniture arcs. Windows are glazed openings in walls. Count storeys from distinct drawn floors, not staircases or sheet layout.

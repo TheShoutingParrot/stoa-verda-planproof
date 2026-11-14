@@ -80,7 +80,7 @@ function showReport(index) {
       ? report.coverage_evidence.filter(boxOK) : [];
     node('answer-reason').textContent = report.reason || (report.answer === 0 ? 'The reader returned a count of zero.' : 'Select an evidence mark to locate it on the original scan.');
     node('scan-evidence-count').textContent = `${items.length} ${items.length === 1 ? 'mark' : 'marks'}`;
-    if (coverage.length) node('scan-evidence-count').textContent = 'Printed evidence for zero';
+    if (coverage.length) node('scan-evidence-count').textContent = 'Evidence for zero';
     drawBoxes(coverage.length ? coverage : items);
   } else {
     node('scan-answer').textContent = report.status === 'unavailable' ? 'Unavailable' : 'Unknown';
