@@ -90,8 +90,8 @@ if args.hybrid:
 if args.hosted_example:
     path, question = args.hosted_example.split('|', 1)
     scenes.append({'id': '07-hosted', 'kind': 'app',
-                   'shots': [{'url': '/scan-drawing.html?' + urlencode({'path': path, 'question': question}), 'wait': ready, 'actions': [frame]}],
-                   'narration': 'In the live app, a question no local reader covers is answered by Nemotron, and the source of every answer is shown.'})
+                   'shots': [{'url': '/scan-drawing.html?' + urlencode({'path': path, 'question': question}), 'wait': ready, 'actions': [frame, select(0)]}, {'actions': [select(1)]}],
+                   'narration': 'Showers have no local reader. Asked live in the app, Nemotron reasons over the drawing on NVIDIA\'s endpoint and marks both showers, which is the right count. The source line names the model that answered.'})
 scenes.append({'id': '08-close', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Every count can be checked on the drawing',
                'lines': ['Open the drawing library, pick a scan, ask a count.', 'Code, tests and the sealed protocol are in the repository.'],
                'narration': 'Planproof. Every count can be checked on the drawing.'})

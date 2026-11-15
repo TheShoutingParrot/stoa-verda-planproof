@@ -119,6 +119,26 @@
    "narration": "What the local readers cannot prove goes to Nemotron on NVIDIA's endpoint. Nemotron alone gets 247 of the 608 questions exactly right. With Planproof's readers in front, and Nemotron reasoning over small shower symbols, the same endpoint reaches 405, with 143 calls instead of 608."
   },
   {
+   "id": "07-hosted",
+   "kind": "app",
+   "shots": [
+    {
+     "url": "/scan-drawing.html?path=data%2Fcubicasa5k%2Fhigh_quality_architectural-6549.png&question=How+many+showers+and+bathtubs+are+drawn+on+this+floor+plan+in+total%3F",
+     "wait": "!document.getElementById('scan-workspace').hidden && document.getElementById('scan-image').complete && document.getElementById('scan-answer').textContent.trim() !== '—'",
+     "actions": [
+      "document.getElementById('scan-workspace').scrollIntoView({block:'start'})",
+      "document.querySelectorAll('.evidence-row')[0]?.click()"
+     ]
+    },
+    {
+     "actions": [
+      "document.querySelectorAll('.evidence-row')[1]?.click()"
+     ]
+    }
+   ],
+   "narration": "Showers have no local reader. Asked live in the app, Nemotron reasons over the drawing on NVIDIA's endpoint and marks both showers, which is the right count. The source line names the model that answered."
+  },
+  {
    "id": "08-close",
    "kind": "card",
    "kicker": "Planproof",
