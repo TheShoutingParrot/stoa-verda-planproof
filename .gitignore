@@ -7,3 +7,4 @@ __pycache__/
 .local/
 public/data/finnish/*.tmp
 demo/out/
+submission/

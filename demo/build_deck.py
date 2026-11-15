@@ -141,7 +141,7 @@ SLIDES = [
 # 4 ------------------------------------------------------------------------------ rooms and zeros
 '''<section id="rooms">
 <p class="eyebrow">ROOMS, STOREYS AND ZEROS</p>
-<h2>Rooms and storeys too, and a zero shows what was checked</h2>
+<h2>Rooms and storeys too, and a room zero shows which rooms were checked</h2>
 <div class="pair">
 <figure><div class="shot"><img src="{{storeys}}" alt="Three floor panels, each with its own box"></div><figcaption><b>3 storeys</b>, one box per floor panel. The previous reader deferred this question.</figcaption></figure>
 <figure><div class="shot"><img src="{{zero}}" alt="Zero saunas, with the examined wet room marked"></div><figcaption><b>0 saunas</b>, and the evidence is the wet room it examined, not an empty box.</figcaption></figure>
@@ -163,7 +163,7 @@ SLIDES = [
 <div class="node nv"><h3>Not proven</h3><p>NVIDIA Nemotron 3.5 Super VL on NVIDIA’s endpoint answers and marks what it counted. The source line names the model.</p></div>
 </div>
 </div>
-<p class="foot">Evidence is bound to the original image by SHA-256. Without a hosted endpoint, unproven questions are deferred.</p>
+<p class="foot">Scan evidence is bound to the original image by SHA-256. Without a hosted endpoint, unproven questions are deferred.</p>
 <aside>README.md and docs/scan-next-evaluation.md. The product sends every question no local reader can verify to Nemotron 3.5 Super VL (integrate.api.nvidia.com).</aside>
 </section>''',
 # 6 ----------------------------------------------------------------------------------------- dataset
@@ -195,7 +195,7 @@ SLIDES = [
 {{bars}}
 <div class="legend"><span><i class="key exact"></i>Exact</span><span><i class="key wrong"></i>Wrong</span><span><i class="key deferred"></i>Deferred</span></div>
 </div>
-<p class="foot">72 held-out CubiCasa test drawings · baseline sealed before tuning · one independent run, scored once · no hosted model</p>
+<p class="foot">72 held-out CubiCasa test drawings · baseline sealed before tuning · one scored run plus an identical repeat · no hosted model</p>
 <aside>docs/scan-next-evaluation.md, "Result", and docs/scan-next-results-2026-11-15.json (overall): 189 / 145 / 274 before, 325 / 140 / 143 after; +22.37 points, clustered bootstrap 18.74 to 26.05; 131 newly answered, 127 of them exact.</aside>
 </section>''',
 # 8 ------------------------------------------------------------------------------------------- marks
@@ -206,7 +206,7 @@ SLIDES = [
 <div class="tiles stack">
 <div class="tile"><div class="value">68.5% <i>→</i> 76.2%</div><div class="label">of annotated windows found · 507 → 564 of 740</div></div>
 <div class="tile"><div class="value">85.6% <i>→</i> 95.0%</div><div class="label">of annotated doors found · 427 → 474 of 499</div></div>
-<div class="tile"><div class="value">90%</div><div class="label">of window marks land on a real window · 564 of 625</div></div>
+<div class="tile"><div class="value">90%</div><div class="label">of window marks land on a real window · 564 of 625 (92.3% before)</div></div>
 </div>
 </div>
 <div class="shot tall crop"><img src="{{windows_marks}}" alt="Window marks on the original scan of drawing 6549"></div>
@@ -237,7 +237,7 @@ SLIDES = [
 <h2>What we have not shown yet</h2>
 <ul class="points big">
 <li><b>Window totals did not improve significantly:</b> +1.4 points (−8.3 to 12.5). The window marks improved; the exact totals did not.</li>
-<li><b>Bedrooms and showers still rely on the hosted model.</b> Showers on NVIDIA are right 41 of 66 times, still behind a constant answer of one (right on 69 of 90 confirmation drawings).</li>
+<li><b>Showers, and the bedroom questions the label reader defers (20 of 40), still rely on the hosted model.</b> The shower route is right on 61 of 90 confirmation drawings, still behind a constant answer of one (69 of the same 90).</li>
 <li><b>No NVIDIA GPU was measured locally:</b> the detector ran on an Apple M5 only. It selects CUDA when present. Verda-hosted inference still needs verification.</li>
 <li><b>The current reader is about 1.7 times slower:</b> 9.4 s per drawing against 5.6 s.</li>
 <li><b>Test composition:</b> 60 of the 72 drawings are architectural and none is colorful.</li>
@@ -254,14 +254,14 @@ team_slide,
 <ol class="steps">
 <li><b>Windows</b> on drawing 6549: click through the 18 marks.</li>
 <li><b>Storeys</b> on drawing 1692: answered from the room map, deferred before.</li>
-<li><b>A zero with evidence:</b> the rooms that were examined.</li>
+<li><b>A zero with evidence:</b> no sauna, and the wet rooms that were examined.</li>
 <li><b>Ask live:</b> “How many doors are shown on this floor plan?”</li>
 <li><b>Showers</b> go to Nemotron on NVIDIA’s endpoint, and say so.</li>
 </ol>
 <p class="soft">No model or key needed for the saved answers: every demo link replays a sealed answer offline.</p>
 </div>
 <div class="col cta">
-<div class="card"><h3>Run it</h3><p><code>python3 server.py</code>, then open the drawing library and pick any plan. With an NVIDIA key in the server environment, unproven questions go to Nemotron.</p></div>
+<div class="card"><h3>Run it</h3><p><code>python3 server.py</code>, then open the drawing library and pick any plan. With <code>NEMOTRON_BASE_URL</code> set to NVIDIA's endpoint and <code>NEMOTRON_API_KEY</code> in the server environment, unproven questions go to Nemotron.</p></div>
 <div class="card"><h3>Next</h3><ul class="points">
 <li>Measure the detector on an NVIDIA GPU on Verda.</li>
 <li>Move bedrooms and showers to local readers.</li>

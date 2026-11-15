@@ -93,10 +93,10 @@ scenes.append({'id': '07a-dataset', 'kind': 'card', 'kicker': 'The sponsor datas
 scenes.append({'id': '07b-svg', 'kind': 'card', 'kicker': 'Checked against the original vector drawings',
                'title': 'Every mark compared with the SVG annotation',
                'metrics': [{'value': '76%', 'label': 'of annotated windows found (was 69%)'}, {'value': '95%', 'label': 'of annotated doors found (was 86%)'},
-                           {'value': '90%', 'label': 'of window marks land on a real window'}],
+                           {'value': '90%', 'label': 'of window marks land on a real window (92% before)'}],
                'foot': 'CubiCasa5K SVG annotations · overlap of at least 25% per object',
                'narration': 'We did not just check the totals. Each window and door mark was compared with the original vector drawing of the plan. '
-                            'The reader now finds three quarters of all windows and ninety-five percent of all doors, and nine in ten window marks sit on a real window.'})
+                            'The reader now finds three quarters of all windows and ninety-five percent of all doors, and nine in ten window marks still sit on a real window.'})
 if args.hybrid:
     h = json.loads(args.hybrid.read_text())
     arms, calls = h['arms'], h['hosted_calls_needed']
