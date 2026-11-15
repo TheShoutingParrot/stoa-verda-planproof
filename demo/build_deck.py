@@ -3,7 +3,7 @@
 usage: python3 -I demo/build_deck.py --kit TEAM_SLIDE_KIT_DIR --frames DEMO_FRAMES_DIR [--out DIR] [--pdf] [--png]
 
 The deck follows the team slide kit: a 1920 x 1080 canvas with 128 px margins, dark background, Inter,
-and the kit's team slide second to last. The team slide is rendered from the kit's team.json and photos,
+and the kit's team slide second to last. The team slide is rendered from the kit's team.json (or --team) and photos,
 which are read as data only. Product slides use the frames captured for the demo video
 (demo/out/frames). Every figure on the slides comes from docs/scan-next-evaluation.md and the result
 files next to it; each slide's speaker note names its source.
@@ -24,6 +24,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser()
 parser.add_argument('--kit', type=Path, required=True, help='extracted team-slide-kit folder (contains team.json)')
+parser.add_argument('--team', type=Path, help="team.json with the team's own corrections; defaults to the kit's (photos still come from the kit)")
 parser.add_argument('--frames', type=Path, required=True, help='demo video frames (demo/out/frames)')
 parser.add_argument('--out', type=Path, default=HERE / 'out' / 'deck')
 parser.add_argument('--pdf', action='store_true', help='also print the deck to PDF with a headless browser')
@@ -47,7 +48,7 @@ def frame(name):
 
 # ---------------------------------------------------------------- team slide from the kit (data only)
 kit = args.kit.resolve()
-team = json.loads((kit / 'team.json').read_text(encoding='utf-8'))
+team = json.loads((args.team or kit / 'team.json').read_text(encoding='utf-8'))
 members = {m['id']: m for m in team['members']}
 
 
@@ -67,8 +68,8 @@ team_slide = '''<section id="team">
 <p class="eyebrow">%s</p>
 <h2>%s</h2>
 <div class="team">%s</div>
-<aside>Four of us from Aalto: %s and %s. Content from the team slide kit's team.json, unchanged.</aside>
-</section>''' % (esc(team['slide']['eyebrow']), esc(team['slide']['title']), team_columns, ', '.join(first_names[:-1]), first_names[-1])
+<aside>Four of us from Aalto: %s and %s. Content from the team slide kit's team.json%s.</aside>
+</section>''' % (esc(team['slide']['eyebrow']), esc(team['slide']['title']), team_columns, ', '.join(first_names[:-1]), first_names[-1], ', with the team\'s corrections' if args.team else ', unchanged')
 
 
 # ---------------------------------------------------------------- outcome bars for the results slide
