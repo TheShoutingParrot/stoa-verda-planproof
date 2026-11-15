@@ -107,7 +107,7 @@
      "was": true
     },
     {
-     "value": 392,
+     "value": 405,
      "label": "Planproof readers with Nemotron behind them"
     },
     {
@@ -116,7 +116,7 @@
     }
    ],
    "foot": "Same 608 questions · hosted on integrate.api.nvidia.com",
-   "narration": "What the local readers cannot prove goes to Nemotron on NVIDIA's endpoint. Nemotron alone gets 247 of the 608 questions exactly right. With Planproof's readers in front, the same endpoint reaches 392, and needs 143 calls instead of 608."
+   "narration": "What the local readers cannot prove goes to Nemotron on NVIDIA's endpoint. Nemotron alone gets 247 of the 608 questions exactly right. With Planproof's readers in front, and Nemotron reasoning over small shower symbols, the same endpoint reaches 405, with 143 calls instead of 608."
   },
   {
    "id": "08-close",

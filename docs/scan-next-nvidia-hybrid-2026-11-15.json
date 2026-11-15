@@ -5,7 +5,8 @@
  "hosted_calls_needed": {
   "nemotron_alone": 608,
   "hybrid_before": 274,
-  "hybrid_after": 143
+  "hybrid_after": 143,
+  "hybrid_after_shower_route": 143
  },
  "arms": {
   "nemotron_alone": {
@@ -42,6 +43,13 @@
    "deferred": 30,
    "exact_share": 0.6447,
    "accuracy_among_answered": 0.6782
+  },
+  "hybrid_after_shower_route": {
+   "exact": 405,
+   "wrong": 175,
+   "deferred": 28,
+   "exact_share": 0.6661,
+   "accuracy_among_answered": 0.6983
   }
  },
  "by_family": {

@@ -77,15 +77,16 @@ scenes.append({'id': '05-result', 'kind': 'card', 'kicker': 'Sealed comparison �
 if args.hybrid:
     h = json.loads(args.hybrid.read_text())
     arms, calls = h['arms'], h['hosted_calls_needed']
+    best = 'hybrid_after_shower_route' if 'hybrid_after_shower_route' in arms else 'hybrid_after'
     scenes.append({'id': '06-nvidia', 'kind': 'card', 'kicker': 'On NVIDIA hardware · Nemotron 3.5 Super VL',
                    'title': 'Local evidence first, NVIDIA for the rest',
                    'metrics': [{'value': arms['nemotron_alone']['exact'], 'label': 'Nemotron alone, exact of %d' % h['prompts'], 'was': True},
-                               {'value': arms['hybrid_after']['exact'], 'label': 'Planproof readers with Nemotron behind them'},
-                               {'value': calls['hybrid_after'], 'label': 'NVIDIA calls instead of %d' % calls['nemotron_alone']}],
+                               {'value': arms[best]['exact'], 'label': 'Planproof readers with Nemotron behind them'},
+                               {'value': calls[best], 'label': 'NVIDIA calls instead of %d' % calls['nemotron_alone']}],
                    'foot': 'Same %d questions · hosted on integrate.api.nvidia.com' % h['prompts'],
                    'narration': 'What the local readers cannot prove goes to Nemotron on NVIDIA\'s endpoint. Nemotron alone gets %d of the %d questions exactly right. '
-                                'With Planproof\'s readers in front, the same endpoint reaches %d, and needs %d calls instead of %d.'
-                                % (arms['nemotron_alone']['exact'], h['prompts'], arms['hybrid_after']['exact'], calls['hybrid_after'], calls['nemotron_alone'])})
+                                'With Planproof\'s readers in front, and Nemotron reasoning over small shower symbols, the same endpoint reaches %d, with %d calls instead of %d.'
+                                % (arms['nemotron_alone']['exact'], h['prompts'], arms[best]['exact'], calls[best], calls['nemotron_alone'])})
 if args.hosted_example:
     path, question = args.hosted_example.split('|', 1)
     scenes.append({'id': '07-hosted', 'kind': 'app',

@@ -73,7 +73,23 @@ With a hosted endpoint configured, the product sends every question that no loca
 | Previous local readers, then Nemotron | 336 | 208 | 64 | 274 |
 | Current local readers, then Nemotron | **392** | **186** | 30 | **143** |
 
-With the current readers in front, the hosted product gets 56 more exact answers and 22 fewer wrong ones, with about half as many calls to NVIDIA. Nemotron still decides every shower question, bedrooms the label reader defers, and what remains of the room questions. It gets showers right 28 times out of 66.
+With the current readers in front, the hosted product gets 56 more exact answers and 22 fewer wrong ones, with about half as many calls to NVIDIA. Nemotron still decides every shower question, bedrooms the label reader defers, and what remains of the room questions. On those routes it got showers right 28 times out of 66.
+
+### Showers on NVIDIA's endpoint
+
+Showers were the largest family left to Nemotron and its weakest one, so the hosted route for shower and bathtub questions was improved on NVIDIA's endpoint. The new route describes how Finnish plans draw showers and bathtubs, switches on Nemotron's reasoning and raises the output budget to 16,384 tokens (`scripts/scan_reader.py`, `SHOWER_INSTRUCTIONS`). Other questions keep the previous hosted route.
+
+The change was chosen on 45 development drawings and then frozen. It was confirmed once on 90 other development drawings, and then run once on the 66 shower questions of the 72 held-out drawings. None of these drawings was used to choose it. [Result file](scan-next-nvidia-showers-2026-11-15.json)
+
+| Shower and bathtub questions | Previous hosted route: exact / wrong / unanswered | New route: exact / wrong / unanswered | Gained / lost |
+|---|---:|---:|---:|
+| 45 tuning drawings | 24 / 16 / 5 | 33 / 12 / 0 | 13 / 4 |
+| 90 confirmation drawings | 50 / 34 / 6 | 61 / 28 / 1 | 21 / 10 |
+| 66 held-out questions | 28 / 35 / 3 | **41 / 24 / 1** | 24 / 11 |
+
+On the held-out questions a paired sign test gives p = 0.04 (0.07 on the confirmation drawings). With the current local readers and this route, the product answers **405 of 608** questions exactly, with 175 wrong, 28 deferred and 143 calls to NVIDIA. The reasoning pass costs about 5,500 output tokens per shower question, against about 20 before, and takes tens of seconds instead of a few.
+
+The figure still trails a constant answer of one shower, which would be right on 69 of the 90 confirmation drawings, because most Finnish flats have exactly one. The route answers from what is drawn and marks each shower it counts, so a plan with a bathtub, two bathrooms or none is not forced to one.
 
 ## Clickable examples
 
@@ -86,7 +102,8 @@ Start `python3 server.py` with the sponsor ZIP at its default path. The viewer r
 ## Limits
 
 - The window count gain is not significant on these drawings, and nine of the thirteen new errors are window or door totals.
-- Bedroom questions the label reader defers and all shower questions still need the hosted model.
+- Bedroom questions the label reader defers and all shower questions still need the hosted model. Shower counts on NVIDIA's endpoint are right 62% of the time.
+- No NVIDIA GPU was available, so the local detector has only been measured on an Apple M5. It selects CUDA when present.
 - The room-map reader needs the optional detector and a completed macOS Vision pass. Without either it declines.
 - The current reader is about 1.7 times slower per drawing.
 - Composition matters: 60 of the 72 drawings are architectural and none is colorful, because every colorful test drawing had been used before.

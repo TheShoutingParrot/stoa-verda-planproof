@@ -1,0 +1,50 @@
+{
+ "showers": {
+  "prompts": 66,
+  "old_route": {
+   "exact": 28,
+   "wrong": 35,
+   "deferred": 3
+  },
+  "new_route": {
+   "exact": 41,
+   "wrong": 24,
+   "deferred": 1
+  },
+  "gained": 24,
+  "lost": 11,
+  "sign_test_p": 0.041
+ },
+ "hybrid_608": {
+  "old_shower_route": {
+   "exact": 392,
+   "wrong": 186,
+   "deferred": 30
+  },
+  "new_shower_route": {
+   "exact": 405,
+   "wrong": 175,
+   "deferred": 28
+  },
+  "hosted_calls": 143
+ },
+ "development": {
+  "tune_45": {
+   "old_route_exact": 24,
+   "new_route_exact": 33,
+   "old_wrong": 16,
+   "new_wrong": 12
+  },
+  "confirm_90": {
+   "old_route_exact": 50,
+   "new_route_exact": 61,
+   "old_wrong": 34,
+   "new_wrong": 28,
+   "old_unanswered": 6,
+   "new_unanswered": 1,
+   "gained": 21,
+   "lost": 10,
+   "sign_test_p": 0.0708
+  }
+ }
+}
