@@ -2,7 +2,7 @@
 
 **One line:** Ask a construction drawing how many, and see exactly where. Planproof counts windows, doors, rooms and storeys on the original drawing and marks every counted item, so the number can be checked instead of trusted.
 
-**Challenges:** Stoa (main challenge) · Verda compute · NVIDIA
+**Challenges:** Stoa: Make Blueprints Talk · NVIDIA: Best Use of Nemotron
 
 ## What we built
 
@@ -39,15 +39,22 @@ All local figures are offline, on 72 CubiCasa test drawings with 608 questions t
   - Planproof's readers with Nemotron behind them: **405** exact, with 143 NVIDIA calls instead of 608.
   - Shower route: tuned on development drawings only, it raised held-out shower counts from 28 to 41 of 66 (paired sign test p = 0.04).
 
+## NVIDIA Nemotron (Best Use of Nemotron)
+
+- **Model:** NVIDIA Nemotron 3.5 Super VL on `integrate.api.nvidia.com`.
+- **What it does:** it answers the count questions our local readers cannot prove, such as showers and bedrooms whose labels are unreadable, and returns a box for every item it counts. Those boxes are shown on the drawing like the local marks.
+- **Why it matters:** the local readers answer what the drawing itself proves for free, and Nemotron covers the rest. Together they reach 405 of 608 exact, against 247 for Nemotron alone, with 143 NVIDIA calls instead of 608.
+- **How we improved its outputs:** answers must parse as a count with one valid box per item, or they are deferred. For showers, a guide to Finnish shower symbols plus Nemotron's reasoning pass, chosen on development drawings and checked on held-out ones, raised exact counts from 28 to 41 of 66.
+
 ## Try it
 
 ```sh
 python3 server.py        # with the sponsor ZIP at .local/evaluation/swiss-frontier/inputs/junction-dataset.zip
 ```
 
-Open http://127.0.0.1:4179/library.html. The links in `demo/links.md` replay sealed answers without a model or key. For live counts, start the server with the detector's Python (`.local/scan-dev/objects/venv/bin/python server.py`); see `docs/scan-objects.md`. The detector setup is in `docs/scan-objects.md`. To send unproven questions to NVIDIA, set `NEMOTRON_BASE_URL=https://integrate.api.nvidia.com/v1` and `NEMOTRON_API_KEY` in the server environment.
+Open http://127.0.0.1:4179/library.html. The links in `demo/links.md` replay sealed answers without a model or key. For live counts, start the server with the detector's Python (`.local/scan-dev/objects/venv/bin/python server.py`); the detector setup is in `docs/scan-objects.md`. To send unproven questions to NVIDIA, set `NEMOTRON_BASE_URL=https://integrate.api.nvidia.com/v1` and `NEMOTRON_API_KEY` in the server environment.
 
-- Demo video: `planproof-demo.mp4` (2 min 20 s)
+- Demo video: https://youtu.be/NZQnlgucLDw (1 min 43 s; also `planproof-demo.mp4`)
 - Pitch deck: `planproof-deck.pdf` (12 slides)
 - Evaluation write-up: `docs/scan-next-evaluation.md`; protocol: `docs/scan-next-protocol.md`
 
