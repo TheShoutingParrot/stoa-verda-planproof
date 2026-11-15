@@ -69,6 +69,51 @@ class ObjectReaderTests(unittest.TestCase):
         self.assertEqual(scan_openings.decode(prob, ends, [], [existing]), {1: [], 2: [existing]})
         self.assertEqual(scan_openings.decode(prob, ends, [], []), {1: [], 2: [existing]})
 
+    @unittest.skipUnless(all(importlib.util.find_spec(m) for m in ('numpy', 'cv2', 'torch', 'PIL')), 'optional scan object runtime')
+    def test_room_map_and_object_marks_share_one_first_pass(self):
+        import io
+        import numpy as np
+        import torch
+        from PIL import Image
+        calls = []
+
+        def model(x):
+            # Stand-in network: background room class and the empty icon class everywhere.
+            calls.append(tuple(x.shape[-2:]))
+            out = torch.zeros((x.shape[0], 44) + tuple(x.shape[-2:]))
+            out[:, 21] = out[:, 33] = 9.
+            return out
+
+        def png(shade):
+            buffer = io.BytesIO()
+            Image.fromarray(np.full((300, 400, 3), shade, dtype=np.uint8)).save(buffer, format='PNG')
+            return buffer.getvalue()
+
+        first_pass = sorted([(300, 400), (400, 300)] * 2)  # four quarter turns of the sheet
+        with patch.object(scan_objects, 'available', return_value=True), \
+                patch.object(scan_objects, '_load', return_value=(model, 'cpu')), \
+                patch.object(scan_objects, 'CACHE', scan_objects.OrderedDict()), \
+                patch.object(scan_objects, 'FIRST', scan_objects.OrderedDict()), \
+                patch.object(scan_objects, 'TILE', 256), patch.object(scan_objects, 'OVERLAP', 32):
+            for order, shade in (('room map first', 255), ('marks first', 254)):
+                with self.subTest(order=order):
+                    data = png(shade)
+                    calls.clear()
+                    if order == 'room map first':
+                        rooms, icons = scan_objects.room_planes(data)
+                        self.assertEqual(sorted(calls), first_pass)
+                        record = scan_objects.inventory(data)
+                    else:
+                        record = scan_objects.inventory(data)
+                        rooms, icons = scan_objects.room_planes(data)
+                    # Whichever reader asks first, the sheet passes through the network once at the first scale.
+                    self.assertEqual(sorted(shape for shape in calls if shape != (256, 256)), first_pass)
+                    self.assertEqual((rooms.shape, icons.shape, rooms.dtype), ((12, 300, 400), (11, 300, 400), np.uint8))
+                    self.assertTrue((rooms[0] == 255).all() and (icons[0] == 255).all() and not rooms[1:].any())
+                    self.assertEqual(record['classes'], {1: [], 2: [], 5: [], 6: []})
+                    self.assertIs(scan_objects.room_planes(data)[0], rooms)
+            self.assertIsNone(scan_objects.room_planes(b'not a png'))
+
     def test_rotation_channel_order_matches_point_geometry(self):
         offsets = [(0, -1), (0, 1), (-1, 0), (1, 0)]
         points = offsets

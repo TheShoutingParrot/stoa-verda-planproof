@@ -190,6 +190,23 @@ class ScanTests(unittest.TestCase):
         self.assertEqual(len(rooms),1)
         self.assertEqual(len(rooms[0]['coverage_evidence']),2)
 
+    def test_next_replay_holds_the_sealed_after_arm_with_zero_evidence(self):
+        from scripts.export_scan_replay import UI_FIELDS
+        data = scan.NEXT_REPLAY_FILE.read_bytes()
+        self.assertEqual(hashlib.sha256(data).hexdigest(), scan.NEXT_REPLAY_SHA256)
+        reports = json.loads(data)['reports']
+        self.assertEqual(len(reports), 465)
+        self.assertEqual(len({(r['path'], r['question']) for r in reports}), 465)
+        earlier = json.loads(scan.REPLAY_FILE.read_bytes())['reports'] + json.loads(scan.REVISION_REPLAY_FILE.read_bytes())['reports']
+        self.assertTrue({r['path'] for r in earlier}.isdisjoint(r['path'] for r in reports))
+        for r in reports:
+            self.assertFalse(set(r) - set(UI_FIELDS))
+            self.assertEqual((r['status'], len(r['evidence'])), ('answered', r['answer']))
+            for item in r['evidence'] + r.get('coverage_evidence', []):
+                self.assertEqual(set(item), {'label', 'box'})
+        zeros = [r for r in reports if r['answer'] == 0 and r['method'] == 'local_room_layout']
+        self.assertTrue(zeros and all(r.get('coverage_evidence') and r.get('reason') for r in zeros))
+
     def test_distinct_portable_bundles_coexist_and_degrade_independently(self):
         historical = self.replay_fixture()
         revision = historical.with_name('revision.json')

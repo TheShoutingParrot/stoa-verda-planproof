@@ -6,3 +6,5 @@ __pycache__/
 .env.*
 .local/
 public/data/finnish/*.tmp
+demo/out/
+submission/

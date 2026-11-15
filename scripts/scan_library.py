@@ -74,7 +74,12 @@ REVISION_REPLAY_FILE = REPLAY_FILE.with_name('scan-revision-replay.json')
 REVISION_REPLAY_SHA256 = '8ff6c0357f36b77d1ba248ecd96f38a19a39359d88ebfd4e16cfb8a7b4fd6523'
 
 
-@lru_cache(maxsize=2)
+# Sealed after-arm answers of the 72-drawing comparison in docs/scan-next-evaluation.md.
+NEXT_REPLAY_FILE = REPLAY_FILE.with_name('scan-next-replay.json')
+NEXT_REPLAY_SHA256 = '8da1831a23f1d704e74d3160d0c958c3087efbc6595cc171315693a394a773de'
+
+
+@lru_cache(maxsize=3)
 def _replay_index(file, file_stat, expected_digest):
     data = file.read_bytes()
     if hashlib.sha256(data).hexdigest() != expected_digest:
@@ -94,7 +99,8 @@ def _replay_index(file, file_stat, expected_digest):
 
 def _measured(path, digest):
     reports = {}
-    for file, expected_hash in ((REPLAY_FILE, REPLAY_SHA256), (REVISION_REPLAY_FILE, REVISION_REPLAY_SHA256)):
+    for file, expected_hash in ((REPLAY_FILE, REPLAY_SHA256), (REVISION_REPLAY_FILE, REVISION_REPLAY_SHA256),
+                                (NEXT_REPLAY_FILE, NEXT_REPLAY_SHA256)):
         try:
             st = file.stat()
             fingerprint = (st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns)

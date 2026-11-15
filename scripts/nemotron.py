@@ -96,7 +96,7 @@ def token_usage(reply):
 
 
 def run(image, question, base, model, api_key, timeout=90, opener=None, *, instructions=INSTRUCTIONS,
-        thinking=None, json_output=False):
+        thinking=None, json_output=False, max_tokens=4096):
     report = {'schema_version': 1, 'status': 'unavailable', 'answer': None, 'evidence': [],
               'question': question, 'image': image.name, 'model': model, 'provider_host': None,
               'timestamp': datetime.now(timezone.utc).isoformat(timespec='seconds'),
@@ -121,7 +121,7 @@ def run(image, question, base, model, api_key, timeout=90, opener=None, *, instr
             raise ConfigurationError('Timeout must be between 1 and 600 seconds.')
         content = [{'type': 'text', 'text': question},
                    {'type': 'image_url', 'image_url': {'url': 'data:' + mime + ';base64,' + base64.b64encode(data).decode('ascii')}}]
-        payload = {'model': model, 'max_tokens': 4096, 'stream': False,
+        payload = {'model': model, 'max_tokens': max_tokens, 'stream': False,
                    'messages': [{'role': 'system', 'content': instructions}, {'role': 'user', 'content': content}]}
         if json_output:
             payload['response_format'] = {'type': 'json_object'}
