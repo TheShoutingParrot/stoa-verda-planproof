@@ -15,7 +15,24 @@ Scope: count objects in the depicted plan, across all separate floor panels. Ign
 Review the drawing once in reading order. Return compact JSON only. For each item draw a tight, distinct box around the actual symbol, room label, or floor panel on the original image. Coordinates are integers [left,top,right,bottom] in 0–1000 with origin at top left. Use a short label, e.g. "WC". Output {"status":"answered","answer":N,"evidence":[{"label":"...","box":[x0,y0,x1,y1]}]}. If the drawing shows no such objects, answer 0 with empty evidence. If the count cannot be verified, return {"status":"unknown","answer":null,"evidence":[],"reason":"short reason"}. Never substitute an entire image for an object's location."""
 
 
+# Tuned on development drawings only and confirmed on held-out ones (docs/scan-next-evaluation.md).
+SHOWER_GUIDE = """Count showers and bathtubs together. Look inside every bathroom or washroom (Finnish KH, KPH, PH, PESUH, SH; Swedish BAD, DUSCH) and every WC.
+A shower is drawn in one of these ways: a small shower head (a small circle or dot on a short line from the wall, often with a hose), a square or rectangular tray with a diagonal cross or a drain dot, a quarter-circle or rectangular glass cabin, a dotted or hatched floor area, or a label such as SUIHKU, SK or DUSCH. A bathtub is a long rounded rectangle with an inner outline, or the label AMME.
+Most Finnish bathrooms have exactly one shower even when it is drawn only as a small shower head. A WC room with only a toilet and a basin has none. A sauna (S, LH) has no shower unless one is drawn.
+Do not count toilet bowls, sinks, washing machines, floor drains on their own, sauna benches or stoves, door arcs or room labels.
+A Finnish bathroom (KH, KPH, PH, PESUH) without a bathtub practically always has a shower, often drawn as only a small shower head in a corner or on a wall next to the floor drain. Answer 0 only when no bathroom or washroom is drawn at all, or when every washroom is clearly a WC or sauna."""
+SHOWER_INSTRUCTIONS = DIRECT_INSTRUCTIONS.replace(
+    "Distinguish showers or tubs from saunas, sinks and floor drains.",
+    "Distinguish showers or tubs from saunas, sinks and floor drains.\n" + SHOWER_GUIDE)
+
+
 def hosted_count(image, question, base, model, api_key, timeout=90):
+    if any(term in question.casefold() for term in ('shower', 'bathtub')):
+        # Small shower symbols need the model's reasoning pass, which needs a larger output budget.
+        report = nemotron.run(image, question, base, model, api_key, max(timeout, 240),
+                              instructions=SHOWER_INSTRUCTIONS, thinking=True, json_output=True, max_tokens=16384)
+        report['method'] = 'nemotron_shower_guided'
+        return report
     report = nemotron.run(image, question, base, model, api_key, timeout,
                           instructions=DIRECT_INSTRUCTIONS, thinking=False, json_output=True)
     report['method'] = 'nemotron_direct'

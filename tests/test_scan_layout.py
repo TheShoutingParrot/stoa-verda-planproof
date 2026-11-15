@@ -435,3 +435,22 @@ class SharedPassTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class HostedShowerRouteTests(unittest.TestCase):
+    def test_shower_questions_use_the_guided_reasoning_route_and_others_do_not(self):
+        calls = []
+
+        def fake(image, question, base, model, key, timeout, **options):
+            calls.append((question, timeout, options))
+            return {'status': 'answered', 'answer': 1, 'evidence': [{'label': 'shower', 'box': [1, 2, 3, 4]}]}
+
+        with patch.object(scan_reader.nemotron, 'run', side_effect=fake):
+            shower = scan_reader.hosted_count(None, 'How many showers and bathtubs are drawn on this floor plan in total?', 'https://x/v1', 'm', 'k')
+            window = scan_reader.hosted_count(None, 'How many windows are shown on this floor plan?', 'https://x/v1', 'm', 'k')
+        self.assertEqual((shower['method'], window['method']), ('nemotron_shower_guided', 'nemotron_direct'))
+        (_, timeout, guided), (_, plain_timeout, plain) = calls
+        self.assertEqual((guided['thinking'], guided['max_tokens'], timeout), (True, 16384, 240))
+        self.assertIn('SUIHKU', guided['instructions'])
+        self.assertEqual((plain['thinking'], plain['instructions'], plain_timeout), (False, scan_reader.DIRECT_INSTRUCTIONS, 90))
+        self.assertNotIn('max_tokens', plain)
