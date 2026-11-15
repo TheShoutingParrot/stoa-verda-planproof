@@ -83,6 +83,33 @@ scenes.append({'id': '07-how', 'kind': 'card', 'kicker': 'How it works', 'title'
                'title_size': 72,
                'narration': 'Under the hood, Planproof tries its own readers first: text recognition for room labels, a floor-plan detector for rooms and storeys, '
                             'and a second, closer look at windows and doors. Only what they cannot prove is sent to NVIDIA. That keeps answers fast, checkable and cheap.'})
+scenes.append({'id': '07a-dataset', 'kind': 'card', 'kicker': 'The sponsor dataset', 'title': 'Built on the full 9.8 GB release',
+               'metrics': [{'value': '4,787', 'label': 'scanned Finnish floor plans'}, {'value': '1,040', 'label': 'Swiss plans with CAD files'},
+                           {'value': '64,132', 'label': 'English questions'}],
+               'foot': 'Tested on %d held-out scans with %d questions, never used while building it' % (drawings, len(rows)),
+               'narration': 'All of this runs on the sponsor\'s full release: nearly five thousand scanned plans, a thousand Swiss plans and sixty-four thousand questions. '
+                            'We tested on %d scans we never touched while building it. Exact answers went from %d to %d of %d, with no cloud model at all.'
+                            % (drawings, before['exact'], after['exact'], len(rows))})
+scenes.append({'id': '07b-svg', 'kind': 'card', 'kicker': 'Checked against the original vector drawings',
+               'title': 'Every mark compared with the SVG annotation',
+               'metrics': [{'value': '76%', 'label': 'of annotated windows found (was 69%)'}, {'value': '95%', 'label': 'of annotated doors found (was 86%)'},
+                           {'value': '90%', 'label': 'of window marks land on a real window'}],
+               'foot': 'CubiCasa5K SVG annotations · overlap of at least 25% per object',
+               'narration': 'We did not just check the totals. Each window and door mark was compared with the original vector drawing of the plan. '
+                            'The reader now finds three quarters of all windows and ninety-five percent of all doors, and nine in ten window marks sit on a real window.'})
+if args.hybrid:
+    h = json.loads(args.hybrid.read_text())
+    arms, calls = h['arms'], h['hosted_calls_needed']
+    best = 'hybrid_after_shower_route' if 'hybrid_after_shower_route' in arms else 'hybrid_after'
+    scenes.append({'id': '07c-nvidia', 'kind': 'card', 'kicker': 'On NVIDIA · Nemotron 3.5 Super VL',
+                   'title': 'Better answers with fewer NVIDIA calls',
+                   'metrics': [{'value': arms['nemotron_alone']['exact'], 'label': 'exact with Nemotron alone', 'was': True},
+                               {'value': arms[best]['exact'], 'label': 'exact with Planproof in front'},
+                               {'value': calls[best], 'label': 'NVIDIA calls instead of %d' % calls['nemotron_alone']}],
+                   'foot': 'Same %d questions · showers on NVIDIA: 28 to 41 of 66 with the reasoning route' % h['prompts'],
+                   'narration': 'On NVIDIA\'s endpoint, Nemotron alone gets %d of the %d questions right. With Planproof\'s readers in front, it reaches %d, '
+                                'and needs only %d NVIDIA calls instead of %d. Letting Nemotron reason over shower symbols took held-out shower counts from 28 to 41.'
+                                % (arms['nemotron_alone']['exact'], h['prompts'], arms[best]['exact'], calls[best], calls['nemotron_alone'])})
 scenes.append({'id': '08-close', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Every count can be checked on the drawing',
                'lines': ['Open the library, pick a plan, ask how many.'],
                'narration': 'Planproof. Ask how many, and see exactly where.'})

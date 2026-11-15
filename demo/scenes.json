@@ -119,6 +119,73 @@
    "narration": "Under the hood, Planproof tries its own readers first: text recognition for room labels, a floor-plan detector for rooms and storeys, and a second, closer look at windows and doors. Only what they cannot prove is sent to NVIDIA. That keeps answers fast, checkable and cheap."
   },
   {
+   "id": "07a-dataset",
+   "kind": "card",
+   "kicker": "The sponsor dataset",
+   "title": "Built on the full 9.8 GB release",
+   "metrics": [
+    {
+     "value": "4,787",
+     "label": "scanned Finnish floor plans"
+    },
+    {
+     "value": "1,040",
+     "label": "Swiss plans with CAD files"
+    },
+    {
+     "value": "64,132",
+     "label": "English questions"
+    }
+   ],
+   "foot": "Tested on 72 held-out scans with 608 questions, never used while building it",
+   "narration": "All of this runs on the sponsor's full release: nearly five thousand scanned plans, a thousand Swiss plans and sixty-four thousand questions. We tested on 72 scans we never touched while building it. Exact answers went from 189 to 325 of 608, with no cloud model at all."
+  },
+  {
+   "id": "07b-svg",
+   "kind": "card",
+   "kicker": "Checked against the original vector drawings",
+   "title": "Every mark compared with the SVG annotation",
+   "metrics": [
+    {
+     "value": "76%",
+     "label": "of annotated windows found (was 69%)"
+    },
+    {
+     "value": "95%",
+     "label": "of annotated doors found (was 86%)"
+    },
+    {
+     "value": "90%",
+     "label": "of window marks land on a real window"
+    }
+   ],
+   "foot": "CubiCasa5K SVG annotations · overlap of at least 25% per object",
+   "narration": "We did not just check the totals. Each window and door mark was compared with the original vector drawing of the plan. The reader now finds three quarters of all windows and ninety-five percent of all doors, and nine in ten window marks sit on a real window."
+  },
+  {
+   "id": "07c-nvidia",
+   "kind": "card",
+   "kicker": "On NVIDIA · Nemotron 3.5 Super VL",
+   "title": "Better answers with fewer NVIDIA calls",
+   "metrics": [
+    {
+     "value": 247,
+     "label": "exact with Nemotron alone",
+     "was": true
+    },
+    {
+     "value": 405,
+     "label": "exact with Planproof in front"
+    },
+    {
+     "value": 143,
+     "label": "NVIDIA calls instead of 608"
+    }
+   ],
+   "foot": "Same 608 questions · showers on NVIDIA: 28 to 41 of 66 with the reasoning route",
+   "narration": "On NVIDIA's endpoint, Nemotron alone gets 247 of the 608 questions right. With Planproof's readers in front, it reaches 405, and needs only 143 NVIDIA calls instead of 608. Letting Nemotron reason over shower symbols took held-out shower counts from 28 to 41."
+  },
+  {
    "id": "08-close",
    "kind": "card",
    "kicker": "Planproof",
