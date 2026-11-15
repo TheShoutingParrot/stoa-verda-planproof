@@ -113,6 +113,32 @@ if args.hybrid:
 scenes.append({'id': '08-close', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Every count can be checked on the drawing',
                'lines': ['Open the library, pick a plan, ask how many.'],
                'narration': 'Planproof. Ask how many, and see exactly where.'})
+# Short narration for a video under two minutes (about 230 words).
+SHORT = {
+    '01-title': 'This is Planproof. Ask a construction drawing how many windows, doors or bathrooms, '
+                'and you get the number, with every counted item marked on the drawing.',
+    '02-library': "It works on the sponsor's whole library: thousands of Finnish scans, Swiss plans and building models.",
+    '05-zero': 'Even a zero comes with evidence. Here, the wet rooms it checked before saying there is no %s.'
+               % (zero['category'].rstrip('s') if zero else 'sauna'),
+    '06-nvidia': "What the local readers cannot prove, like showers, goes to NVIDIA's Nemotron. "
+                 'It reasons over the drawing and marks what it counted.',
+    '07-how': 'Local readers go first, and only the unproven rest goes to NVIDIA. That keeps every answer fast, checkable and cheap.',
+    '07a-dataset': 'On %d scans we never touched while building it, exact answers rose from %d to %d of %d, with no cloud model at all.'
+                   % (drawings, before['exact'], after['exact'], len(rows)),
+    '07b-svg': 'Checked against the original vector drawings, it now finds three quarters of all windows and ninety-five percent of all doors.',
+    '08-close': 'Planproof. Ask how many, and see exactly where.',
+}
+if windows:
+    SHORT['03-windows'] = ('Here it found %d windows. Every one is a mark on the scan, so you can check the count in seconds instead of trusting it.'
+                           % windows['new']['answer'])
+if storeys:
+    SHORT['04-storeys'] = ('It reads rooms too: kitchens, saunas, bathrooms and storeys, from the printed room names and a map of the plan. '
+                           '%d floors, %d boxes.' % (storeys['new']['answer'], storeys['new']['answer']))
+if args.hybrid:
+    SHORT['07c-nvidia'] = ('With Planproof in front, Nemotron reaches %d exact answers instead of %d, using %d NVIDIA calls instead of %d.'
+                           % (arms[best]['exact'], arms['nemotron_alone']['exact'], calls[best], calls['nemotron_alone']))
+for scene in scenes:
+    scene['narration'] = SHORT.get(scene['id'], scene['narration'])
 (HERE / 'scenes.json').write_text(json.dumps({'scenes': scenes}, indent=1, ensure_ascii=False) + '\n')
 words = sum(len(s['narration'].split()) for s in scenes)
 print('scenes: %d, narration words: %d' % (len(scenes), words))

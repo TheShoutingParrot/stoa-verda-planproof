@@ -10,7 +10,7 @@
     "Every counted item is marked where it is."
    ],
    "foot": "Built at Junction 2026 for the Stoa, Verda and NVIDIA challenges",
-   "narration": "This is Planproof. You ask a construction drawing a counting question, like how many windows or how many bathrooms, and it gives you the number together with the marks on the drawing that support it."
+   "narration": "This is Planproof. Ask a construction drawing how many windows, doors or bathrooms, and you get the number, with every counted item marked on the drawing."
   },
   {
    "id": "02-library",
@@ -22,7 +22,7 @@
      "settle": 900
     }
    ],
-   "narration": "It opens the sponsor's whole drawing library: thousands of scanned Finnish floor plans, Swiss plans and building models. Pick any drawing and ask."
+   "narration": "It works on the sponsor's whole library: thousands of Finnish scans, Swiss plans and building models."
   },
   {
    "id": "03-windows",
@@ -47,7 +47,7 @@
      ]
     }
    ],
-   "narration": "Here we asked how many windows. It found 18, and each one is a mark on the scan. Click a row and it shows you that window, so you never have to take the number on trust."
+   "narration": "Here it found 18 windows. Every one is a mark on the scan, so you can check the count in seconds instead of trusting it."
   },
   {
    "id": "04-storeys",
@@ -67,7 +67,7 @@
      ]
     }
    ],
-   "narration": "It also reads the rooms. From the printed room names and a map of the plan's rooms, it answers questions about kitchens, saunas, bathrooms and storeys. This sheet shows 3 floors, and each floor gets its own box."
+   "narration": "It reads rooms too: kitchens, saunas, bathrooms and storeys, from the printed room names and a map of the plan. 3 floors, 3 boxes."
   },
   {
    "id": "05-zero",
@@ -82,7 +82,7 @@
      ]
     }
    ],
-   "narration": "Even a zero comes with evidence. When it says there is no sauna, it shows the rooms it checked."
+   "narration": "Even a zero comes with evidence. Here, the wet rooms it checked before saying there is no sauna."
   },
   {
    "id": "06-nvidia",
@@ -102,7 +102,7 @@
      ]
     }
    ],
-   "narration": "Some questions need more than the local readers, like counting showers. Those go to NVIDIA's Nemotron vision model, which reasons over the drawing and marks what it counted. The answer always says which model gave it."
+   "narration": "What the local readers cannot prove, like showers, goes to NVIDIA's Nemotron. It reasons over the drawing and marks what it counted."
   },
   {
    "id": "07-how",
@@ -116,7 +116,7 @@
     "4. Anything still unproven goes to Nemotron on NVIDIA."
    ],
    "title_size": 72,
-   "narration": "Under the hood, Planproof tries its own readers first: text recognition for room labels, a floor-plan detector for rooms and storeys, and a second, closer look at windows and doors. Only what they cannot prove is sent to NVIDIA. That keeps answers fast, checkable and cheap."
+   "narration": "Local readers go first, and only the unproven rest goes to NVIDIA. That keeps every answer fast, checkable and cheap."
   },
   {
    "id": "07a-dataset",
@@ -138,7 +138,7 @@
     }
    ],
    "foot": "Tested on 72 held-out scans with 608 questions, never used while building it",
-   "narration": "All of this runs on the sponsor's full release: nearly five thousand scanned plans, a thousand Swiss plans and sixty-four thousand questions. We tested on 72 scans we never touched while building it. Exact answers went from 189 to 325 of 608, with no cloud model at all."
+   "narration": "On 72 scans we never touched while building it, exact answers rose from 189 to 325 of 608, with no cloud model at all."
   },
   {
    "id": "07b-svg",
@@ -160,7 +160,7 @@
     }
    ],
    "foot": "CubiCasa5K SVG annotations · overlap of at least 25% per object",
-   "narration": "We did not just check the totals. Each window and door mark was compared with the original vector drawing of the plan. The reader now finds three quarters of all windows and ninety-five percent of all doors, and nine in ten window marks still sit on a real window."
+   "narration": "Checked against the original vector drawings, it now finds three quarters of all windows and ninety-five percent of all doors."
   },
   {
    "id": "07c-nvidia",
@@ -183,7 +183,7 @@
     }
    ],
    "foot": "Same 608 questions · showers on NVIDIA: 28 to 41 of 66 with the reasoning route",
-   "narration": "On NVIDIA's endpoint, Nemotron alone gets 247 of the 608 questions right. With Planproof's readers in front, it reaches 405, and needs only 143 NVIDIA calls instead of 608. Letting Nemotron reason over shower symbols took held-out shower counts from 28 to 41."
+   "narration": "With Planproof in front, Nemotron reaches 405 exact answers instead of 247, using 143 NVIDIA calls instead of 608."
   },
   {
    "id": "08-close",
