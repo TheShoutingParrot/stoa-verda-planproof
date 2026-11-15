@@ -21,8 +21,8 @@ Fallback if the network is down: every link in `demo/links.md` replays a sealed 
 
 ```sh
 python3 server.py &                                  # saved results only
-python3 demo/make_scenes.py --paired <paired-rows.json> --hybrid <hybrid-summary.json>
+python3 demo/make_scenes.py --paired <paired-rows.json> --hosted-example "<drawing path>|<question>"
 python3 demo/build_video.py                          # macOS voice; or --audio-dir with recorded or AI narration
 ```
 
-`make_scenes.py` takes every number and link from the scored result files. `build_video.py` captures the scenes from the running app with a headless Chromium browser (`demo/capture.mjs`), narrates them with a macOS system voice or the audio files given, and writes `demo/out/planproof-demo.mp4` with subtitles in `demo/out/planproof-demo.srt`. The output folder is ignored by git.
+The video explains what Planproof does, filmed from real answers: `make_scenes.py` picks its example drawings from the scored result files. `build_video.py` captures the scenes from the running app with a headless Chromium browser (`demo/capture.mjs`), narrates them with a macOS system voice or the audio files given, and writes `demo/out/planproof-demo.mp4` with subtitles in `demo/out/planproof-demo.srt`. The output folder is ignored by git.

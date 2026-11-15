@@ -4,16 +4,28 @@
    "id": "01-title",
    "kind": "card",
    "kicker": "Planproof",
-   "title": "Counts on construction drawings, with the evidence you can click",
+   "title": "Ask a floor plan how many. See exactly where.",
    "lines": [
-    "Local readers answer what the drawing itself can prove.",
-    "NVIDIA Nemotron answers the rest."
+    "Windows, doors, rooms and storeys, counted on the drawing itself.",
+    "Every counted item is marked where it is."
    ],
-   "foot": "Junction 2026 · Stoa, Verda and NVIDIA challenges",
-   "narration": "Planproof answers quantity questions about construction drawings. Every count links to the marks on the drawing that support it."
+   "foot": "Built at Junction 2026 for the Stoa, Verda and NVIDIA challenges",
+   "narration": "This is Planproof. You ask a construction drawing a counting question, like how many windows or how many bathrooms, and it gives you the number together with the marks on the drawing that support it."
   },
   {
-   "id": "02-windows",
+   "id": "02-library",
+   "kind": "app",
+   "shots": [
+    {
+     "url": "/library.html?source=cubicasa5k",
+     "wait": "document.querySelectorAll('a[href*=\\'scan-drawing\\']').length > 5",
+     "settle": 900
+    }
+   ],
+   "narration": "It opens the sponsor's whole drawing library: thousands of scanned Finnish floor plans, Swiss plans and building models. Pick any drawing and ask."
+  },
+  {
+   "id": "03-windows",
    "kind": "app",
    "shots": [
     {
@@ -35,10 +47,10 @@
      ]
     }
    ],
-   "narration": "This floor plan was held back for the test. The new reader reads windows and doors a second time, at a scale set by the drawing's own doors. It marks all 18 windows. The previous reader counted 15."
+   "narration": "Here we asked how many windows. It found 18, and each one is a mark on the scan. Click a row and it shows you that window, so you never have to take the number on trust."
   },
   {
-   "id": "03-storeys",
+   "id": "04-storeys",
    "kind": "app",
    "shots": [
     {
@@ -55,10 +67,10 @@
      ]
     }
    ],
-   "narration": "Questions the old reader had to defer now get an answer from the room map of the same detector. Here it counts 3 storeys, one box for each."
+   "narration": "It also reads the rooms. From the printed room names and a map of the plan's rooms, it answers questions about kitchens, saunas, bathrooms and storeys. This sheet shows 3 floors, and each floor gets its own box."
   },
   {
-   "id": "04-zero",
+   "id": "05-zero",
    "kind": "app",
    "shots": [
     {
@@ -70,56 +82,10 @@
      ]
     }
    ],
-   "narration": "A zero is an answer too. For saunas, the reader shows the rooms it examined before it says none."
-  },
-  {
-   "id": "05-result",
-   "kind": "card",
-   "kicker": "Sealed comparison · 72 drawings, 608 questions",
-   "title": "Exact answers, offline, on drawings held back from development",
-   "metrics": [
-    {
-     "value": 189,
-     "label": "previous reader",
-     "was": true
-    },
-    {
-     "value": 325,
-     "label": "new reader"
-    },
-    {
-     "value": "70%",
-     "label": "of its answers exact (was 57%)"
-    }
-   ],
-   "foot": "Baseline sealed before any tuning · one scoring · protocol in docs/scan-next-protocol.md",
-   "narration": "On 72 drawings held back from development, with 608 questions, exact answers rose from 189 to 325 with no hosted model at all. 70 percent of the answers it gives are exact, up from 57."
+   "narration": "Even a zero comes with evidence. When it says there is no sauna, it shows the rooms it checked."
   },
   {
    "id": "06-nvidia",
-   "kind": "card",
-   "kicker": "On NVIDIA hardware · Nemotron 3.5 Super VL",
-   "title": "Local evidence first, NVIDIA for the rest",
-   "metrics": [
-    {
-     "value": 247,
-     "label": "Nemotron alone, exact of 608",
-     "was": true
-    },
-    {
-     "value": 405,
-     "label": "Planproof readers with Nemotron behind them"
-    },
-    {
-     "value": 143,
-     "label": "NVIDIA calls instead of 608"
-    }
-   ],
-   "foot": "Same 608 questions · hosted on integrate.api.nvidia.com",
-   "narration": "What the local readers cannot prove goes to Nemotron on NVIDIA's endpoint. Nemotron alone gets 247 of the 608 questions exactly right. With Planproof's readers in front, and Nemotron reasoning over small shower symbols, the same endpoint reaches 405, with 143 calls instead of 608."
-  },
-  {
-   "id": "07-hosted",
    "kind": "app",
    "shots": [
     {
@@ -136,7 +102,21 @@
      ]
     }
    ],
-   "narration": "Showers have no local reader. Asked live in the app, Nemotron reasons over the drawing on NVIDIA's endpoint and marks both showers, which is the right count. The source line names the model that answered."
+   "narration": "Some questions need more than the local readers, like counting showers. Those go to NVIDIA's Nemotron vision model, which reasons over the drawing and marks what it counted. The answer always says which model gave it."
+  },
+  {
+   "id": "07-how",
+   "kind": "card",
+   "kicker": "How it works",
+   "title": "Local readers first, NVIDIA Nemotron for the rest",
+   "lines": [
+    "1. Room labels read with OCR on the scan.",
+    "2. Floor panels and the room map of a floor-plan detector.",
+    "3. Windows and doors read again at the drawing's own scale.",
+    "4. Anything still unproven goes to Nemotron on NVIDIA."
+   ],
+   "title_size": 72,
+   "narration": "Under the hood, Planproof tries its own readers first: text recognition for room labels, a floor-plan detector for rooms and storeys, and a second, closer look at windows and doors. Only what they cannot prove is sent to NVIDIA. That keeps answers fast, checkable and cheap."
   },
   {
    "id": "08-close",
@@ -144,10 +124,9 @@
    "kicker": "Planproof",
    "title": "Every count can be checked on the drawing",
    "lines": [
-    "Open the drawing library, pick a scan, ask a count.",
-    "Code, tests and the sealed protocol are in the repository."
+    "Open the library, pick a plan, ask how many."
    ],
-   "narration": "Planproof. Every count can be checked on the drawing."
+   "narration": "Planproof. Ask how many, and see exactly where."
   }
  ]
 }

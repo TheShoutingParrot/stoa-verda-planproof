@@ -47,54 +47,45 @@ select = lambda k: "document.querySelectorAll('.evidence-row')[%d]?.click()" % k
 frame = "document.getElementById('scan-workspace').scrollIntoView({block:'start'})"
 ready = "!document.getElementById('scan-workspace').hidden && document.getElementById('scan-image').complete && document.getElementById('scan-answer').textContent.trim() !== '—'"
 scenes = [
-    {'id': '01-title', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Counts on construction drawings, with the evidence you can click',
-     'lines': ['Local readers answer what the drawing itself can prove.', 'NVIDIA Nemotron answers the rest.'],
-     'foot': 'Junction 2026 · Stoa, Verda and NVIDIA challenges',
-     'narration': 'Planproof answers quantity questions about construction drawings. Every count links to the marks on the drawing that support it.'},
+    {'id': '01-title', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Ask a floor plan how many. See exactly where.',
+     'lines': ['Windows, doors, rooms and storeys, counted on the drawing itself.', 'Every counted item is marked where it is.'],
+     'foot': 'Built at Junction 2026 for the Stoa, Verda and NVIDIA challenges',
+     'narration': 'This is Planproof. You ask a construction drawing a counting question, like how many windows or how many bathrooms, '
+                  'and it gives you the number together with the marks on the drawing that support it.'},
+    {'id': '02-library', 'kind': 'app',
+     'shots': [{'url': '/library.html?source=cubicasa5k', 'wait': "document.querySelectorAll('a[href*=\\'scan-drawing\\']').length > 5", 'settle': 900}],
+     'narration': 'It opens the sponsor\'s whole drawing library: thousands of scanned Finnish floor plans, Swiss plans and building models. Pick any drawing and ask.'},
 ]
 if windows:
-    scenes.append({'id': '02-windows', 'kind': 'app',
+    scenes.append({'id': '03-windows', 'kind': 'app',
                    'shots': [{'url': link(windows), 'wait': ready, 'actions': [frame, select(0)]},
                              {'actions': [select(min(3, windows['gold'] - 1))]}, {'actions': [select(windows['gold'] - 1)]}],
-                   'narration': 'This floor plan was held back for the test. The new reader reads windows and doors a second time, at a scale set by the drawing\'s own doors. '
-                                'It marks all %d windows. The previous reader counted %d.' % (windows['gold'], windows['old']['answer'])})
+                   'narration': 'Here we asked how many windows. It found %d, and each one is a mark on the scan. Click a row and it shows you that window, '
+                                'so you never have to take the number on trust.' % windows['new']['answer']})
 if storeys:
-    scenes.append({'id': '03-storeys', 'kind': 'app',
+    scenes.append({'id': '04-storeys', 'kind': 'app',
                    'shots': [{'url': link(storeys), 'wait': ready, 'actions': [frame, select(0)]}] + ([{'actions': [select(1)]}] if storeys['gold'] >= 2 else []),
-                   'narration': 'Questions the old reader had to defer now get an answer from the room map of the same detector. '
-                                'Here it counts %d %s, one box for each.' % (storeys['gold'], 'storeys' if storeys['gold'] != 1 else 'storey')})
+                   'narration': 'It also reads the rooms. From the printed room names and a map of the plan\'s rooms, it answers questions about kitchens, saunas, bathrooms and storeys. '
+                                'This sheet shows %d floors, and each floor gets its own box.' % storeys['new']['answer']})
 if zero:
-    scenes.append({'id': '04-zero', 'kind': 'app',
+    scenes.append({'id': '05-zero', 'kind': 'app',
                    'shots': [{'url': link(zero), 'wait': ready, 'actions': [frame, select(0)]}],
-                   'narration': 'A zero is an answer too. For %s, the reader shows the rooms it examined before it says none.' % zero['category']})
-scenes.append({'id': '05-result', 'kind': 'card', 'kicker': 'Sealed comparison · %d drawings, %d questions' % (drawings, len(rows)),
-               'title': 'Exact answers, offline, on drawings held back from development',
-               'metrics': [{'value': before['exact'], 'label': 'previous reader', 'was': True}, {'value': after['exact'], 'label': 'new reader'},
-                           {'value': '%d%%' % share(after), 'label': 'of its answers exact (was %d%%)' % share(before)}],
-               'foot': 'Baseline sealed before any tuning · one scoring · protocol in docs/scan-next-protocol.md',
-               'narration': 'On %d drawings held back from development, with %d questions, exact answers rose from %d to %d with no hosted model at all. '
-                            '%d percent of the answers it gives are exact, up from %d.' % (drawings, len(rows), before['exact'], after['exact'], share(after), share(before))})
-if args.hybrid:
-    h = json.loads(args.hybrid.read_text())
-    arms, calls = h['arms'], h['hosted_calls_needed']
-    best = 'hybrid_after_shower_route' if 'hybrid_after_shower_route' in arms else 'hybrid_after'
-    scenes.append({'id': '06-nvidia', 'kind': 'card', 'kicker': 'On NVIDIA hardware · Nemotron 3.5 Super VL',
-                   'title': 'Local evidence first, NVIDIA for the rest',
-                   'metrics': [{'value': arms['nemotron_alone']['exact'], 'label': 'Nemotron alone, exact of %d' % h['prompts'], 'was': True},
-                               {'value': arms[best]['exact'], 'label': 'Planproof readers with Nemotron behind them'},
-                               {'value': calls[best], 'label': 'NVIDIA calls instead of %d' % calls['nemotron_alone']}],
-                   'foot': 'Same %d questions · hosted on integrate.api.nvidia.com' % h['prompts'],
-                   'narration': 'What the local readers cannot prove goes to Nemotron on NVIDIA\'s endpoint. Nemotron alone gets %d of the %d questions exactly right. '
-                                'With Planproof\'s readers in front, and Nemotron reasoning over small shower symbols, the same endpoint reaches %d, with %d calls instead of %d.'
-                                % (arms['nemotron_alone']['exact'], h['prompts'], arms[best]['exact'], calls[best], calls['nemotron_alone'])})
+                   'narration': 'Even a zero comes with evidence. When it says there is no %s, it shows the rooms it checked.' % zero['category'].rstrip('s')})
 if args.hosted_example:
     path, question = args.hosted_example.split('|', 1)
-    scenes.append({'id': '07-hosted', 'kind': 'app',
+    scenes.append({'id': '06-nvidia', 'kind': 'app',
                    'shots': [{'url': '/scan-drawing.html?' + urlencode({'path': path, 'question': question}), 'wait': ready, 'actions': [frame, select(0)]}, {'actions': [select(1)]}],
-                   'narration': 'Showers have no local reader. Asked live in the app, Nemotron reasons over the drawing on NVIDIA\'s endpoint and marks both showers, which is the right count. The source line names the model that answered.'})
+                   'narration': 'Some questions need more than the local readers, like counting showers. Those go to NVIDIA\'s Nemotron vision model, '
+                                'which reasons over the drawing and marks what it counted. The answer always says which model gave it.'})
+scenes.append({'id': '07-how', 'kind': 'card', 'kicker': 'How it works', 'title': 'Local readers first, NVIDIA Nemotron for the rest',
+               'lines': ['1. Room labels read with OCR on the scan.', '2. Floor panels and the room map of a floor-plan detector.',
+                         '3. Windows and doors read again at the drawing\'s own scale.', '4. Anything still unproven goes to Nemotron on NVIDIA.'],
+               'title_size': 72,
+               'narration': 'Under the hood, Planproof tries its own readers first: text recognition for room labels, a floor-plan detector for rooms and storeys, '
+                            'and a second, closer look at windows and doors. Only what they cannot prove is sent to NVIDIA. That keeps answers fast, checkable and cheap.'})
 scenes.append({'id': '08-close', 'kind': 'card', 'kicker': 'Planproof', 'title': 'Every count can be checked on the drawing',
-               'lines': ['Open the drawing library, pick a scan, ask a count.', 'Code, tests and the sealed protocol are in the repository.'],
-               'narration': 'Planproof. Every count can be checked on the drawing.'})
+               'lines': ['Open the library, pick a plan, ask how many.'],
+               'narration': 'Planproof. Ask how many, and see exactly where.'})
 (HERE / 'scenes.json').write_text(json.dumps({'scenes': scenes}, indent=1, ensure_ascii=False) + '\n')
 words = sum(len(s['narration'].split()) for s in scenes)
 print('scenes: %d, narration words: %d' % (len(scenes), words))
